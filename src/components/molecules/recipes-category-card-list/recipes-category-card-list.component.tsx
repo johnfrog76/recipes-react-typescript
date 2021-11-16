@@ -13,6 +13,14 @@ const RecipesCategoryCardList: FC<Props> = ({ recipes = [] }) => (
         {
             recipes.map((item, key) => (<RecipeCardItem key={key} item={item} />))
         }
+        {
+            recipes.length < 3 && (
+                <React.Fragment>
+                    <div></div>
+                    <div></div>
+                </React.Fragment>
+            )
+        }
     </StyledCardContainer>
 
 );

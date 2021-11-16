@@ -10,18 +10,20 @@ import { MainSection } from "../../components/atoms/main-section/main-section.co
 const RecipesByCategory = () => {
     const recipes = useContext(RecipeCollectionContext);
     const [filtered, setFiltered] = useState<iRecipe[]>([]);
+    const [catName, setCatName] = useState<string>('');
     const { cat_id } = useParams();
     const param_id = cat_id ? parseInt(cat_id) : -1;
 
     useEffect(() => {
         let temp: iRecipe[] = recipes.filter((item, idx) => item.cat_id === param_id);
         setFiltered(temp);
+        setCatName(temp[0].category);
 
     }, [recipes]);
 
     return (
         <MainSection>
-            <PageTitle>Recipes by Category</PageTitle>
+            <PageTitle>{catName}</PageTitle>
             <RecipesCategoryCardList recipes={filtered} />
         </MainSection>
     )
