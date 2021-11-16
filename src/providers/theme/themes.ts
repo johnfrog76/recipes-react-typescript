@@ -10,7 +10,7 @@ export const darkTheme = {
         pageHighLight1: PALLETS.teal.A100,
         pageHighLight2: PALLETS.teal.A700,
         navBarBackground: PALLETS.teal[800],
-        secondaryColor1: PALLETS.teal[400],
+        pageSecondaryColor1: PALLETS.teal[700]
     },
     fonts: ["sans-serif", "Roboto"],
     fontSizes: {
@@ -31,7 +31,7 @@ export const lightTheme = {
         pageHighLight1: PALLETS.blue.A100,
         pageHighLight2: PALLETS.blue.A700,
         navBarBackground: PALLETS.blue[800],
-        secondaryColor1: PALLETS.blue[400],
+        pageSecondaryColor1: PALLETS.blue[700],
     },
     fonts: ["sans-serif", "Roboto"],
     fontSizes: {

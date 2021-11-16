@@ -15,6 +15,12 @@ export const HeroSubTitle = styled.h2`
 export const HeroWrapper = styled.div`
     padding: 2rem;
     background-color: ${props => props.theme.colors.pageBackground2};
+    background: linear-gradient(
+        to right,
+        ${props => props.theme.colors.pageBackground1},
+        75%,
+        ${props => props.theme.colors.navBarBackground}
+    );
     position: relative;
     overflow: hidden;
     display: flex;

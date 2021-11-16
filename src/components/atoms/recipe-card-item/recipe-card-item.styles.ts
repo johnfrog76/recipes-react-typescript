@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const CardItem = styled.div`
-    background-color: ${(props) => props.theme.colors.secondaryColor1};
+    background-color: ${(props) => props.theme.colors.pageSecondaryColor1};
     padding: 1rem;
     color: #fff;
     min-height: 200px;
