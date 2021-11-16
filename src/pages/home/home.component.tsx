@@ -1,22 +1,23 @@
-import React, { useContext } from "react";
-import { HeroStyles, HeroSubTitle } from "./home.styles";
-import { Theme, ThemeContext } from "../../provider/theme/theme.provider"
+import React from "react";
+import { HeroStyles, HeroSubTitle, HeroWrapper } from "./home.styles";
+import CategoryTags from '../../components/molecules/category-tags/category-tags.component';
+import { MainSection } from "../../components/atoms/main-section/main-section.component";
+import FeaturedRecipes from "../../components/molecules/featured-recipes/featured-recipes.component";
 
-export const HomePage = () => {
-    const { theme, setTheme } = useContext(ThemeContext);
-    const handleTheme = () => {
-        if (theme === Theme.Dark) {
-            setTheme(Theme.Light);
-        } else {
-            setTheme(Theme.Dark);
-        }
-    };
+
+
+const HomePage = () => {
     return (
-        <React.Fragment>
-            <HeroStyles>Welcome to Recipe App</HeroStyles>
-            <HeroSubTitle>Here you will find collection of your favorite recipes.</HeroSubTitle>
-            <button onClick={() => handleTheme()}>set theme</button>
-        </React.Fragment>
+        <MainSection>
+            <HeroWrapper>
+                <HeroStyles>My Recipe Box</HeroStyles>
+                <HeroSubTitle>Here is a collection of my favorite recipes.</HeroSubTitle>
+            </HeroWrapper>
+            <FeaturedRecipes />
+            <CategoryTags />
+        </MainSection>
     )
 }
+
+export default HomePage;
 

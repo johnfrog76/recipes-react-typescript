@@ -1,36 +1,10 @@
 import React, { useContext, createContext, useState, FC } from "react";
+import { darkTheme, lightTheme } from './themes';
 import { ThemeProvider } from "styled-components";
 
 export enum Theme {
     Dark = 'Dark',
     Light = 'Light',
-}
-
-
-const theme1 = {
-    colors: {
-        pageBackground1: "#111",
-        pageForeground1: "#ccc"
-    },
-    fonts: ["sans-serif", "Roboto"],
-    fontSizes: {
-        small: "1em",
-        medium: "2em",
-        large: "3em"
-    }
-}
-
-const theme2 = {
-    colors: {
-        pageBackground1: "#f1f1f1",
-        pageForeground1: "#000"
-    },
-    fonts: ["sans-serif", "Roboto"],
-    fontSizes: {
-        small: "1em",
-        medium: "2em",
-        large: "3em"
-    }
 }
 
 export type ThemeContextType = {
@@ -49,7 +23,7 @@ const MyTheme: FC<Props> = ({ children }) => {
     const [theme, setTheme] = useState(Theme.Dark);
     return (
         <ThemeContext.Provider value={{ theme, setTheme }}>
-            <ThemeProvider theme={theme === Theme.Dark ? theme1 : theme2}>{children}</ThemeProvider>
+            <ThemeProvider theme={theme === Theme.Dark ? darkTheme : lightTheme}>{children}</ThemeProvider>
         </ThemeContext.Provider>
     );
 
