@@ -1,11 +1,11 @@
 import React from "react";
 
-import { StyledPageTitle } from './add-recipe.styles';
 import { MainSection } from "../../components/atoms/main-section/main-section.component";
+import PageTitle from "../../components/atoms/page-title/page-title.component";
 
 const AddRecipePage = () => (
     <MainSection>
-        <StyledPageTitle>Add Recipe</StyledPageTitle>
+        <PageTitle>Add Recipe</PageTitle>
     </MainSection>
 );
 

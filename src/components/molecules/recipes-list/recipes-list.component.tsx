@@ -1,11 +1,15 @@
-import React, { useContext } from 'react';
+import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
+
 import { StyledList, StyledListItem } from './recipe-list.styles';
 
-import RecipeCollectionContext from '../../../contexts/recipe-collection/recipe-collection.context';
+import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
 
-const RecipeList = () => {
-    const recipes = useContext(RecipeCollectionContext);
+interface Props {
+    recipes?: iRecipe[]
+}
+
+const RecipeList: FC<Props> = ({ recipes = [] }) => {
 
     return (
         <StyledList>
@@ -17,6 +21,9 @@ const RecipeList = () => {
                         </Link>
                     </StyledListItem>
                 ))
+            }
+            {
+                recipes.length === 0 && <p>no recipes</p>
             }
         </StyledList>
     )

@@ -27,7 +27,7 @@ export const lightTheme = {
         pageBackground2: PALLETS.grey[200],
         pageBackground3: PALLETS.grey[300],
         pageForeground1: PALLETS.grey[900],
-        pageLinkColor1: PALLETS.blue.A200,
+        pageLinkColor1: PALLETS.blue[900],
         pageHighLight1: PALLETS.blue.A100,
         pageHighLight2: PALLETS.blue.A700,
         navBarBackground: PALLETS.blue[800],

@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
+export const StyledTitleWrapper = styled.div`
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   margin-bottom: -1rem;
 
-export const StyledPageTitle = styled.h2`
-    font-size: ${(props) => props.theme.fontSizes.medium};
-    margin-bottom: 0.5em;
-    color: ${(props) => props.theme.colors.pageHighLight1};
 `;
