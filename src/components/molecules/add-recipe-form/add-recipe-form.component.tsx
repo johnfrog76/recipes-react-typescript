@@ -1,6 +1,8 @@
 import React from 'react';
 import { Formik, Field, Form, FormikHelpers } from 'formik';
 
+import { StyledFormWrapper } from './add-recipe-form.styles';
+
 interface Values {
     firstName: string;
     lastName: string;
@@ -9,7 +11,7 @@ interface Values {
 
 
 const AddRecipeForm = () => (
-    <div>
+    <StyledFormWrapper>
         <Formik
             initialValues={{
                 firstName: '',
@@ -44,7 +46,7 @@ const AddRecipeForm = () => (
                 <button type="submit">Submit</button>
             </Form>
         </Formik>
-    </div>
+    </StyledFormWrapper>
 );
 
 export default AddRecipeForm;

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { TagContainer, TagList } from './category-tabs.styles';
 import RecipeCollectionContext from '../../../contexts/recipe-collection/recipe-collection.context';
 import { iRecipe } from "../../../interfaces/recipe/recipe.interface";
+import { getCategoryTags } from '../../../contexts/recipe-collection/recipe-collection.utils';
 
 
 const CategoryTags = () => {
@@ -10,21 +11,7 @@ const CategoryTags = () => {
     const [uniques, setUniques] = useState<iRecipe[]>([]);
 
     useEffect(() => {
-        const temp: iRecipe[] = [];
-        for (let i = 0; i < recipes.length; i++) {
-            if (!temp.find(item => recipes[i].category === item.category)) {
-                temp.push(recipes[i]);
-            }
-        }
-        setUniques(temp.sort((a, b) => {
-            if (a.category < b.category) {
-                return -1;
-            }
-            if (a.category > b.category) {
-                return 1;
-            }
-            return 0;
-        }))
+        setUniques(getCategoryTags(recipes))
     }, [recipes])
 
     return (

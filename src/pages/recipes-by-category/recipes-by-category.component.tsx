@@ -15,7 +15,7 @@ const RecipesByCategory = () => {
     const param_id = cat_id ? parseInt(cat_id) : -1;
 
     useEffect(() => {
-        let temp: iRecipe[] = recipes.filter((item, idx) => item.cat_id === param_id);
+        let temp: iRecipe[] = recipes.filter(item => item.cat_id === param_id);
         setFiltered(temp);
         setCatName(temp[0].category);
 
