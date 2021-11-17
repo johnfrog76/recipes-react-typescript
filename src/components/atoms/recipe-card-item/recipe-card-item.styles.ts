@@ -19,6 +19,7 @@ export const CardCopy = styled.p`
 `;
 
 export const CardTitle = styled.h3`
+font-weight: 400;
 display: -webkit-box;
 -webkit-line-clamp: 2;
 -webkit-box-orient: vertical;  
