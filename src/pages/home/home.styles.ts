@@ -2,13 +2,15 @@ import styled from 'styled-components';
 import { Widgets } from '@material-ui/icons';
 
 export const HeroStyles = styled.h1`
-    font-size: ${(props) => props.theme.fontSizes.medium};
+    font-size: ${(props) => props.theme.fontSizes.large};
+    font-weight: 300;
     margin-bottom: 0.5em;
     color: ${(props) => props.theme.colors.pageHighLight2};
 `;
 
 export const HeroSubTitle = styled.h2`
-    font-size: 1rem;
+    font-size: 1.5rem;
+    font-weight: 300;
     color: ${(props) => props.theme.colors.pageForeground1};
 `;
 

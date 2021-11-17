@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledOuterDiv = styled.div`
-  font-family: sans-serif;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 1.5em;
   background-color: ${(props) => props.theme.colors.pageBackground1};

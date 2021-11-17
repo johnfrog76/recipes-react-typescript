@@ -11,6 +11,7 @@ export const CardItem = styled.div`
 `;
 
 export const CardCopy = styled.p`
+    font-weight: 300;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;  
