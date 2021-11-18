@@ -1,5 +1,5 @@
 export interface iRecipe {
-    id: number;
+    id?: number;
     user_id: number;
     r_name: string;
     cat_id: number;
