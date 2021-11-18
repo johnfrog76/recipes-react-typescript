@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import {Field} from 'formik';
+import { StyledFieldWrapper } from '../../atoms/field-wrapper/field-wrapper.styles';
 
 export const StyledFormWrapper = styled.div`
     padding: 1.5rem;
@@ -75,28 +76,26 @@ export const StyledPrimaryButton = styled.button`
     background-color: ${props => props.theme.colors.navBarBackground};
     border: 0;
     padding: 0.5rem 1rem;
-    margin: 1.5rem 0;
+    margin: 0 0 0 0;
     color: #fff;
     cursor: pointer;
     &:hover {
         background: ${props => props.theme.colors.pageHighLight2}
-
     }
 `;
 
-export const StyledSelect = styled(Field)`
-    width: 100%;
-    color: ${props => props.theme.colors.pageForeground1};
-    height: 2.5rem;
+export const StyledHRule = styled.hr`
+    border: 1px solid ${(props) => props.theme.colors.navBarBackground};
+    margin: 1.5rem 0;
+`;
+
+export const StyledFieldArrayEmptyButton = styled.button`
+    background-color: ${props => props.theme.colors.pageBackground3};
+    border: 0;
     font-size: 1rem;
-    background-color: ${props => props.theme.colors.pageBackground1};
-    border: 2px solid ${props => props.theme.colors.pageBorderColor1};
-    padding: 0.25rem 0.5rem;
-    border-radius: 0;
-    outline: none;
-    margin: 0;
-    &:focus {
-        border: 2px solid ${props => props.theme.colors.navBarBackground};
-        outline: 0;
-    }
+    color: ${props => props.theme.colors.pageForeground1};
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 0;
+    cursor: pointer;
 `;
+

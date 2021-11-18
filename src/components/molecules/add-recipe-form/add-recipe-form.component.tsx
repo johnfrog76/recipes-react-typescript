@@ -1,29 +1,38 @@
-import React from 'react';
-
+import React, { useContext, useState, useEffect } from 'react';
 import { Formik, FieldArray, Form, FormikHelpers } from 'formik';
+
+import SelectOptionField from '../../atoms/select-option-field/select-option-field.component';
+import RecipeTextField from '../../atoms/text-field/text-field.component';
+import RecipeCollectionContext from '../../../contexts/recipe-collection/recipe-collection.context';
+import { getCategoryTags } from '../../../contexts/recipe-collection/recipe-collection.utils';
 import {
     StyledFormWrapper,
     StyledAddInputBtn,
     StyledSubtractInputBtn,
     StyledInputWrapper,
     StyledInput,
-    StyledSelect,
     StyledLabel,
     InputButtonsWrap,
     FieldArrayItem,
-    StyledPrimaryButton
-} from './add-recipe-form.styles'
-import RecipeTextField from '../../atoms/text-field/text-field.component';
+    StyledPrimaryButton,
+    StyledHRule,
+    StyledFieldArrayEmptyButton
+} from './add-recipe-form.styles';
+import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
 
+interface iKeyValuePair {
+    id: string;
+    name: string;
+}
 
 interface Values {
     id?: number;
     user_id: number;
     r_name: string;
-    cat_id?: number;
+    cat_id?: string;
     shared: boolean;
     rating: number;
-    category: string;
+    category?: string;
     ingredients?: string[];
     steps?: string[];
     comments?: {
@@ -37,141 +46,170 @@ const createNumericId = (): number => {
     return d.getTime();
 }
 
-const AddRecipeForm = () => (
-    <StyledFormWrapper>
-        <Formik
-            initialValues={{
-                user_id: 1,
-                r_name: '',
-                shared: false,
-                rating: 0,
-                cat_id: createNumericId(),
-                category: '',
-                ingredients: [''],
-                steps: [''],
-                comments: []
-            }}
-            onSubmit={(
-                values: Values,
-                { setSubmitting }: FormikHelpers<Values>
-            ) => {
-                setTimeout(() => {
+const AddRecipeForm = () => {
 
-                    alert(JSON.stringify(values, null, 2));
-                    setSubmitting(false);
-                }, 500);
-            }}
-        >
-            {({ values }) => (
-                <Form>
+    const recipes = useContext(RecipeCollectionContext);
+    const [catData, setCatData] = useState<iKeyValuePair[]>([]);
 
-                    <RecipeTextField
-                        id="r_name"
-                        label="Recipe Name"
-                        name="r_name"
-                        placeholder="Chocolate Cake"
-                        required
-                    />
+    useEffect(() => {
+        const uniques = getCategoryTags(recipes);
+        const data = uniques.map((item: iRecipe) => {
+            const { cat_id, category } = item;
+            const strId = String(cat_id);
+            return { id: strId, name: category }
+        });
+        setCatData(data);
+    }, [recipes]);
 
-                    <RecipeTextField
-                        id="category"
-                        name="category"
-                        placeholder="Category"
-                        label="Recipe Category"
-                    />
+    return (
+        <StyledFormWrapper>
+            <Formik
+                initialValues={{
+                    user_id: 1,
+                    r_name: '',
+                    shared: false,
+                    rating: 0,
+                    cat_id: '',
+                    category: '',
+                    ingredients: [''],
+                    steps: [''],
+                    comments: []
+                }}
+                onSubmit={(
+                    values: Values,
+                    { setSubmitting }: FormikHelpers<Values>
+                ) => {
 
-                    <StyledInputWrapper>
-                        <StyledLabel htmlFor="lastName">Rating</StyledLabel>
-                        <StyledSelect as="select" name="rating">
-                            <option value="0">Select rating</option>
-                            <option value="1">One star</option>
-                            <option value="2">Two stars</option>
-                            <option value="1">Three stars</option>
-                            <option value="2">Four stars</option>
-                        </StyledSelect>
-                    </StyledInputWrapper>
+                    const catName = catData.find(i => i.id === values.cat_id);
+                    const vals = {
+                        ...values,
+                        category: catName?.name
+                    }
 
-                    <div>
-                        <FieldArray
-                            name="ingredients"
-                            render={arrayHelpers => (
-                                <div>
-                                    {values.ingredients && values.ingredients.length > 0 ? (
-                                        values.ingredients.map((item, index) => (
-                                            <StyledInputWrapper key={index}>
-                                                <StyledLabel>Ingredient {index + 1}</StyledLabel>
-                                                <FieldArrayItem>
-                                                    <StyledInput name={`ingredients.${index}`} placeholder="Ex: 1 cup milk" />
-                                                    <InputButtonsWrap>
-                                                        <StyledSubtractInputBtn
-                                                            type="button"
-                                                            onClick={() => arrayHelpers.remove(index)}
-                                                        >
-                                                            -
-                                                        </StyledSubtractInputBtn>
-                                                        <StyledAddInputBtn
-                                                            type="button"
-                                                            onClick={() => arrayHelpers.insert(index, '')}
-                                                        >
-                                                            +
-                                                        </StyledAddInputBtn>
-                                                    </InputButtonsWrap>
-                                                </FieldArrayItem>
-                                            </StyledInputWrapper>
-                                        ))
-                                    ) : (
-                                        <button type="button" onClick={() => arrayHelpers.push('')}>
-                                            Add Ingredients
-                                        </button>
-                                    )}
-                                </div>
-                            )}
+                    setTimeout(() => {
+                        alert(JSON.stringify(vals, null, 2));
+                        setSubmitting(false);
+                    }, 500);
+                }}
+            >
+                {({ values }) => (
+                    <Form>
+
+                        <RecipeTextField
+                            id="r_name"
+                            label="Recipe Name"
+                            name="r_name"
+                            placeholder="Ex: Chocolate Cake"
+                            required
                         />
-                    </div>
 
-                    <div>
-                        <FieldArray
-                            name="steps"
-                            render={arrayHelpers => (
-                                <div>
-                                    {values.steps && values.steps.length > 0 ? (
-                                        values.steps.map((item, index) => (
-                                            <StyledInputWrapper key={index}>
-                                                <StyledLabel>Step {index + 1}</StyledLabel>
-                                                <FieldArrayItem>
-                                                    <StyledInput name={`steps.${index}`} placeholder="Add step" />
-                                                    <InputButtonsWrap>
-                                                        <StyledSubtractInputBtn
-                                                            type="button"
-                                                            onClick={() => arrayHelpers.remove(index)}
-                                                        >
-                                                            -
-                                                        </StyledSubtractInputBtn>
-                                                        <StyledAddInputBtn
-                                                            type="button"
-                                                            onClick={() => arrayHelpers.insert(index, '')}
-                                                        >
-                                                            +
-                                                        </StyledAddInputBtn>
-                                                    </InputButtonsWrap>
-                                                </FieldArrayItem>
-                                            </StyledInputWrapper>
-                                        ))
-                                    ) : (
-                                        <button type="button" onClick={() => arrayHelpers.push('')}>
-                                            Add Steps
-                                        </button>
-                                    )}
-                                </div>
-                            )}
+                        <SelectOptionField
+                            as="select"
+                            id="cat_id"
+                            name="cat_id"
+                            label="Category"
+                            defaultOptionText="Select Recipe Category"
+                            optionData={catData}
                         />
-                    </div>
-                    <StyledPrimaryButton type="submit">Add Recipe</StyledPrimaryButton>
-                </Form>
 
-            )}
-        </Formik>
-    </StyledFormWrapper >
-);
+                        <SelectOptionField
+                            as="select"
+                            id="rating"
+                            name="rating"
+                            label="Rating"
+                            defaultOptionText="Ex: Four Stars"
+                            optionData={[
+                                { id: '1', name: 'One Star' },
+                                { id: '2', name: 'Two Stars' },
+                                { id: '3', name: 'Three Stars' },
+                                { id: '4', name: 'Four Stars' }
+                            ]}
+                        />
+
+
+                        <div>
+                            <FieldArray
+                                name="ingredients"
+                                render={arrayHelpers => (
+                                    <div>
+                                        {values.ingredients && values.ingredients.length > 0 ? (
+                                            values.ingredients.map((item, index) => (
+                                                <StyledInputWrapper key={index}>
+                                                    <StyledLabel>Ingredient {index + 1}</StyledLabel>
+                                                    <FieldArrayItem>
+                                                        <StyledInput name={`ingredients.${index}`} placeholder="Ex: 1 cup milk" />
+                                                        <InputButtonsWrap>
+                                                            <StyledSubtractInputBtn
+                                                                type="button"
+                                                                onClick={() => arrayHelpers.remove(index)}
+                                                            >
+                                                                -
+                                                            </StyledSubtractInputBtn>
+                                                            <StyledAddInputBtn
+                                                                type="button"
+                                                                onClick={() => arrayHelpers.insert(index, '')}
+                                                            >
+                                                                +
+                                                            </StyledAddInputBtn>
+                                                        </InputButtonsWrap>
+                                                    </FieldArrayItem>
+                                                </StyledInputWrapper>
+                                            ))
+                                        ) : (
+                                            <StyledFieldArrayEmptyButton type="button" onClick={() => arrayHelpers.push('')}>
+                                                Add Ingredients
+                                            </StyledFieldArrayEmptyButton>
+                                        )}
+                                    </div>
+                                )}
+                            />
+                        </div>
+
+                        <div>
+                            <FieldArray
+                                name="steps"
+                                render={arrayHelpers => (
+                                    <div>
+                                        {values.steps && values.steps.length > 0 ? (
+                                            values.steps.map((item, index) => (
+                                                <StyledInputWrapper key={index}>
+                                                    <StyledLabel>Step {index + 1}</StyledLabel>
+                                                    <FieldArrayItem>
+                                                        <StyledInput name={`steps.${index}`} placeholder="Add step" />
+                                                        <InputButtonsWrap>
+                                                            <StyledSubtractInputBtn
+                                                                type="button"
+                                                                onClick={() => arrayHelpers.remove(index)}
+                                                            >
+                                                                -
+                                                            </StyledSubtractInputBtn>
+                                                            <StyledAddInputBtn
+                                                                type="button"
+                                                                onClick={() => arrayHelpers.insert(index, '')}
+                                                            >
+                                                                +
+                                                            </StyledAddInputBtn>
+                                                        </InputButtonsWrap>
+                                                    </FieldArrayItem>
+                                                </StyledInputWrapper>
+                                            ))
+                                        ) : (
+                                            <StyledFieldArrayEmptyButton type="button" onClick={() => arrayHelpers.push('')}>
+                                                Add Steps
+                                            </StyledFieldArrayEmptyButton>
+                                        )}
+                                    </div>
+                                )}
+                            />
+                        </div>
+                        <StyledHRule />
+                        <StyledPrimaryButton type="submit">Add Recipe</StyledPrimaryButton>
+                    </Form>
+
+                )}
+            </Formik>
+        </StyledFormWrapper >
+    );
+}
 
 export default AddRecipeForm;
