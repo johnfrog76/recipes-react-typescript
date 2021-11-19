@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 
 import {Field} from 'formik';
-import { StyledFieldWrapper } from '../../atoms/field-wrapper/field-wrapper.styles';
+
+interface iRequiredLabel {
+    Required?: 'required'
+}
 
 export const StyledFormWrapper = styled.div`
     padding: 1.5rem;
@@ -51,10 +54,16 @@ export const StyledSubtractInputBtn = styled.button`
     cursor: pointer;
 `;
 
-export const StyledLabel = styled.label`
+export const StyledLabel = styled.label<iRequiredLabel>`
     color: ${props => props.theme.colors.pageForeground1};
     display: block;
     margin-bottom: 0.25rem;
+    &::before {
+        content: '${props => props.Required ? '* ' : ''}';
+        color: ${props => props.theme.colors.pageHighLight2};
+        font-size: 18px;
+        font-weight: 700;
+    }
 `;
 
 export const StyledInput = styled(Field)`

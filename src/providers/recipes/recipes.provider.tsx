@@ -29,8 +29,11 @@ const RecipesProvider: FC<Props> = ({ children }) => {
     const [recipeCount, setRecipeCount] = useState<number>(0)
 
     useEffect(() => {
-        setRecipeItems(RECIPES);
-        setRecipeCount(RECIPES.length)
+        setTimeout(() => {
+            setRecipeItems(RECIPES);
+            setRecipeCount(RECIPES.length)
+
+        }, 3000)
     }, [recipeItems])
 
     return (<RecipesContext.Provider

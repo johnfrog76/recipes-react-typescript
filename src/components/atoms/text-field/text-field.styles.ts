@@ -1,4 +1,11 @@
-import styled from 'styled-components';
+import React, {useContext} from 'react';
+import styled, { ThemeContext } from 'styled-components';
+
+import { Theme } from '../../../providers/theme/theme.provider';
+
+interface iStyledLabel {
+    Required: boolean;
+}
 
 export const StyledInput = styled.input`
     border: 2px solid ${props => props.theme.colors.pageBorderColor1};
@@ -14,8 +21,14 @@ export const StyledInput = styled.input`
     }
 `;
 
-export const StyledLabel = styled.label`
+export const StyledLabel = styled.label<iStyledLabel>`
     color: ${props => props.theme.colors.pageForeground1};
     display: block;
     margin-bottom: 0.25rem;
-`
+    &::before {
+        content: '${props => props.Required ? '* ' : ''}';
+        color: ${props => props.theme.colors.pageHighLight2};
+        font-size: 18px;
+        font-weight: 700;
+    }
+`;

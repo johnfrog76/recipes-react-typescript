@@ -19,7 +19,7 @@ const RecipeTextField = ({ name, id, placeholder, required = false, label }: iTe
     return (
         <FieldWrapper>
 
-            {label && (<StyledLabel htmlFor={id}>{label}</StyledLabel>)}
+            {label && (<StyledLabel Required={required} htmlFor={id}>{label}</StyledLabel>)}
             <StyledInput
                 id={id}
                 placeholder={placeholder}

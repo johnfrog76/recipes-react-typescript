@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Formik, FieldArray, Form, FormikHelpers } from 'formik';
+import { useNavigate } from 'react-router-dom';
 
 import SelectOptionField from '../../atoms/select-option-field/select-option-field.component';
 import RecipeTextField from '../../atoms/text-field/text-field.component';
@@ -50,6 +51,18 @@ const AddRecipeForm = () => {
     const { recipeItems, getCategoryTags, addRecipeToList } = useContext(RecipesContext);
     const [catData, setCatData] = useState<iKeyValuePair[]>([]);
     const [currentRecipeItems, setCurrentRecipeItems] = useState<iRecipe[]>(recipeItems);
+    let navigate = useNavigate();
+    const formValuesInitial = {
+        user_id: 1,
+        r_name: '',
+        shared: false,
+        rating: 0,
+        cat_id: '',
+        category: '',
+        ingredients: [''],
+        steps: [''],
+        comments: []
+    }
 
     useEffect(() => {
         const uniques = getCategoryTags(recipeItems);
@@ -64,17 +77,7 @@ const AddRecipeForm = () => {
     return (
         <StyledFormWrapper>
             <Formik
-                initialValues={{
-                    user_id: 1,
-                    r_name: '',
-                    shared: false,
-                    rating: 0,
-                    cat_id: '',
-                    category: '',
-                    ingredients: [''],
-                    steps: [''],
-                    comments: []
-                }}
+                initialValues={formValuesInitial}
                 onSubmit={(
                     values: Values,
                     { setSubmitting }: FormikHelpers<Values>
@@ -90,14 +93,15 @@ const AddRecipeForm = () => {
                     }
 
                     setTimeout(() => {
-                        alert(JSON.stringify(vals, null, 2));
+                        //alert(JSON.stringify(vals, null, 2));
                         setSubmitting(false);
-                        setCurrentRecipeItems(addRecipeToList(currentRecipeItems, vals))
+                        setCurrentRecipeItems(addRecipeToList(currentRecipeItems, vals));
+                        navigate('/')
 
                     }, 500);
                 }}
             >
-                {({ values }) => (
+                {({ values, resetForm }) => (
                     <Form>
 
                         <RecipeTextField
@@ -140,9 +144,9 @@ const AddRecipeForm = () => {
                                         {values.ingredients && values.ingredients.length > 0 ? (
                                             values.ingredients.map((item, index) => (
                                                 <StyledInputWrapper key={index}>
-                                                    <StyledLabel>Ingredient {index + 1}</StyledLabel>
+                                                    <StyledLabel Required={'required'}>Ingredient {index + 1}</StyledLabel>
                                                     <FieldArrayItem>
-                                                        <StyledInput name={`ingredients.${index}`} placeholder="Ex: 1 cup milk" />
+                                                        <StyledInput required name={`ingredients.${index}`} placeholder="Ex: 1 cup milk" />
                                                         <InputButtonsWrap>
                                                             <StyledSubtractInputBtn
                                                                 type="button"
@@ -178,7 +182,7 @@ const AddRecipeForm = () => {
                                         {values.steps && values.steps.length > 0 ? (
                                             values.steps.map((item, index) => (
                                                 <StyledInputWrapper key={index}>
-                                                    <StyledLabel>Step {index + 1}</StyledLabel>
+                                                    <StyledLabel Required={'required'}>Step {index + 1}</StyledLabel>
                                                     <FieldArrayItem>
                                                         <StyledInput name={`steps.${index}`} placeholder="Add step" />
                                                         <InputButtonsWrap>
