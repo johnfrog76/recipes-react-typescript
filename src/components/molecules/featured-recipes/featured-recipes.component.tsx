@@ -1,18 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import { CardList } from "./featured-recipes.styles";
-import RecipeCollectionContext from "../../../contexts/recipe-collection/recipe-collection.context";
+import { RecipesContext } from "../../../providers/recipes/recipes.provider";
 import { iRecipe } from "../../../interfaces/recipe/recipe.interface";
 import RecipeCardItem from '../../atoms/recipe-card-item/recipe-card-item.component';
-import { getFeaturedRecipes } from '../../../contexts/recipe-collection/recipe-collection.utils';
 
 const FeaturedRecipes = () => {
-    const recipes = useContext(RecipeCollectionContext);
+    const { recipeItems, getFeaturedRecipes } = useContext(RecipesContext);
     const [featured, setFeatured] = useState<iRecipe[]>([]);
 
     useEffect(() => {
-        setFeatured(getFeaturedRecipes(recipes))
-    }, [recipes])
+        setFeatured(getFeaturedRecipes(recipeItems));
+    }, [recipeItems])
 
 
     return (

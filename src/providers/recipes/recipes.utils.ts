@@ -39,3 +39,12 @@ export const getCategoryTags = (recipes: iRecipe[]):iRecipe[] => {
     })
 }
 
+export const addRecipeToList = ( recipes: iRecipe[] = [], recipe?: iRecipe) => {
+    if (!recipe) {
+        return recipes;
+    } else {
+        recipes.push(recipe);
+        return recipes;
+    }
+}
+

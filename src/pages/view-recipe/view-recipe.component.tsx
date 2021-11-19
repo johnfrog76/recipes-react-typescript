@@ -6,13 +6,13 @@ import RecipeViewDetails from '../../components/molecules/recipe-view-details/re
 import RecipeRating from '../../components/atoms/rating/rating.component';
 import PageTitle from '../../components/atoms/page-title/page-title.component';
 import { MainSection } from "../../components/atoms/main-section/main-section.component";
-import RecipeCollectionContext from "../../contexts/recipe-collection/recipe-collection.context";
+import { RecipesContext } from '../../providers/recipes/recipes.provider';
 
 const RecipeDetailPage = () => {
     const { id } = useParams();
     const numId: number | undefined = id ? parseInt(id) : -1;
-    const recipes = useContext(RecipeCollectionContext);
-    const recipe = recipes.find(r => r.id === numId);
+    const { recipeItems } = useContext(RecipesContext);
+    const recipe = recipeItems.find(r => r.id === numId);
 
     return (
         <MainSection>

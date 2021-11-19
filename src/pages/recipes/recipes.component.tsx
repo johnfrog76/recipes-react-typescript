@@ -4,13 +4,13 @@ import { MainSection } from "../../components/atoms/main-section/main-section.co
 import PageTitle from "../../components/atoms/page-title/page-title.component";
 import RecipeList from "../../components/molecules/recipes-list/recipes-list.component";
 import ListGridToggleButton from "../../components/atoms/list-grid-toggle/list-grid-toggle.component";
-import RecipeCollectionContext from '../../contexts/recipe-collection/recipe-collection.context';
+import { RecipesContext } from '../../providers/recipes/recipes.provider';
 import RecipeCardList from '../../components/molecules/recipes-category-card-list/recipes-category-card-list.component';
 import { StyledTitleWrapper } from './recipes.styles'
 
 const RecipesPage = () => {
     const [isGridView, setIsGridView] = useState<boolean>(true);
-    const recipes = useContext(RecipeCollectionContext);
+    const { recipeItems } = useContext(RecipesContext);
 
     const onButtonClick = () => setIsGridView(!isGridView);
 
@@ -22,9 +22,9 @@ const RecipesPage = () => {
             </StyledTitleWrapper>
             {
                 isGridView ? (
-                    <RecipeCardList recipes={recipes} />
+                    <RecipeCardList recipes={recipeItems} />
                 ) : (
-                    <RecipeList recipes={recipes} />
+                    <RecipeList recipes={recipeItems} />
                 )
             }
         </MainSection>

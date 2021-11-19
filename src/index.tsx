@@ -5,14 +5,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import MyTheme from './providers/theme/theme.provider';
+import RecipesProvider from './providers/recipes/recipes.provider';
 
 ReactDOM.render(
   <React.StrictMode>
-    <MyTheme>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </MyTheme>
+    <RecipesProvider>
+      <MyTheme>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </MyTheme>
+    </RecipesProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

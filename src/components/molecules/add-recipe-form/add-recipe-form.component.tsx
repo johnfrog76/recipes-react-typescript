@@ -3,8 +3,7 @@ import { Formik, FieldArray, Form, FormikHelpers } from 'formik';
 
 import SelectOptionField from '../../atoms/select-option-field/select-option-field.component';
 import RecipeTextField from '../../atoms/text-field/text-field.component';
-import RecipeCollectionContext from '../../../contexts/recipe-collection/recipe-collection.context';
-import { getCategoryTags } from '../../../contexts/recipe-collection/recipe-collection.utils';
+import { RecipesContext } from '../../../providers/recipes/recipes.provider';
 import {
     StyledFormWrapper,
     StyledAddInputBtn,
@@ -48,18 +47,19 @@ const createNumericId = (): number => {
 
 const AddRecipeForm = () => {
 
-    const recipes = useContext(RecipeCollectionContext);
+    const { recipeItems, getCategoryTags, addRecipeToList } = useContext(RecipesContext);
     const [catData, setCatData] = useState<iKeyValuePair[]>([]);
+    const [currentRecipeItems, setCurrentRecipeItems] = useState<iRecipe[]>(recipeItems);
 
     useEffect(() => {
-        const uniques = getCategoryTags(recipes);
+        const uniques = getCategoryTags(recipeItems);
         const data = uniques.map((item: iRecipe) => {
             const { cat_id, category } = item;
             const strId = String(cat_id);
             return { id: strId, name: category }
         });
         setCatData(data);
-    }, [recipes]);
+    }, [recipeItems]);
 
     return (
         <StyledFormWrapper>
@@ -81,14 +81,19 @@ const AddRecipeForm = () => {
                 ) => {
 
                     const catName = catData.find(i => i.id === values.cat_id);
+                    const cat_id = Number(values.cat_id);
                     const vals = {
                         ...values,
-                        category: catName?.name
+                        category: catName?.name || '',
+                        cat_id: cat_id,
+                        id: createNumericId()
                     }
 
                     setTimeout(() => {
                         alert(JSON.stringify(vals, null, 2));
                         setSubmitting(false);
+                        setCurrentRecipeItems(addRecipeToList(currentRecipeItems, vals))
+
                     }, 500);
                 }}
             >

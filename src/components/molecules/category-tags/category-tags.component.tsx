@@ -1,18 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { TagContainer, TagList } from './category-tabs.styles';
-import RecipeCollectionContext from '../../../contexts/recipe-collection/recipe-collection.context';
-import { iRecipe } from "../../../interfaces/recipe/recipe.interface";
-import { getCategoryTags } from '../../../contexts/recipe-collection/recipe-collection.utils';
 
+import { TagContainer, TagList } from './category-tabs.styles';
+import { RecipesContext } from '../../../providers/recipes/recipes.provider';
+import { iRecipe } from "../../../interfaces/recipe/recipe.interface";
 
 const CategoryTags = () => {
-    const recipes = useContext(RecipeCollectionContext);
+    const { recipeItems, getCategoryTags } = useContext(RecipesContext);
     const [uniques, setUniques] = useState<iRecipe[]>([]);
 
     useEffect(() => {
-        setUniques(getCategoryTags(recipes))
-    }, [recipes])
+        setUniques(getCategoryTags(recipeItems))
+    }, [recipeItems])
 
     return (
         <TagContainer>

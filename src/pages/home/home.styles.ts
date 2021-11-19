@@ -4,6 +4,7 @@ import { Widgets } from '@material-ui/icons';
 export const HeroStyles = styled.h1`
     font-size: ${(props) => props.theme.fontSizes.large};
     font-weight: 300;
+    line-height: 0.9em;
     margin-bottom: 0.5em;
     color: ${(props) => props.theme.colors.pageHighLight2};
 `;
