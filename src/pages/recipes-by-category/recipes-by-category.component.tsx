@@ -5,25 +5,36 @@ import PageTitle from "../../components/atoms/page-title/page-title.component";
 import RecipesCategoryCardList from '../../components/molecules/recipes-category-card-list/recipes-category-card-list.component';
 import { RecipesContext } from '../../providers/recipes/recipes.provider';
 import { iRecipe } from "../../interfaces/recipe/recipe.interface";
+import { SpinnerWrapper } from './recipes-by-category.styles';
 import { MainSection } from "../../components/atoms/main-section/main-section.component";
+import Spinner from "../../components/molecules/spinner/spinner.component";
 
 const RecipesByCategory = () => {
-    const { recipeItems } = useContext(RecipesContext);
+    const { recipeItems, isLoading } = useContext(RecipesContext);
     const [filtered, setFiltered] = useState<iRecipe[]>([]);
     const [catName, setCatName] = useState<string>('');
     const { cat_id } = useParams();
     const param_id = cat_id ? parseInt(cat_id) : -1;
 
     useEffect(() => {
-        let temp: iRecipe[] = recipeItems.filter(item => item.cat_id === param_id);
-        setFiltered(temp);
-        setCatName(temp[0].category);
-    }, [recipeItems]);
+        if (!isLoading) {
+            let temp: iRecipe[] = recipeItems.filter(item => item.cat_id === param_id);
+            setFiltered(temp);
+            setCatName(temp[0].category);
+        }
+    }, [recipeItems, isLoading]);
 
     return (
         <MainSection>
             <PageTitle>{catName}</PageTitle>
             <RecipesCategoryCardList recipes={filtered} />
+            {
+                isLoading && (
+                    <SpinnerWrapper>
+                        <Spinner />
+                    </SpinnerWrapper>
+                )
+            }
         </MainSection>
     )
 }

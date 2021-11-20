@@ -9,6 +9,14 @@ export const HeroStyles = styled.h1`
     color: ${(props) => props.theme.colors.pageHighLight2};
 `;
 
+export const SpinnerWrapper = styled.div`
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`;
+
 export const HeroSubTitle = styled.h2`
     font-size: 1.5rem;
     font-weight: 300;

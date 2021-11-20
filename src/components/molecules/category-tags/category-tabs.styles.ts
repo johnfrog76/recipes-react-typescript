@@ -20,7 +20,12 @@ export const TagList = styled.ul`
         background-color: ${props => props.theme.colors.pageHighLight2};
         padding: 0.5rem 1rem;
         margin: 0 1rem 1rem 0;
-        border-radius: 1rem 0 1rem 0;
+        border-radius: 0 1rem 0 1rem;
+        @media (min-width: 1400px) {
+            &:nth-child(even) {
+                border-radius: 1rem 0 1rem 0;
+            }
+        }
         a {
             color: #fff;
             text-decoration: none;

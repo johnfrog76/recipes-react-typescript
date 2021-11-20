@@ -9,6 +9,7 @@ type RecipeContextType = {
     getFeaturedRecipes: (recipes: iRecipe[]) => iRecipe[];
     getCategoryTags: (recipes: iRecipe[]) => iRecipe[];
     addRecipeToList: (recipes: iRecipe[], recipe?: iRecipe) => iRecipe[];
+    isLoading: boolean;
 }
 
 export const RecipesContext = createContext<RecipeContextType>({
@@ -16,7 +17,8 @@ export const RecipesContext = createContext<RecipeContextType>({
     recipeCount: 0,
     getFeaturedRecipes: ([]) => [],
     getCategoryTags: ([]) => [],
-    addRecipeToList: ([]) => []
+    addRecipeToList: ([]) => [],
+    isLoading: false
 });
 
 
@@ -26,12 +28,14 @@ interface Props {
 
 const RecipesProvider: FC<Props> = ({ children }) => {
     const [recipeItems, setRecipeItems] = useState<iRecipe[]>([]);
-    const [recipeCount, setRecipeCount] = useState<number>(0)
+    const [recipeCount, setRecipeCount] = useState<number>(0);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         setTimeout(() => {
             setRecipeItems(RECIPES);
             setRecipeCount(recipeItems.length);
+            setIsLoading(false);
 
         }, 3000)
     }, [recipeItems])
@@ -42,7 +46,8 @@ const RecipesProvider: FC<Props> = ({ children }) => {
             recipeCount,
             getFeaturedRecipes,
             getCategoryTags,
-            addRecipeToList
+            addRecipeToList,
+            isLoading
         }}
     >{children}</RecipesContext.Provider>)
 };

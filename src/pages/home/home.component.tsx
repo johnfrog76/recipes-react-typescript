@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 
-import { HeroStyles, HeroSubTitle, HeroWrapper, StyledHeroGraphic } from "./home.styles";
+import { HeroStyles, HeroSubTitle, HeroWrapper, StyledHeroGraphic, SpinnerWrapper } from "./home.styles";
 import CategoryTags from '../../components/molecules/category-tags/category-tags.component';
 import { MainSection } from "../../components/atoms/main-section/main-section.component";
 import FeaturedRecipes from "../../components/molecules/featured-recipes/featured-recipes.component";
+import { RecipesContext } from "../../providers/recipes/recipes.provider";
+import Spinner from "../../components/molecules/spinner/spinner.component";
 
 const HomePage = () => {
+    const { isLoading } = useContext(RecipesContext);
+
     return (
         <MainSection>
             <HeroWrapper>
@@ -15,8 +19,21 @@ const HomePage = () => {
                     <HeroSubTitle>A collection of my favorite recipes.</HeroSubTitle>
                 </div>
             </HeroWrapper>
-            <FeaturedRecipes />
-            <CategoryTags />
+            {
+                isLoading && (
+                    <SpinnerWrapper>
+                        <Spinner />
+                    </SpinnerWrapper>
+                )
+            }
+            {
+                !isLoading && (
+                    <React.Fragment>
+                        <FeaturedRecipes />
+                        <CategoryTags />
+                    </React.Fragment>
+                )
+            }
         </MainSection>
     )
 }

@@ -22,9 +22,6 @@ const RecipeList: FC<Props> = ({ recipes = [] }) => {
                     </StyledListItem>
                 ))
             }
-            {
-                recipes.length === 0 && <p>no recipes</p>
-            }
         </StyledList>
     )
 }

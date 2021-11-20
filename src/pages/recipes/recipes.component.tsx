@@ -6,11 +6,12 @@ import RecipeList from "../../components/molecules/recipes-list/recipes-list.com
 import ListGridToggleButton from "../../components/atoms/list-grid-toggle/list-grid-toggle.component";
 import { RecipesContext } from '../../providers/recipes/recipes.provider';
 import RecipeCardList from '../../components/molecules/recipes-category-card-list/recipes-category-card-list.component';
-import { StyledTitleWrapper } from './recipes.styles'
+import { StyledTitleWrapper, StyledSpinnerWrap } from './recipes.styles';
+import Spinner from "../../components/molecules/spinner/spinner.component";
 
 const RecipesPage = () => {
     const [isGridView, setIsGridView] = useState<boolean>(true);
-    const { recipeItems } = useContext(RecipesContext);
+    const { recipeItems, isLoading } = useContext(RecipesContext);
 
     const onButtonClick = () => setIsGridView(!isGridView);
 
@@ -21,7 +22,15 @@ const RecipesPage = () => {
                 <ListGridToggleButton grid={isGridView} onClick={onButtonClick} />
             </StyledTitleWrapper>
             {
-                isGridView ? (
+                isLoading && (
+                    <StyledSpinnerWrap>
+                        <Spinner />
+                    </StyledSpinnerWrap>
+                )
+            }
+            {
+                !isLoading &&
+                    isGridView ? (
                     <RecipeCardList recipes={recipeItems} />
                 ) : (
                     <RecipeList recipes={recipeItems} />
