@@ -11,7 +11,9 @@ export const darkTheme = {
         pageHighLight1: PALLETS.teal.A100,
         pageHighLight2: PALLETS.teal.A700,
         navBarBackground: PALLETS.teal[800],
-        pageSecondaryColor1: PALLETS.teal[700]
+        pageSecondaryColor1: PALLETS.teal[700],
+        pageToastSuccess: '#2E7D32',
+        pageToastError: '#C62828'
     },
     fonts: ["sans-serif", "Roboto"],
     fontSizes: {
@@ -34,6 +36,8 @@ export const lightTheme = {
         pageHighLight2: PALLETS.blue.A700,
         navBarBackground: PALLETS.blue[800],
         pageSecondaryColor1: PALLETS.blue[700],
+        pageToastSuccess: '#2E7D32',
+        pageToastError: '#C62828'
     },
     fonts: ["sans-serif", "Roboto"],
     fontSizes: {

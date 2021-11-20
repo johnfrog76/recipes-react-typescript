@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
@@ -6,14 +6,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import MyTheme from './providers/theme/theme.provider';
 import RecipesProvider from './providers/recipes/recipes.provider';
+import { ToastProvider } from 'react-toast-notifications';
+import CustomToast from './components/molecules/toasts/toasts.component';
 
 ReactDOM.render(
   <React.StrictMode>
     <RecipesProvider>
       <MyTheme>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <ToastProvider components={{ Toast: CustomToast }}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ToastProvider>
       </MyTheme>
     </RecipesProvider>
   </React.StrictMode>,

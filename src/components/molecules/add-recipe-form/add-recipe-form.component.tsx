@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Formik, FieldArray, Form, FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
+import { useToasts } from 'react-toast-notifications';
 
 import SelectOptionField from '../../atoms/select-option-field/select-option-field.component';
 import RecipeTextField from '../../atoms/text-field/text-field.component';
@@ -47,10 +48,11 @@ const createNumericId = (): number => {
 }
 
 const AddRecipeForm = () => {
-
+    const { addToast } = useToasts();
     const { recipeItems, getCategoryTags, addRecipeToList } = useContext(RecipesContext);
     const [catData, setCatData] = useState<iKeyValuePair[]>([]);
     const [currentRecipeItems, setCurrentRecipeItems] = useState<iRecipe[]>(recipeItems);
+
     let navigate = useNavigate();
     const formValuesInitial = {
         user_id: 1,
@@ -91,9 +93,14 @@ const AddRecipeForm = () => {
                         cat_id: cat_id,
                         id: createNumericId()
                     }
-
+                    addToast(
+                        'Success',
+                        {
+                            appearance: 'success',
+                            autoDismiss: true
+                        }
+                    );
                     setTimeout(() => {
-                        //alert(JSON.stringify(vals, null, 2));
                         setSubmitting(false);
                         setCurrentRecipeItems(addRecipeToList(currentRecipeItems, vals));
                         navigate('/')

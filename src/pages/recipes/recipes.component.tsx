@@ -17,7 +17,7 @@ const RecipesPage = () => {
     return (
         <MainSection>
             <StyledTitleWrapper>
-                <PageTitle>Recipes</PageTitle>
+                <PageTitle>Recipes ({recipeItems.length})</PageTitle>
                 <ListGridToggleButton grid={isGridView} onClick={onButtonClick} />
             </StyledTitleWrapper>
             {
