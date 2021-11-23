@@ -1,3 +1,12 @@
+
+# Recipe App
+## Full CRUD of recipes (in memory)
+* Light and Dark Theme
+* Context API
+* Styled Components
+
+![home screen](./images/home.png)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
