@@ -48,3 +48,23 @@ export const addRecipeToList = ( recipes: iRecipe[] = [], recipe?: iRecipe) => {
     }
 }
 
+export const editRecipe = ( recipes: iRecipe[] = [], recipe?: iRecipe) => {
+    if (!recipe) {
+        return recipes;
+    } else {
+        const index = recipes.findIndex(index => index.id === recipe.id);
+        const updated = recipes.splice(index, 1, recipe);
+        return updated;
+    }
+}
+
+export const deleteRecipe = ( recipes: iRecipe[] = [], recipe?: iRecipe) => {
+    if (!recipe) {
+        return recipes;
+    } else {
+        const index = recipes.findIndex(index => index.id === recipe.id);
+        const updated = recipes.splice(index, 1);
+        return updated;
+    }
+}
+

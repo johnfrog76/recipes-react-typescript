@@ -23,7 +23,7 @@ export const StyledButton = styled.button`
 `;
 
 export const StyledToast = styled.div<iStyledToast>`
-    background: ${props => props.Appearance == 'success' ?
+    background: ${props => props.Appearance === 'success' ?
         props.theme.colors.pageToastSuccess :
         props.theme.colors.pageToastError};
     position: fixed;

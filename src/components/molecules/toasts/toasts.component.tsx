@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ToastProvider, ToastProps } from 'react-toast-notifications';
+import { ToastProps } from 'react-toast-notifications';
 import { StyledToast, StyledButton, StyledCloseIcon } from './toasts-styles'
 
 

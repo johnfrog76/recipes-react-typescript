@@ -13,3 +13,12 @@ export const SpinnerWrapper = styled.div`
 export const StyledCircularProgress = styled(CircularProgress)`
     color: ${props => props.theme.colors.pageHighLight2} !important;
 `;
+
+
+export const SpinnerOuter = styled.div`
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`;

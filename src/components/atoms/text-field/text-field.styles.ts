@@ -1,7 +1,5 @@
-import React, {useContext} from 'react';
-import styled, { ThemeContext } from 'styled-components';
-
-import { Theme } from '../../../providers/theme/theme.provider';
+import React from 'react';
+import styled from 'styled-components';
 
 interface iStyledLabel {
     Required: boolean;

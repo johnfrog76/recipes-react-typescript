@@ -11,7 +11,7 @@ const CategoryTags = () => {
 
     useEffect(() => {
         setUniques(getCategoryTags(recipeItems))
-    }, [recipeItems])
+    }, [recipeItems, getCategoryTags])
 
     return (
         <TagContainer>

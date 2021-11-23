@@ -56,6 +56,7 @@ const AddRecipeForm = () => {
     let navigate = useNavigate();
     const formValuesInitial = {
         user_id: 1,
+        user: 'John',
         r_name: '',
         shared: false,
         rating: 0,
@@ -212,6 +213,45 @@ const AddRecipeForm = () => {
                                         ) : (
                                             <StyledFieldArrayEmptyButton type="button" onClick={() => arrayHelpers.push('')}>
                                                 Add Steps
+                                            </StyledFieldArrayEmptyButton>
+                                        )}
+                                    </div>
+                                )}
+                            />
+                        </div>
+
+                        <div>
+                            <FieldArray
+                                name="comments"
+                                render={arrayHelpers => (
+                                    <div>
+                                        {values.comments && values.comments.length > 0 ? (
+                                            values.comments.map((item, index) => (
+                                                <StyledInputWrapper key={index}>
+                                                    <StyledLabel>Comment {index + 1}</StyledLabel>
+                                                    <FieldArrayItem>
+                                                        <StyledInput type="hidden" name={`comments.${index}.user`} />
+                                                        <StyledInput name={`comments.${index}.comment`} placeholder="Add comment" />
+                                                        <InputButtonsWrap>
+                                                            <StyledSubtractInputBtn
+                                                                type="button"
+                                                                onClick={() => arrayHelpers.remove(index)}
+                                                            >
+                                                                -
+                                                            </StyledSubtractInputBtn>
+                                                            <StyledAddInputBtn
+                                                                type="button"
+                                                                onClick={() => arrayHelpers.insert(index, { user: 'John', comment: '' })}
+                                                            >
+                                                                +
+                                                            </StyledAddInputBtn>
+                                                        </InputButtonsWrap>
+                                                    </FieldArrayItem>
+                                                </StyledInputWrapper>
+                                            ))
+                                        ) : (
+                                            <StyledFieldArrayEmptyButton type="button" onClick={() => arrayHelpers.push({ user: 'John', comment: '' })}>
+                                                Add comment
                                             </StyledFieldArrayEmptyButton>
                                         )}
                                     </div>

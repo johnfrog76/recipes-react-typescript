@@ -1,6 +1,6 @@
 import React, { FC, createContext, useState, useEffect } from 'react';
 import RECIPES from './recipe-collection.data.json';
-import { getFeaturedRecipes, getCategoryTags, addRecipeToList } from './recipes.utils';
+import { getFeaturedRecipes, getCategoryTags, addRecipeToList, editRecipe, deleteRecipe } from './recipes.utils';
 import { iRecipe } from '../../interfaces/recipe/recipe.interface';
 
 type RecipeContextType = {
@@ -9,6 +9,8 @@ type RecipeContextType = {
     getFeaturedRecipes: (recipes: iRecipe[]) => iRecipe[];
     getCategoryTags: (recipes: iRecipe[]) => iRecipe[];
     addRecipeToList: (recipes: iRecipe[], recipe?: iRecipe) => iRecipe[];
+    editRecipe: (recipes: iRecipe[], recipe?: iRecipe) => iRecipe[];
+    deleteRecipe: (recipes: iRecipe[], recipe?: iRecipe) => iRecipe[];
     isLoading: boolean;
 }
 
@@ -18,6 +20,8 @@ export const RecipesContext = createContext<RecipeContextType>({
     getFeaturedRecipes: ([]) => [],
     getCategoryTags: ([]) => [],
     addRecipeToList: ([]) => [],
+    editRecipe: ([]) => [],
+    deleteRecipe: ([]) => [],
     isLoading: false
 });
 
@@ -47,6 +51,8 @@ const RecipesProvider: FC<Props> = ({ children }) => {
             getFeaturedRecipes,
             getCategoryTags,
             addRecipeToList,
+            editRecipe,
+            deleteRecipe,
             isLoading
         }}
     >{children}</RecipesContext.Provider>)
