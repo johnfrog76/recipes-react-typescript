@@ -80,19 +80,6 @@ export const StyledInput = styled(Field)`
     }
 `;
 
-export const StyledPrimaryButton = styled.button`
-    font-size: ${props => props.theme.fontSizes.regular};
-    background-color: ${props => props.theme.colors.navBarBackground};
-    border: 0;
-    padding: 0.5rem 1rem;
-    margin: 0 0 0 0;
-    color: #fff;
-    cursor: pointer;
-    &:hover {
-        background: ${props => props.theme.colors.pageHighLight2}
-    }
-`;
-
 export const StyledHRule = styled.hr`
     border: 1px solid ${(props) => props.theme.colors.navBarBackground};
     margin: 1.5rem 0;

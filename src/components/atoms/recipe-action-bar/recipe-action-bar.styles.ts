@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import { Delete, Edit, Share, Print } from '@material-ui/icons';
 
+export const StyledTextarea = styled.textarea`
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    visibility: hidden;
+`;
 
 export const StyledEditIcon = styled(Edit)`
     font-size: 1.5rem !important;

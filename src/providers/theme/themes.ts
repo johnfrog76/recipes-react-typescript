@@ -4,7 +4,7 @@ export const darkTheme = {
     colors: {
         pageBackground1: PALLETS.grey[900],
         pageBackground2: PALLETS.grey[800],
-        pageBackground3: PALLETS.grey[800],
+        pageBackground3: PALLETS.grey[700],
         pageBorderColor1: PALLETS.grey[500],
         pageForeground1: PALLETS.grey[50],
         pageLinkColor1: PALLETS.teal.A200,

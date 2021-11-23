@@ -5,6 +5,7 @@ import { useToasts } from 'react-toast-notifications';
 
 import SelectOptionField from '../../atoms/select-option-field/select-option-field.component';
 import RecipeTextField from '../../atoms/text-field/text-field.component';
+import FormButton, { FormButtons } from '../../atoms/form-button/form-button.component';
 import { RecipesContext } from '../../../providers/recipes/recipes.provider';
 import {
     StyledFormWrapper,
@@ -15,7 +16,6 @@ import {
     StyledLabel,
     InputButtonsWrap,
     FieldArrayItem,
-    StyledPrimaryButton,
     StyledHRule,
     StyledFieldArrayEmptyButton
 } from './add-recipe-form.styles';
@@ -109,7 +109,7 @@ const AddRecipeForm = () => {
                     }, 500);
                 }}
             >
-                {({ values, resetForm }) => (
+                {({ values, resetForm, dirty, isValid }) => (
                     <Form>
 
                         <RecipeTextField
@@ -192,7 +192,7 @@ const AddRecipeForm = () => {
                                                 <StyledInputWrapper key={index}>
                                                     <StyledLabel Required={'required'}>Step {index + 1}</StyledLabel>
                                                     <FieldArrayItem>
-                                                        <StyledInput name={`steps.${index}`} placeholder="Add step" />
+                                                        <StyledInput required name={`steps.${index}`} placeholder="Add step" />
                                                         <InputButtonsWrap>
                                                             <StyledSubtractInputBtn
                                                                 type="button"
@@ -228,7 +228,7 @@ const AddRecipeForm = () => {
                                         {values.comments && values.comments.length > 0 ? (
                                             values.comments.map((item, index) => (
                                                 <StyledInputWrapper key={index}>
-                                                    <StyledLabel>Comment {index + 1}</StyledLabel>
+                                                    <StyledLabel Required={'required'}>Comment {index + 1}</StyledLabel>
                                                     <FieldArrayItem>
                                                         <StyledInput type="hidden" name={`comments.${index}.user`} />
                                                         <StyledInput name={`comments.${index}.comment`} placeholder="Add comment" />
@@ -259,7 +259,19 @@ const AddRecipeForm = () => {
                             />
                         </div>
                         <StyledHRule />
-                        <StyledPrimaryButton type="submit">Add Recipe</StyledPrimaryButton>
+                        <FormButton
+                            type="submit"
+                            buttonText={'Add Recipe'}
+                            FormButton={FormButtons.Primary}
+                            disabled={!dirty || !isValid}
+                        />
+                        <FormButton
+                            type="button"
+                            buttonText={'Cancel'}
+                            FormButton={FormButtons.Secondary}
+                            onClick={() => navigate(`/`)}
+                            disabled={false}
+                        />
                     </Form>
 
                 )}

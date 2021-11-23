@@ -5,6 +5,7 @@ import { useToasts } from 'react-toast-notifications';
 
 import SelectOptionField from '../../atoms/select-option-field/select-option-field.component';
 import RecipeTextField from '../../atoms/text-field/text-field.component';
+import FormButton, { FormButtons } from '../../atoms/form-button/form-button.component';
 import { RecipesContext } from '../../../providers/recipes/recipes.provider';
 import {
     StyledFormWrapper,
@@ -15,10 +16,9 @@ import {
     StyledLabel,
     InputButtonsWrap,
     FieldArrayItem,
-    StyledPrimaryButton,
     StyledHRule,
     StyledFieldArrayEmptyButton
-} from './add-recipe-form.styles';
+} from './edit-recipe-form.styles';
 import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
 
 interface iKeyValuePair {
@@ -118,7 +118,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                             }, 500);
                         }}
                     >
-                        {({ values, resetForm }) => (
+                        {({ values, resetForm, isValid, dirty }) => (
                             <Form>
 
                                 <RecipeTextField
@@ -201,7 +201,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                                                         <StyledInputWrapper key={index}>
                                                             <StyledLabel Required={'required'}>Step {index + 1}</StyledLabel>
                                                             <FieldArrayItem>
-                                                                <StyledInput name={`steps.${index}`} placeholder="Add step" />
+                                                                <StyledInput required name={`steps.${index}`} placeholder="Add step" />
                                                                 <InputButtonsWrap>
                                                                     <StyledSubtractInputBtn
                                                                         type="button"
@@ -237,10 +237,10 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                                                 {values.comments && values.comments.length > 0 ? (
                                                     values.comments.map((item, index) => (
                                                         <StyledInputWrapper key={index}>
-                                                            <StyledLabel>Comment {index + 1}</StyledLabel>
+                                                            <StyledLabel Required={'required'}>Comment {index + 1}</StyledLabel>
                                                             <FieldArrayItem>
                                                                 <StyledInput type="hidden" name={`comments.${index}.user`} />
-                                                                <StyledInput name={`comments.${index}.comment`} placeholder="Add comment" />
+                                                                <StyledInput required name={`comments.${index}.comment`} placeholder="Add comment" />
                                                                 <InputButtonsWrap>
                                                                     <StyledSubtractInputBtn
                                                                         type="button"
@@ -268,7 +268,18 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                                     />
                                 </div>
                                 <StyledHRule />
-                                <StyledPrimaryButton type="submit">Update Recipe</StyledPrimaryButton>
+                                <FormButton
+                                    type="submit"
+                                    buttonText={'Update Recipe'}
+                                    FormButton={FormButtons.Primary}
+                                    disabled={!dirty || !isValid}
+                                />
+                                <FormButton
+                                    type="button"
+                                    buttonText={'Cancel'}
+                                    FormButton={FormButtons.Secondary}
+                                    onClick={() => navigate(`/recipes/${values.id}`)}
+                                />
                             </Form>
 
                         )}
