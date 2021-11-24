@@ -16,7 +16,7 @@ const HomePage = () => {
                 <StyledHeroGraphic />
                 <div>
                     <HeroStyles>Recipe Box</HeroStyles>
-                    <HeroSubTitle>A collection of my favorite recipes.</HeroSubTitle>
+                    <HeroSubTitle>A collection of my favorite recipes</HeroSubTitle>
                 </div>
             </HeroWrapper>
             {

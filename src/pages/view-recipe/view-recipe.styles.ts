@@ -19,9 +19,11 @@ export const MetaInfoBottom = styled.div`
 `;
 
 export const MetaInfoWrapper = styled.div`
-    position: absolute;
-    top: 0;
-    right: 0;
+    @media (min-width: 595px) {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
     color: #fff;
     padding: 0 0 1rem 0;
 `;

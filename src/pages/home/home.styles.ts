@@ -40,6 +40,10 @@ export const HeroWrapper = styled.div`
 
 export const StyledHeroGraphic = styled(Widgets)`
     color: ${(props) => props.theme.colors.pageHighLight2};
-    font-size: 11.6rem !important;
-    margin: 0 1.25rem 0 -1.25rem;
+    font-size: 8.6rem !important;
+    margin: -4rem 1.25rem 0 -2.6rem;
+    @media (min-width: 415px) {
+        font-size: 11.6rem !important;
+        margin: 0 1.25rem 0 -1.25rem;
+    }
 `;
