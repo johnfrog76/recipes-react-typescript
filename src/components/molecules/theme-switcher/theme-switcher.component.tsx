@@ -21,7 +21,8 @@ const ThemeSwitcher = () => {
                     :
                     'Switch to Dark Theme'
             }
-            onClick={() => handleTheme()}>
+            onClick={() => handleTheme()}
+        >
             {
                 theme === Theme.Dark ?
                     (<StyledLightModeIcon />)

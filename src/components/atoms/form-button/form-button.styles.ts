@@ -15,7 +15,8 @@ export const StyledPrimaryButton = styled.button<iButtonStyleProps>`
     margin-right: ${props => props.FormButton === FormButtons.Primary ? '1rem' : 0 };
     border: 0;
     padding: 0.5rem 1rem;
-    color: #fff;
+    color: ${props => props.FormButton === FormButtons.Primary ?
+        '#fff' : props.theme.colors.pageForeground1};
     cursor: pointer;
     &:hover {
         background-color: ${props => props.FormButton === FormButtons.Primary ?
