@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Theme, ThemeContext } from "../../../providers/theme/theme.provider";
-import { StyledThemeButton, StyledThemeIcon } from './theme-switcher.styles';
+import { StyledThemeButton, StyledThemeIcon, StyledDarkModeIcon, StyledLightModeIcon } from './theme-switcher.styles';
 
 
 const ThemeSwitcher = () => {
@@ -22,7 +22,12 @@ const ThemeSwitcher = () => {
                     'Switch to Dark Theme'
             }
             onClick={() => handleTheme()}>
-            <StyledThemeIcon />
+            {
+                theme === Theme.Dark ?
+                    (<StyledLightModeIcon />)
+                    :
+                    (<StyledDarkModeIcon />)
+            }
         </StyledThemeButton>
     )
 }
