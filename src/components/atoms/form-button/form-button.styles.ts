@@ -8,11 +8,17 @@ interface iButtonStyleProps {
 }
 
 export const StyledPrimaryButton = styled.button<iButtonStyleProps>`
+    margin: 0 0 1rem 0;
+    width: 100%;
+
+    @media (min-width: 414px) {
+        margin: 0 0 0 0;
+        margin-right: ${props => props.FormButton === FormButtons.Primary ? '1rem' : 0 };
+        width: auto;
+    }
     font-size: ${props => props.theme.fontSizes.regular};
     background-color: ${props => props.FormButton === FormButtons.Primary ?
         props.theme.colors.navBarBackground : props.theme.colors.pageBackground3};
-    margin: 0 0 0 0;
-    margin-right: ${props => props.FormButton === FormButtons.Primary ? '1rem' : 0 };
     border: 0;
     padding: 0.5rem 1rem;
     color: ${props => props.FormButton === FormButtons.Primary ?
@@ -30,4 +36,5 @@ export const StyledPrimaryButton = styled.button<iButtonStyleProps>`
                 props.theme.colors.navBarBackground : props.theme.colors.pageBackground3};
         }
     }
+
 `;

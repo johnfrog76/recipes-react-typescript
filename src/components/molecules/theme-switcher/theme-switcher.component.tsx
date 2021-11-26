@@ -1,10 +1,9 @@
 import React, { useContext } from 'react';
 import { Theme, ThemeContext } from "../../../providers/theme/theme.provider";
-import { StyledThemeButton, StyledThemeIcon, StyledDarkModeIcon, StyledLightModeIcon } from './theme-switcher.styles';
+import { StyledThemeButton, StyledDarkModeIcon, StyledLightModeIcon } from './theme-switcher.styles';
 
 
 const ThemeSwitcher = () => {
-
     const { theme, setTheme } = useContext(ThemeContext);
     const handleTheme = () => {
         if (theme === Theme.Dark) {
@@ -13,6 +12,7 @@ const ThemeSwitcher = () => {
             setTheme(Theme.Dark);
         }
     };
+
     return (
         <StyledThemeButton
             title={

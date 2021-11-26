@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import WbSunny from '@material-ui/icons/WbSunny';
+
 import { DarkMode, LightMode } from '@mui/icons-material';
 
 
@@ -11,11 +11,6 @@ export const StyledThemeButton = styled.button`
     align-items: center;
     cursor: pointer;
     color: #fff;
-`;
-
-export const StyledThemeIcon = styled(WbSunny)`
-    font-size: 1.25rem !important;
-    margin-right: 5px;
 `;
 
 export const StyledLightModeIcon = styled(LightMode)`
