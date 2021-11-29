@@ -6,6 +6,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { RecipesContext } from '../../../providers/recipes/recipes.provider';
 import ConfirmDialog from '../../molecules/confirm-dialog/confirm-dialog.component';
 import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
+import { removeRecipe } from '../../../services/recipes/recipes.services';
 
 import {
     StyledDeleteIcon,
@@ -19,10 +20,10 @@ import {
 
 const RecicipeActionBar = () => {
     let { id } = useParams();
-    const numId = Number(id);
     let navigate = useNavigate();
     const { addToast } = useToasts();
-    const { recipeItems, deleteRecipe } = useContext(RecipesContext);
+    const { recipeItems, deleteRecipe, isLoading, setSpinner, setCount } = useContext(RecipesContext);
+
     const [recipe, setRecipe] = useState<iRecipe | undefined>(undefined);
     const [open, setOpen] = useState<boolean>(false);
     const [copied, setCopied] = useState<boolean>(false);
@@ -31,23 +32,40 @@ const RecicipeActionBar = () => {
     const handleDelete = () => {
         if (recipe) {
             setOpen(false);
-            deleteRecipe(recipeItems, recipe);
-            addToast(
-                'Success',
-                {
-                    appearance: 'success',
-                    autoDismiss: true
-                }
-            );
-            navigate('/')
+            setSpinner(true);
+            removeRecipe(recipe).then((resp) => {
+                // delay see spinner in the parent component
+                setTimeout(() => {
+                    deleteRecipe(recipeItems, recipe);
+                    setCount(recipeItems.length);
+                    setSpinner(false);
+                    addToast(
+                        'Success',
+                        {
+                            appearance: 'success',
+                            autoDismiss: true
+                        }
+                    );
+                    navigate('/');
+                }, 2000)
+            }).catch((err) => {
+                setOpen(false);
+                addToast(
+                    `Error: ${err.message}`,
+                    {
+                        appearance: 'error',
+                        autoDismiss: false
+                    }
+                );
+            })
         }
     }
 
     useEffect(() => {
-        const recipe = recipeItems.find(r => r.id === numId);
+        const recipe = recipeItems.find(r => r._id === id);
         if (recipe) {
             setRecipe(recipe);
-            setValue(`localhost:3000/recipes/${recipe.id}`)
+            setValue(`localhost:3000/recipes/${recipe._id}`)
         }
     }, [recipeItems]);
 

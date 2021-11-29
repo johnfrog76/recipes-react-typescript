@@ -2,6 +2,7 @@ import React, { FC, createContext, useState, useEffect } from 'react';
 import RECIPES from './recipe-collection.data.json';
 import { getFeaturedRecipes, getCategoryTags, addRecipeToList, editRecipe, deleteRecipe } from './recipes.utils';
 import { iRecipe } from '../../interfaces/recipe/recipe.interface';
+import { getRecipes, addRecipe } from '../../services/recipes/recipes.services';
 
 type RecipeContextType = {
     recipeItems: iRecipe[];
@@ -11,6 +12,8 @@ type RecipeContextType = {
     addRecipeToList: (recipes: iRecipe[], recipe?: iRecipe) => iRecipe[];
     editRecipe: (recipes: iRecipe[], recipe?: iRecipe) => iRecipe[];
     deleteRecipe: (recipes: iRecipe[], recipe?: iRecipe) => iRecipe[];
+    setSpinner: (val: boolean) => void;
+    setCount: (val: number) => void;
     isLoading: boolean;
 }
 
@@ -22,7 +25,9 @@ export const RecipesContext = createContext<RecipeContextType>({
     addRecipeToList: ([]) => [],
     editRecipe: ([]) => [],
     deleteRecipe: ([]) => [],
-    isLoading: false
+    setSpinner: () => { },
+    setCount: () => { },
+    isLoading: true
 });
 
 
@@ -33,16 +38,48 @@ interface Props {
 const RecipesProvider: FC<Props> = ({ children }) => {
     const [recipeItems, setRecipeItems] = useState<iRecipe[]>([]);
     const [recipeCount, setRecipeCount] = useState<number>(0);
+    const [makeRequest, setMakeRequest] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const setSpinner = (val = true) => setIsLoading(val);
+    const setCount = (val = 0) => setRecipeCount(val);
 
     useEffect(() => {
-        setTimeout(() => {
-            setRecipeItems(RECIPES);
-            setRecipeCount(recipeItems.length);
-            setIsLoading(false);
+        if (makeRequest) {
+            console.log('make request');
+            setMakeRequest(false);
+            getRecipes().then((resp) => {
+                // delay is to see spinner
+                setTimeout(() => {
+                    console.log('success');
+                    setSpinner(false);
+                    if (resp) {
+                        setRecipeItems(resp);
+                        setCount(resp.length);
+                    }
+                }, 1500);
+            }).catch((err) => {
+                setSpinner(false);
+                console.log('fails')
+                console.log(err);
+            })
 
-        }, 3000)
-    }, [recipeItems])
+            // let myRecipeList = RECIPES.map(({ _id, ...rest }) => rest);
+            // let count = 0;
+            // const addItem = () => {
+            //     addRecipe(myRecipeList[count]).then((resp) => {
+            //         count += 1;
+            //         if (count < myRecipeList.length) {
+            //             addItem()
+            //         } else {
+            //             console.log('finished')
+            //         }
+            //     })
+
+            // };
+            //addItem();
+        }
+
+    }, [makeRequest])
 
     return (<RecipesContext.Provider
         value={{
@@ -53,6 +90,8 @@ const RecipesProvider: FC<Props> = ({ children }) => {
             addRecipeToList,
             editRecipe,
             deleteRecipe,
+            setSpinner,
+            setCount,
             isLoading
         }}
     >{children}</RecipesContext.Provider>)

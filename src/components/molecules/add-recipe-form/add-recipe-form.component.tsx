@@ -20,6 +20,7 @@ import {
     StyledFieldArrayEmptyButton
 } from './add-recipe-form.styles';
 import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
+import { addRecipe } from '../../../services/recipes/recipes.services';
 
 interface iKeyValuePair {
     id: string;
@@ -27,7 +28,7 @@ interface iKeyValuePair {
 }
 
 interface Values {
-    id?: number;
+    _id?: string;
     user_id: number;
     r_name: string;
     cat_id?: string;
@@ -49,7 +50,7 @@ const createNumericId = (): number => {
 
 const AddRecipeForm = () => {
     const { addToast } = useToasts();
-    const { recipeItems, getCategoryTags, addRecipeToList } = useContext(RecipesContext);
+    const { recipeItems, setCount, getCategoryTags, addRecipeToList } = useContext(RecipesContext);
     const [catData, setCatData] = useState<iKeyValuePair[]>([]);
     const [currentRecipeItems, setCurrentRecipeItems] = useState<iRecipe[]>(recipeItems);
 
@@ -91,22 +92,29 @@ const AddRecipeForm = () => {
                     const vals = {
                         ...values,
                         category: catName?.name || '',
-                        cat_id: cat_id,
-                        id: createNumericId()
+                        cat_id: cat_id
                     }
-                    addToast(
-                        'Success',
-                        {
-                            appearance: 'success',
-                            autoDismiss: true
-                        }
-                    );
-                    setTimeout(() => {
+                    addRecipe(vals).then((resp) => {
                         setSubmitting(false);
-                        setCurrentRecipeItems(addRecipeToList(currentRecipeItems, vals));
+                        setCurrentRecipeItems(addRecipeToList(currentRecipeItems, resp));
+                        setCount(currentRecipeItems.length)
+                        addToast(
+                            'Success',
+                            {
+                                appearance: 'success',
+                                autoDismiss: true
+                            }
+                        );
                         navigate('/')
-
-                    }, 500);
+                    }).catch((err) => {
+                        addToast(
+                            `Error: ${err.message}`,
+                            {
+                                appearance: 'error',
+                                autoDismiss: false
+                            }
+                        );
+                    })
                 }}
             >
                 {({ values, resetForm, dirty, isValid }) => (

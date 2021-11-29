@@ -22,7 +22,7 @@ const RecipeViewDetails: FC<Props> = ({ recipe, id }) => {
 
     return (
         <StyledDetailsDiv>
-            <StyledH4 id={`test${recipe?.id}`}>Ingredients</StyledH4>
+            <StyledH4>Ingredients</StyledH4>
             <StyledList>
                 {
                     ingredients?.map((item, key) => (

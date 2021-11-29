@@ -11,7 +11,6 @@ import EditRecipeForm from '../../components/molecules/edit-recipe-form/edit-rec
 
 const EditRecipePage = () => {
     const { id } = useParams();
-    const numId: number | undefined = id ? parseInt(id) : -1;
 
     const { isLoading } = useContext(RecipesContext);
 
@@ -22,7 +21,7 @@ const EditRecipePage = () => {
                 isLoading && <SpinnerOuter><Spinner /></SpinnerOuter>
             }
             {
-                !isLoading && <EditRecipeForm recipeId={numId}></EditRecipeForm>
+                !isLoading && <EditRecipeForm recipeId={id}></EditRecipeForm>
             }
         </MainSection>
     );

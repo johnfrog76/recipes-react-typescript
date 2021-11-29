@@ -15,8 +15,8 @@ const RecipeList: FC<Props> = ({ recipes = [] }) => {
         <StyledList>
             {
                 recipes.map(item => (
-                    <StyledListItem key={item.id}>
-                        <Link to={`/recipes/${item.id}`}>
+                    <StyledListItem key={item._id}>
+                        <Link to={`/recipes/${item._id}`}>
                             {item.r_name}
                         </Link>
                     </StyledListItem>

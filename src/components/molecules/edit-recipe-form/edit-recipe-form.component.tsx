@@ -20,6 +20,7 @@ import {
     StyledFieldArrayEmptyButton
 } from './edit-recipe-form.styles';
 import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
+import { updateRecipe } from '../../../services/recipes/recipes.services';
 
 interface iKeyValuePair {
     id: string;
@@ -27,11 +28,11 @@ interface iKeyValuePair {
 }
 
 interface Props {
-    recipeId: number;
+    recipeId?: string;
 }
 
 interface Values {
-    id?: number;
+    _id?: string;
     user_id: number;
     user: string;
     r_name: string;
@@ -65,11 +66,11 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
         });
         setCatData(data);
 
-        const foundRecipe = recipeItems.find(r => r.id && r.id === recipeId);
+        const foundRecipe = recipeItems.find(r => r._id && r._id === recipeId);
         if (foundRecipe) {
 
             setFormValuesInitial({
-                id: foundRecipe.id,
+                _id: foundRecipe._id || '',
                 user_id: foundRecipe.user_id,
                 user: 'John',
                 r_name: foundRecipe.r_name,
@@ -77,9 +78,9 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                 rating: foundRecipe.rating,
                 cat_id: foundRecipe.cat_id.toString(),
                 category: foundRecipe.category,
-                ingredients: foundRecipe.ingredients,
-                steps: foundRecipe.steps,
-                comments: foundRecipe.comments
+                ingredients: foundRecipe.ingredients || [],
+                steps: foundRecipe.steps || [],
+                comments: foundRecipe.comments || []
             })
         }
 
@@ -103,19 +104,28 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                                 category: catName?.name || '',
                                 cat_id: cat_id
                             }
-                            setCurrentRecipeItems(editRecipe(currentRecipeItems, vals));
 
-                            addToast(
-                                'Success',
-                                {
-                                    appearance: 'success',
-                                    autoDismiss: true
-                                }
-                            );
-                            setTimeout(() => {
+                            updateRecipe(vals).then((resp) => {
+                                addToast(
+                                    'Success',
+                                    {
+                                        appearance: 'success',
+                                        autoDismiss: true
+                                    }
+                                );
+
+                                setCurrentRecipeItems(editRecipe(currentRecipeItems, resp));
                                 setSubmitting(false);
                                 navigate('/')
-                            }, 500);
+                            }).catch((err) => {
+                                addToast(
+                                    `Error: ${err.message}`,
+                                    {
+                                        appearance: 'error',
+                                        autoDismiss: false
+                                    }
+                                );
+                            })
                         }}
                     >
                         {({ values, resetForm, isValid, dirty }) => (
@@ -278,7 +288,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                                     type="button"
                                     buttonText={'Cancel'}
                                     FormButton={FormButtons.Secondary}
-                                    onClick={() => navigate(`/recipes/${values.id}`)}
+                                    onClick={() => navigate(`/recipes/${values._id}`)}
                                 />
                             </Form>
 

@@ -22,7 +22,7 @@ const RecipeCardItem: FC<Props> = ({ item }) => {
                     <span>{item.category}</span>
                     <RecipeRating rating={item.rating} />
                 </CardMetaInfo>
-                <Link to={`/recipes/${item.id}`}>View More <ChevronRight /></Link>
+                <Link to={`/recipes/${item._id}`}>View More <ChevronRight /></Link>
             </CardBottomWrapper>
         </CardItem>
     );
