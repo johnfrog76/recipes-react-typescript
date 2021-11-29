@@ -8,10 +8,14 @@
 
 ## Run locally
 * add .env file
+
+```
+#development
 REACT_APP_BASEURL
 REACT_APP_RECIPE_ENDPOINT
+```
 
-using mongodb backend (wip)
+using node, express api wip
 
 # Getting Started with Create React App
 
