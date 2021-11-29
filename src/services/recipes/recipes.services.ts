@@ -1,4 +1,4 @@
-import axios, { Axios } from 'axios';
+import axios from 'axios';
 import { iRecipe } from '../../interfaces/recipe/recipe.interface';
 
 type iPatch = {
@@ -9,10 +9,13 @@ type iDelete = {
     message: string;
 }
 
+const baseURL = process.env.REACT_APP_BASEURL;
+const endpoint = process.env.REACT_APP_RECIPE_ENDPOINT;
+
 export const getRecipes = async () => {
     try {
 
-        const resp = await axios.get<iRecipe[]>('http://localhost:5000/api/recipes');
+        const resp = await axios.get<iRecipe[]>(`${baseURL}${endpoint}`);
         return resp.data;
     } catch (err) {
         throw(err)
@@ -21,7 +24,7 @@ export const getRecipes = async () => {
 
 export const addRecipe = async (recipe: iRecipe) => {
     try {
-        const resp = await axios.post<iRecipe>('http://localhost:5000/api/recipes', recipe);
+        const resp = await axios.post<iRecipe>(`${baseURL}${endpoint}`, recipe);
         return resp.data;
     } catch (err) {
         throw(err)
@@ -31,7 +34,7 @@ export const addRecipe = async (recipe: iRecipe) => {
 export const updateRecipe = async (recipe: iRecipe) => {
     try {
         const resp = await axios.patch<iPatch>(
-            `http://localhost:5000/api/recipes/${recipe._id}`,
+            `${baseURL}${endpoint}/${recipe._id}`,
             recipe
         );
         return resp.data.recipe;
@@ -43,7 +46,7 @@ export const updateRecipe = async (recipe: iRecipe) => {
 export const removeRecipe = async (recipe: iRecipe) => {
     try {
         const resp = await axios.delete<iDelete>(
-            `http://localhost:5000/api/recipes/${recipe._id}`
+            `${baseURL}${endpoint}/${recipe._id}`
         );
         return resp.data.message;
     } catch (err) {
