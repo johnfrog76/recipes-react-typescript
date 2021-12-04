@@ -8,17 +8,20 @@ import MyTheme from './providers/theme/theme.provider';
 import RecipesProvider from './providers/recipes/recipes.provider';
 import { ToastProvider } from 'react-toast-notifications';
 import CustomToast from './components/molecules/toasts/toasts.component';
+import UserProvider from './providers/user/user.provider';
 
 ReactDOM.render(
   <React.StrictMode>
     <RecipesProvider>
-      <MyTheme>
-        <ToastProvider components={{ Toast: CustomToast }}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </ToastProvider>
-      </MyTheme>
+      <UserProvider>
+        <MyTheme>
+          <ToastProvider components={{ Toast: CustomToast }}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </ToastProvider>
+        </MyTheme>
+      </UserProvider>
     </RecipesProvider>
   </React.StrictMode>,
   document.getElementById('root')
