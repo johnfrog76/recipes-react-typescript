@@ -7,6 +7,7 @@ import SelectOptionField from '../../atoms/select-option-field/select-option-fie
 import RecipeTextField from '../../atoms/text-field/text-field.component';
 import FormButton, { FormButtons } from '../../atoms/form-button/form-button.component';
 import { RecipesContext } from '../../../providers/recipes/recipes.provider';
+import { UserContext } from '../../../providers/user/user.provider';
 import {
     StyledFormWrapper,
     StyledAddInputBtn,
@@ -50,6 +51,7 @@ const createNumericId = (): number => {
 
 const AddRecipeForm = () => {
     const { addToast } = useToasts();
+    const { token } = useContext(UserContext);
     const { recipeItems, setCount, getCategoryTags, addRecipeToList } = useContext(RecipesContext);
     const [catData, setCatData] = useState<iKeyValuePair[]>([]);
     const [currentRecipeItems, setCurrentRecipeItems] = useState<iRecipe[]>(recipeItems);
@@ -94,7 +96,8 @@ const AddRecipeForm = () => {
                         category: catName?.name || '',
                         cat_id: cat_id
                     }
-                    addRecipe(vals).then((resp) => {
+
+                    addRecipe(vals, token).then((resp) => {
                         setSubmitting(false);
                         setCurrentRecipeItems(addRecipeToList(currentRecipeItems, resp));
                         setCount(currentRecipeItems.length)

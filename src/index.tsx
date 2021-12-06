@@ -12,8 +12,8 @@ import UserProvider from './providers/user/user.provider';
 
 ReactDOM.render(
   <React.StrictMode>
-    <RecipesProvider>
-      <UserProvider>
+    <UserProvider>
+      <RecipesProvider>
         <MyTheme>
           <ToastProvider components={{ Toast: CustomToast }}>
             <BrowserRouter>
@@ -21,8 +21,8 @@ ReactDOM.render(
             </BrowserRouter>
           </ToastProvider>
         </MyTheme>
-      </UserProvider>
-    </RecipesProvider>
+      </RecipesProvider>
+    </UserProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

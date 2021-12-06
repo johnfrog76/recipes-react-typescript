@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { RecipesContext } from '../../../providers/recipes/recipes.provider';
+import { UserContext } from '../../../providers/user/user.provider';
 import ConfirmDialog from '../../molecules/confirm-dialog/confirm-dialog.component';
 import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
 import { removeRecipe } from '../../../services/recipes/recipes.services';
@@ -23,43 +24,12 @@ const RecicipeActionBar = () => {
     let navigate = useNavigate();
     const { addToast } = useToasts();
     const { recipeItems, deleteRecipe, isLoading, setSpinner, setCount } = useContext(RecipesContext);
+    const { token, isLoggedIn } = useContext(UserContext);
 
     const [recipe, setRecipe] = useState<iRecipe | undefined>(undefined);
     const [open, setOpen] = useState<boolean>(false);
     const [copied, setCopied] = useState<boolean>(false);
     const [value, setValue] = useState<string>('');
-
-    const handleDelete = () => {
-        if (recipe) {
-            setOpen(false);
-            setSpinner(true);
-            removeRecipe(recipe).then((resp) => {
-                // delay see spinner in the parent component
-                setTimeout(() => {
-                    deleteRecipe(recipeItems, recipe);
-                    setCount(recipeItems.length);
-                    setSpinner(false);
-                    addToast(
-                        'Success',
-                        {
-                            appearance: 'success',
-                            autoDismiss: true
-                        }
-                    );
-                    navigate('/');
-                }, 2000)
-            }).catch((err) => {
-                setOpen(false);
-                addToast(
-                    `Error: ${err.message}`,
-                    {
-                        appearance: 'error',
-                        autoDismiss: false
-                    }
-                );
-            })
-        }
-    }
 
     useEffect(() => {
         const recipe = recipeItems.find(r => r._id === id);
@@ -68,6 +38,35 @@ const RecicipeActionBar = () => {
             setValue(`localhost:3000/recipes/${recipe._id}`)
         }
     }, [recipeItems]);
+
+    const handleDelete = () => {
+        setSpinner(true);
+        if (recipe) {
+            removeRecipe(recipe, token).then((resp) => {
+                deleteRecipe(recipeItems, recipe);
+                setCount(recipeItems.length);
+                setSpinner(false);
+                addToast(
+                    'Success',
+                    {
+                        appearance: 'success',
+                        autoDismiss: true
+                    }
+                );
+                navigate('/');
+
+            }).catch((err) => {
+                setSpinner(false);
+                addToast(
+                    `Error: ${err.message}`,
+                    {
+                        appearance: 'error',
+                        autoDismiss: false
+                    }
+                );
+            });
+        }
+    }
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -80,13 +79,19 @@ const RecicipeActionBar = () => {
     return (
         <React.Fragment>
             <StyledRecipeActionBar>
-                <StyledButton title="Delete" onClick={() => handleClickOpen()}>
-                    <StyledDeleteIcon />
-                </StyledButton>
+                {
+                    isLoggedIn && (
+                        <React.Fragment>
+                            <StyledButton title="Delete" onClick={() => handleClickOpen()}>
+                                <StyledDeleteIcon />
+                            </StyledButton>
 
-                <StyledButton title="Edit" onClick={() => navigate(`/edit-recipe/${id}`)}>
-                    <StyledEditIcon />
-                </StyledButton>
+                            <StyledButton title="Edit" onClick={() => navigate(`/edit-recipe/${id}`)}>
+                                <StyledEditIcon />
+                            </StyledButton>
+                        </React.Fragment>
+                    )
+                }
 
                 <CopyToClipboard
                     onCopy={() => setCopied(true)}

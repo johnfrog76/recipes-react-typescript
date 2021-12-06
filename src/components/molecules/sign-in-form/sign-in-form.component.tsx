@@ -7,6 +7,7 @@ import { UserContext } from '../../../providers/user/user.provider';
 import RecipeTextField from '../../atoms/text-field/text-field.component';
 import FormButton, { FormButtons } from '../../atoms/form-button/form-button.component';
 import { StyledFormWrapper, StyledHRule } from './sign-in-form.styles';
+import { logInUser } from '../../../services/user/user.services';
 
 interface Values {
     email: string;
@@ -16,7 +17,7 @@ interface Values {
 const SignInForm = () => {
     const { addToast } = useToasts();
     const navigate = useNavigate();
-    const { setLogin } = useContext(UserContext)
+    const { setLogin, setUserToken } = useContext(UserContext)
 
     const formValuesInitial = {
         email: '',
@@ -31,16 +32,28 @@ const SignInForm = () => {
                     values: Values,
                     { setSubmitting }: FormikHelpers<Values>
                 ) => {
-                    console.log(values);
-                    setLogin(true);
-                    addToast(
-                        'Success',
-                        {
-                            appearance: 'success',
-                            autoDismiss: true
-                        }
-                    );
-                    navigate('/')
+                    const { email, password } = values;
+                    logInUser({ email, password }).then((resp) => {
+                        const { token } = resp;
+                        setUserToken(token);
+                        setLogin(true);
+                        addToast(
+                            'Success',
+                            {
+                                appearance: 'success',
+                                autoDismiss: true
+                            }
+                        );
+                        navigate('/')
+                    }).catch((err) => {
+                        addToast(
+                            `Error: ${err.message}`,
+                            {
+                                appearance: 'error',
+                                autoDismiss: false
+                            }
+                        );
+                    });
                 }}
             >
                 {({ values, resetForm, dirty, isValid }) => (

@@ -7,13 +7,15 @@ type UserContextType = {
     isLoggedIn: boolean,
     token: string | null;
     setLogin: (val: boolean) => void;
+    setUserToken: (val: any) => void;
 }
 
 export const UserContext = createContext<UserContextType>({
     user: null,
     isLoggedIn: false,
     token: null,
-    setLogin: () => { }
+    setLogin: () => { },
+    setUserToken: (val) => { }
 });
 
 interface Props {
@@ -23,15 +25,17 @@ interface Props {
 const UserProvider: FC<Props> = ({ children }) => {
     const [user, setUser] = useState<iUser | null>(null);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-    const [token, setToken] = useState<string | null>(null);
+    const [token, setToken] = useState(null);
     const setLogin = (val = false) => setIsLoggedIn(val);
+    const setUserToken = (val = null) => setToken(val);
 
     return (
         <UserContext.Provider value={{
             user,
             isLoggedIn,
             token,
-            setLogin
+            setLogin,
+            setUserToken
         }}>{children}</UserContext.Provider>
     )
 }

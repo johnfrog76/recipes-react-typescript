@@ -19,9 +19,13 @@ const PrimaryNav = () => {
                 <StyledListItem>
                     <NavLink className={isActive => isActive ? 'active' : ''} to="/recipes">recipes</NavLink>
                 </StyledListItem>
-                <StyledListItem>
-                    <NavLink className={isActive => isActive ? 'active' : ''} to="/add-recipe">add-recipe</NavLink>
-                </StyledListItem>
+                {
+                    isLoggedIn && (
+                        <StyledListItem>
+                            <NavLink className={isActive => isActive ? 'active' : ''} to="/add-recipe">add-recipe</NavLink>
+                        </StyledListItem>
+                    )
+                }
             </StyledNavUl>
             <StyledRightItemsWrapper>
                 <StyledListItem>

@@ -22,32 +22,48 @@ export const getRecipes = async () => {
     }
 }
 
-export const addRecipe = async (recipe: iRecipe) => {
+export const addRecipe = async (recipe: iRecipe, token: string | null) => {
     try {
-        const resp = await axios.post<iRecipe>(`${baseURL}${endpoint}`, recipe);
+        const resp = await axios({
+            method: 'post',
+            url: `${baseURL}${endpoint}`,
+            data: recipe,
+            headers: {
+                Authorization: `Bearer ${token ? token : 'none'}`
+            }
+        });
         return resp.data;
     } catch (err) {
         throw(err)
     }
 }
 
-export const updateRecipe = async (recipe: iRecipe) => {
+export const updateRecipe = async (recipe: iRecipe, token: string | null) => {
     try {
-        const resp = await axios.patch<iPatch>(
-            `${baseURL}${endpoint}/${recipe._id}`,
-            recipe
-        );
+        const resp = await axios({
+            method: 'patch',
+            url: `${baseURL}${endpoint}/${recipe._id}`,
+            data: recipe,
+            headers: {
+                Authorization: `Bearer ${token ? token : 'none'}`
+            }
+        });
         return resp.data.recipe;
     } catch (err) {
         throw(err)
     }
 }
 
-export const removeRecipe = async (recipe: iRecipe) => {
+export const removeRecipe = async (recipe: iRecipe, token: string | null) => {
     try {
-        const resp = await axios.delete<iDelete>(
-            `${baseURL}${endpoint}/${recipe._id}`
-        );
+        const resp = await axios({
+            method: 'delete',
+            url: `${baseURL}${endpoint}/${recipe._id}`,
+            headers: {
+                Authorization: `Bearer ${token ? token : 'none'}`
+            }
+        })
+
         return resp.data.message;
     } catch (err) {
         throw(err)

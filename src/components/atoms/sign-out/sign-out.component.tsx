@@ -5,10 +5,11 @@ import { StyledButton } from './sign-out.styles';
 
 
 const SignOutButton = () => {
-    const { setLogin, isLoggedIn } = useContext(UserContext);
+    const { setLogin, setUserToken, isLoggedIn } = useContext(UserContext);
 
     const handleSignOut = () => {
         setLogin(false);
+        setUserToken(null);
     }
 
     return (
