@@ -14,6 +14,12 @@ export const StyledListItem = styled.li`
     }
 `;
 
+export const StyledRightItemsWrapper = styled.ul`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
 export const StyledNavBar = styled.div`
     height: 55px;
     max-width: 100vw;

@@ -3,6 +3,7 @@ import { useField } from 'formik';
 
 import { StyledInput, StyledLabel } from './text-field.styles';
 import FieldWrapper from '../../atoms/field-wrapper/field-wrapper.component';
+import { Password } from '@mui/icons-material';
 
 interface iTextField {
     name: string;
@@ -10,10 +11,11 @@ interface iTextField {
     placeholder?: string;
     required?: boolean;
     label?: string;
+    type?: 'text' | 'password'
 }
 
 
-const RecipeTextField = ({ name, id, placeholder, required = false, label }: iTextField) => {
+const RecipeTextField = ({ name, id, placeholder, type = "text", required = false, label }: iTextField) => {
 
     const [field, meta] = useField({ name, id });
     return (
@@ -25,6 +27,7 @@ const RecipeTextField = ({ name, id, placeholder, required = false, label }: iTe
                 placeholder={placeholder}
                 required={required}
                 {...field}
+                type={type}
             />
         </FieldWrapper>
     );

@@ -1,8 +1,9 @@
 import React, { FC, createContext, useState, useEffect } from 'react';
 import RECIPES from './recipe-collection.data.json';
 import { getFeaturedRecipes, getCategoryTags, addRecipeToList, editRecipe, deleteRecipe } from './recipes.utils';
+
 import { iRecipe } from '../../interfaces/recipe/recipe.interface';
-import { getRecipes, addRecipe } from '../../services/recipes/recipes.services';
+import { getRecipes } from '../../services/recipes/recipes.services';
 
 type RecipeContextType = {
     recipeItems: iRecipe[];
