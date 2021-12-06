@@ -51,7 +51,6 @@ const RecipesProvider: FC<Props> = ({ children }) => {
             getRecipes().then((resp) => {
                 // delay is to see spinner
                 setTimeout(() => {
-                    console.log('success');
                     setSpinner(false);
                     if (resp) {
                         setRecipeItems(resp);
@@ -60,10 +59,10 @@ const RecipesProvider: FC<Props> = ({ children }) => {
                 }, 1500);
             }).catch((err) => {
                 setSpinner(false);
-                console.log('fails')
                 console.log(err);
             })
 
+            // keep this to push this to populate recipe JSON
             // let myRecipeList = RECIPES.map(({ _id, ...rest }) => rest);
             // let count = 0;
             // const addItem = () => {

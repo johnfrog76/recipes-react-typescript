@@ -8,6 +8,7 @@ type UserContextType = {
     token: string | null;
     setLogin: (val: boolean) => void;
     setUserToken: (val: any) => void;
+    setUserObject: (val: any) => void;
 }
 
 export const UserContext = createContext<UserContextType>({
@@ -15,7 +16,8 @@ export const UserContext = createContext<UserContextType>({
     isLoggedIn: false,
     token: null,
     setLogin: () => { },
-    setUserToken: (val) => { }
+    setUserToken: (val) => { },
+    setUserObject: (val) => { }
 });
 
 interface Props {
@@ -28,6 +30,7 @@ const UserProvider: FC<Props> = ({ children }) => {
     const [token, setToken] = useState(null);
     const setLogin = (val = false) => setIsLoggedIn(val);
     const setUserToken = (val = null) => setToken(val);
+    const setUserObject = (val = null) => setUser(val);
 
     return (
         <UserContext.Provider value={{
@@ -35,7 +38,8 @@ const UserProvider: FC<Props> = ({ children }) => {
             isLoggedIn,
             token,
             setLogin,
-            setUserToken
+            setUserToken,
+            setUserObject
         }}>{children}</UserContext.Provider>
     )
 }

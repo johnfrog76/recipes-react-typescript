@@ -7,6 +7,7 @@ import RecipeDetailPage from './pages/view-recipe/view-recipe.component';
 import EditRecipePage from './pages/edit-recipe/edit-recipe.component';
 import RecipesByCategory from './pages/recipes-by-category/recipes-by-category.component';
 import SignInSignUpPage from './pages/sign-in-sign-up/sign-in-sign-up.component';
+import SignUpPage from './pages/sign-up/sign-up.component';
 import { StyledOuterDiv } from './App.styles';
 import PrimaryNav from './components/molecules/primary-nav/primary.nav.component';
 
@@ -21,6 +22,7 @@ class App extends React.Component {
           <Route path='/add-recipe' element={<AddRecipePage />} />
           <Route path='/recipes' element={<RecipesPage />} />
           <Route path='/sign-in' element={<SignInSignUpPage />} />
+          <Route path='/sign-up' element={<SignUpPage />} />
           <Route path='/recipes/:id' element={<RecipeDetailPage />} />
           <Route path='/edit-recipe/:id' element={<EditRecipePage />} />
           <Route path='/recipes/category/:cat_id' element={<RecipesByCategory />} />

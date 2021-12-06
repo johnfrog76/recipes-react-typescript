@@ -17,7 +17,7 @@ interface Values {
 const SignInForm = () => {
     const { addToast } = useToasts();
     const navigate = useNavigate();
-    const { setLogin, setUserToken } = useContext(UserContext)
+    const { setLogin, setUserToken, setUserObject } = useContext(UserContext)
 
     const formValuesInitial = {
         email: '',
@@ -34,9 +34,10 @@ const SignInForm = () => {
                 ) => {
                     const { email, password } = values;
                     logInUser({ email, password }).then((resp) => {
-                        const { token } = resp;
+                        const { token, email, userId, name } = resp;
                         setUserToken(token);
                         setLogin(true);
+                        setUserObject({ token, email, userId, name });
                         addToast(
                             'Success',
                             {
