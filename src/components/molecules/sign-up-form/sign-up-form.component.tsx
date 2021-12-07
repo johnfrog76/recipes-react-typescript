@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Formik, Form, FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
@@ -18,13 +18,18 @@ interface Values {
 const SignUpForm = () => {
     const { addToast } = useToasts();
     const navigate = useNavigate();
-    const { setLogin, setUserToken, setUserObject } = useContext(UserContext)
+    const { setLogin, setUserToken, setUserObject } = useContext(UserContext);
+    const [isVisible, setIsVisable] = useState(false);
 
     const formValuesInitial = {
         email: '',
         password: '',
         name: ''
     }
+
+    const onVisibilityChange = () => {
+        setIsVisable(!isVisible);
+    };
 
     return (
         <StyledFormWrapper>
@@ -81,9 +86,11 @@ const SignUpForm = () => {
                         <RecipeTextField
                             id="password"
                             label="Password"
-                            type="password"
+                            type={isVisible ? 'text' : 'password'}
                             name="password"
                             placeholder="Password"
+                            isVisible={isVisible}
+                            onVisibilityChange={() => onVisibilityChange()}
                             required
                         />
                         <StyledHRule />
