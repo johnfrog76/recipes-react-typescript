@@ -3,11 +3,11 @@ import { Formik, FieldArray, Form, FormikHelpers } from 'formik';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
-import SelectOptionField from '../../atoms/select-option-field/select-option-field.component';
-import RecipeTextField from '../../atoms/text-field/text-field.component';
-import FormButton, { FormButtons } from '../../atoms/form-button/form-button.component';
-import { RecipesContext } from '../../../providers/recipes/recipes.provider';
-import { UserContext } from '../../../providers/user/user.provider';
+import SelectOptionField from '../../components/atoms/select-option-field/select-option-field.component';
+import RecipeTextField from '../../components/atoms/text-field/text-field.component';
+import FormButton, { FormButtons } from '../../components/atoms/form-button/form-button.component';
+import { RecipesContext } from '../../providers/recipes/recipes.provider';
+import { UserContext } from '../../providers/user/user.provider';
 import {
     StyledFormWrapper,
     StyledAddInputBtn,
@@ -20,8 +20,8 @@ import {
     StyledHRule,
     StyledFieldArrayEmptyButton
 } from './edit-recipe-form.styles';
-import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
-import { updateRecipe } from '../../../services/recipes/recipes.services';
+import { iRecipe } from '../../interfaces/recipe/recipe.interface';
+import { updateRecipe } from '../../services/recipes/recipes.services';
 
 interface iKeyValuePair {
     id: string;
@@ -34,7 +34,7 @@ interface Props {
 
 interface Values {
     _id?: string;
-    user_id: number;
+    user_id: string;
     user: string;
     r_name: string;
     cat_id?: string;
@@ -74,7 +74,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
             setFormValuesInitial({
                 _id: foundRecipe._id || '',
                 user_id: foundRecipe.user_id,
-                user: 'John',
+                user: foundRecipe.user_id,
                 r_name: foundRecipe.r_name,
                 shared: foundRecipe.shared,
                 rating: foundRecipe.rating,

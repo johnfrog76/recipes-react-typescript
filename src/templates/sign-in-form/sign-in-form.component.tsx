@@ -1,35 +1,28 @@
-import React, { useContext, useState } from 'react';
+import react, { useContext } from 'react';
 import { Formik, Form, FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
-import { UserContext } from '../../../providers/user/user.provider';
-import RecipeTextField from '../../atoms/text-field/text-field.component';
-import FormButton, { FormButtons } from '../../atoms/form-button/form-button.component';
-import { StyledFormWrapper, StyledHRule } from './sign-up-form.styles';
-import { signUpUser } from '../../../services/user/user.services';
+import { UserContext } from '../../providers/user/user.provider';
+import RecipeTextField from '../../components/atoms/text-field/text-field.component';
+import FormButton, { FormButtons } from '../../components/atoms/form-button/form-button.component';
+import { StyledFormWrapper, StyledHRule } from './sign-in-form.styles';
+import { logInUser } from '../../services/user/user.services';
 
 interface Values {
     email: string;
     password: string;
-    name: string;
 }
 
-const SignUpForm = () => {
+const SignInForm = () => {
     const { addToast } = useToasts();
     const navigate = useNavigate();
-    const { setLogin, setUserToken, setUserObject } = useContext(UserContext);
-    const [isVisible, setIsVisable] = useState(false);
+    const { setLogin, setUserToken, setUserObject } = useContext(UserContext)
 
     const formValuesInitial = {
         email: '',
-        password: '',
-        name: ''
+        password: ''
     }
-
-    const onVisibilityChange = () => {
-        setIsVisable(!isVisible);
-    };
 
     return (
         <StyledFormWrapper>
@@ -39,8 +32,8 @@ const SignUpForm = () => {
                     values: Values,
                     { setSubmitting }: FormikHelpers<Values>
                 ) => {
-                    const { email, password, name } = values;
-                    signUpUser({ email, password, name }).then((resp) => {
+                    const { email, password } = values;
+                    logInUser({ email, password }).then((resp) => {
                         const { token, email, userId, name } = resp;
                         setUserToken(token);
                         setLogin(true);
@@ -66,15 +59,6 @@ const SignUpForm = () => {
             >
                 {({ values, resetForm, dirty, isValid }) => (
                     <Form>
-
-                        <RecipeTextField
-                            id="name"
-                            label="Name"
-                            name="name"
-                            placeholder="Ex: John"
-                            required
-                        />
-
                         <RecipeTextField
                             id="email"
                             label="Email"
@@ -86,17 +70,15 @@ const SignUpForm = () => {
                         <RecipeTextField
                             id="password"
                             label="Password"
-                            type={isVisible ? 'text' : 'password'}
+                            type="password"
                             name="password"
                             placeholder="Password"
-                            isVisible={isVisible}
-                            onVisibilityChange={() => onVisibilityChange()}
                             required
                         />
                         <StyledHRule />
                         <FormButton
                             type="submit"
-                            buttonText={'Sign Up'}
+                            buttonText={'Sign In'}
                             FormButton={FormButtons.Primary}
                             disabled={!dirty || !isValid}
                         />
@@ -108,4 +90,4 @@ const SignUpForm = () => {
     )
 };
 
-export default SignUpForm;
+export default SignInForm;

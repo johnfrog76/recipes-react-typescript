@@ -1,6 +1,6 @@
 export interface iRecipe {
     _id?: string | undefined;
-    user_id: number;
+    user_id: string;
     r_name: string;
     cat_id: number;
     shared: boolean;

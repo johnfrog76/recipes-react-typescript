@@ -6,7 +6,7 @@ import { MainSection } from '../../components/atoms/main-section/main-section.co
 import Spinner from '../../components/molecules/spinner/spinner.component';
 import PageTitle from '../../components/atoms/page-title/page-title.component';
 import { SpinnerOuter } from '../../components/molecules/spinner/spinner.styles';
-import EditRecipeForm from '../../components/molecules/edit-recipe-form/edit-recipe-form.component';
+import EditRecipeForm from '../../templates/edit-recipe-form/edit-recipe-form.component';
 
 
 const EditRecipePage = () => {

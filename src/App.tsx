@@ -8,6 +8,7 @@ import EditRecipePage from './pages/edit-recipe/edit-recipe.component';
 import RecipesByCategory from './pages/recipes-by-category/recipes-by-category.component';
 import SignInSignUpPage from './pages/sign-in-sign-up/sign-in-sign-up.component';
 import SignUpPage from './pages/sign-up/sign-up.component';
+import UsersPage from './pages/users/users.component';
 import { StyledOuterDiv } from './App.styles';
 import PrimaryNav from './components/molecules/primary-nav/primary.nav.component';
 
@@ -20,6 +21,7 @@ class App extends React.Component {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/add-recipe' element={<AddRecipePage />} />
+          <Route path='/users' element={<UsersPage />} />
           <Route path='/recipes' element={<RecipesPage />} />
           <Route path='/sign-in' element={<SignInSignUpPage />} />
           <Route path='/sign-up' element={<SignUpPage />} />

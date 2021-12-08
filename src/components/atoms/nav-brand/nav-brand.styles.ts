@@ -11,6 +11,13 @@ export const StyledNavBrandWrap = styled.div`
     }
 `;
 
+export const StyledBrandText = styled.span`
+    display: none;
+    @media (min-width: 576px) {
+        display: block;
+    }
+`
+
 export const StyledNavBrand = styled(Restaurant)`
     font-size: 1.5rem !important;
     margin-right: 0.5rem;

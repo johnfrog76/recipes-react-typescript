@@ -3,11 +3,11 @@ import { Formik, FieldArray, Form, FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
-import SelectOptionField from '../../atoms/select-option-field/select-option-field.component';
-import RecipeTextField from '../../atoms/text-field/text-field.component';
-import FormButton, { FormButtons } from '../../atoms/form-button/form-button.component';
-import { RecipesContext } from '../../../providers/recipes/recipes.provider';
-import { UserContext } from '../../../providers/user/user.provider';
+import SelectOptionField from '../../components/atoms/select-option-field/select-option-field.component';
+import RecipeTextField from '../../components/atoms/text-field/text-field.component';
+import FormButton, { FormButtons } from '../../components/atoms/form-button/form-button.component';
+import { RecipesContext } from '../../providers/recipes/recipes.provider';
+import { UserContext } from '../../providers/user/user.provider';
 import {
     StyledFormWrapper,
     StyledAddInputBtn,
@@ -20,8 +20,8 @@ import {
     StyledHRule,
     StyledFieldArrayEmptyButton
 } from './add-recipe-form.styles';
-import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
-import { addRecipe } from '../../../services/recipes/recipes.services';
+import { iRecipe } from '../../interfaces/recipe/recipe.interface';
+import { addRecipe } from '../../services/recipes/recipes.services';
 
 interface iKeyValuePair {
     id: string;
@@ -30,7 +30,7 @@ interface iKeyValuePair {
 
 interface Values {
     _id?: string;
-    user_id: number;
+    user_id: string;
     r_name: string;
     cat_id?: string;
     shared: boolean;
@@ -51,15 +51,15 @@ const createNumericId = (): number => {
 
 const AddRecipeForm = () => {
     const { addToast } = useToasts();
-    const { token } = useContext(UserContext);
+    const { token, user } = useContext(UserContext);
     const { recipeItems, setCount, getCategoryTags, addRecipeToList } = useContext(RecipesContext);
     const [catData, setCatData] = useState<iKeyValuePair[]>([]);
     const [currentRecipeItems, setCurrentRecipeItems] = useState<iRecipe[]>(recipeItems);
 
     let navigate = useNavigate();
     const formValuesInitial = {
-        user_id: 1,
-        user: 'John',
+        user_id: user?.userId || '1',
+        user: user ? user.name : 'none',
         r_name: '',
         shared: false,
         rating: 0,
@@ -252,7 +252,9 @@ const AddRecipeForm = () => {
                                                             </StyledSubtractInputBtn>
                                                             <StyledAddInputBtn
                                                                 type="button"
-                                                                onClick={() => arrayHelpers.insert(index, { user: 'John', comment: '' })}
+                                                                onClick={() => arrayHelpers.insert(
+                                                                    index, { user: user?.name, comment: '' }
+                                                                )}
                                                             >
                                                                 +
                                                             </StyledAddInputBtn>
@@ -261,7 +263,10 @@ const AddRecipeForm = () => {
                                                 </StyledInputWrapper>
                                             ))
                                         ) : (
-                                            <StyledFieldArrayEmptyButton type="button" onClick={() => arrayHelpers.push({ user: 'John', comment: '' })}>
+                                            <StyledFieldArrayEmptyButton
+                                                type="button"
+                                                onClick={() => arrayHelpers.push({ user: user?.name, comment: '' })
+                                                }>
                                                 Add comment
                                             </StyledFieldArrayEmptyButton>
                                         )}
