@@ -38,13 +38,6 @@ const SignInForm = () => {
                         setUserToken(token);
                         setLogin(true);
                         setUserObject({ token, email, userId, name });
-                        addToast(
-                            'Success',
-                            {
-                                appearance: 'success',
-                                autoDismiss: true
-                            }
-                        );
                         navigate('/')
                     }).catch((err) => {
                         addToast(

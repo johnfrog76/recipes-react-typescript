@@ -29,6 +29,7 @@ const ThemeSwitcher = () => {
                     :
                     (<StyledDarkModeIcon />)
             }
+            &nbsp;theme
         </StyledThemeButton>
     )
 }

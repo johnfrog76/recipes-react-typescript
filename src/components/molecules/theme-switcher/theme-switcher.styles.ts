@@ -10,7 +10,10 @@ export const StyledThemeButton = styled.button`
     display: flex;
     align-items: center;
     cursor: pointer;
-    color: #fff;
+    font-size: inherit;
+    min-width: 100%;
+    padding: 1.5rem;
+    color: ${props => props.theme.colors.pageLinkColor1};
 `;
 
 export const StyledLightModeIcon = styled(LightMode)`

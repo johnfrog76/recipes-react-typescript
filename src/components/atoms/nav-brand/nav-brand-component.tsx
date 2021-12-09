@@ -1,15 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { StyledNavBrand, StyledNavBrandWrap, StyledBrandText } from './nav-brand.styles';
+import { StyledNavBrand } from './nav-brand.styles';
 
-const NavBrand = () => (
-    <StyledNavBrandWrap>
+const NavBrand = ({ }) => (
+    <React.Fragment>
         <Link to='/'>
             <StyledNavBrand />
-            <StyledBrandText>Recipes</StyledBrandText>
         </Link>
-    </StyledNavBrandWrap>
+    </React.Fragment>
 )
 
 export default NavBrand;
