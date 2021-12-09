@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import NAV_DATA from './primary-nav.data.json';
 import NavBrand from '../../atoms/nav-brand/nav-brand-component';
 import SignInSignOut from "../sign-in-out/sign-in-out.component";
-import { UserContext } from "../../../providers/user/user.provider";
+import { AuthContext } from "../../../providers/auth/auth.provider";
 import Backdrop from "../../atoms/backdrop/backdrop.component";
 import MenuToggle from "../../atoms/menu-toggle/menu-toggle.component";
 import MainMenu from "../main-menu/main-menu.component";
@@ -13,7 +13,7 @@ import { StyledNavBrandWrap, StyledNavBar } from './primary.nav.styles';
 
 const PrimaryNav = () => {
     const [mainNavItems, setMainNavItems] = useState<iMainNavItem[]>(NAV_DATA);
-    const { isLoggedIn } = useContext(UserContext);
+    const { isLoggedIn } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
 
     const handleIsOpen = () => {
@@ -26,7 +26,7 @@ const PrimaryNav = () => {
         } else {
             setMainNavItems(NAV_DATA);
         }
-    }, [isLoggedIn])
+    }, [isLoggedIn, mainNavItems])
 
 
     return (

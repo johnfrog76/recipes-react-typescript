@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 
-import { UserContext } from '../../../providers/user/user.provider';
+import { AuthContext } from '../../../providers/auth/auth.provider';
 import Backdrop from '../../atoms/backdrop/backdrop.component';
 import {
     StyledButton,
@@ -12,7 +12,7 @@ import {
 
 
 const SignOutButton = () => {
-    const { setLogin, setUserToken, user } = useContext(UserContext);
+    const { setLogin, setUserToken, user } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const handleSignOut = () => {

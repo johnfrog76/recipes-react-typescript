@@ -1,4 +1,4 @@
-import React, { FC, createContext, useState, useEffect } from 'react';
+import React, { FC, createContext, useState } from 'react';
 
 import { iUser } from '../../interfaces/user/user.interface';
 
@@ -11,7 +11,7 @@ type UserContextType = {
     setUserObject: (val: any) => void;
 }
 
-export const UserContext = createContext<UserContextType>({
+export const AuthContext = createContext<UserContextType>({
     user: null,
     isLoggedIn: false,
     token: null,
@@ -24,7 +24,7 @@ interface Props {
     children?: React.ReactNode;
 }
 
-const UserProvider: FC<Props> = ({ children }) => {
+const AuthProvider: FC<Props> = ({ children }) => {
     const [user, setUser] = useState<iUser | null>(null);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [token, setToken] = useState(null);
@@ -33,15 +33,15 @@ const UserProvider: FC<Props> = ({ children }) => {
     const setUserObject = (val = null) => setUser(val);
 
     return (
-        <UserContext.Provider value={{
+        <AuthContext.Provider value={{
             user,
             isLoggedIn,
             token,
             setLogin,
             setUserToken,
             setUserObject
-        }}>{children}</UserContext.Provider>
+        }}>{children}</AuthContext.Provider>
     )
 }
 
-export default UserProvider;
+export default AuthProvider;

@@ -1,14 +1,6 @@
 import axios from 'axios';
 import { iRecipe } from '../../interfaces/recipe/recipe.interface';
 
-type iPatch = {
-    recipe: iRecipe;
-}
-
-type iDelete = {
-    message: string;
-}
-
 const baseURL = process.env.REACT_APP_BASEURL;
 const endpoint = process.env.REACT_APP_RECIPE_ENDPOINT;
 

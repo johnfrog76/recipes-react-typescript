@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { RecipesContext } from '../../../providers/recipes/recipes.provider';
-import { UserContext } from '../../../providers/user/user.provider';
+import { AuthContext } from '../../../providers/auth/auth.provider';
 import ConfirmDialog from '../../molecules/confirm-dialog/confirm-dialog.component';
 import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
 import { removeRecipe } from '../../../services/recipes/recipes.services';
@@ -23,8 +23,8 @@ const RecicipeActionBar = () => {
     let { id } = useParams();
     let navigate = useNavigate();
     const { addToast } = useToasts();
-    const { recipeItems, deleteRecipe, isLoading, setSpinner, setCount } = useContext(RecipesContext);
-    const { token, isLoggedIn } = useContext(UserContext);
+    const { recipeItems, deleteRecipe, setSpinner, setCount } = useContext(RecipesContext);
+    const { token, isLoggedIn } = useContext(AuthContext);
 
     const [recipe, setRecipe] = useState<iRecipe | undefined>(undefined);
     const [open, setOpen] = useState<boolean>(false);
@@ -37,7 +37,7 @@ const RecicipeActionBar = () => {
             setRecipe(recipe);
             setValue(`localhost:3000/recipes/${recipe._id}`)
         }
-    }, [recipeItems]);
+    }, [recipeItems, id]);
 
     const handleDelete = () => {
         setSpinner(true);

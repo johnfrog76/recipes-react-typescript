@@ -1,13 +1,13 @@
 import React, { useContext, useState, useEffect, FC } from 'react';
 import { Formik, FieldArray, Form, FormikHelpers } from 'formik';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
 import SelectOptionField from '../../components/atoms/select-option-field/select-option-field.component';
 import RecipeTextField from '../../components/atoms/text-field/text-field.component';
 import FormButton, { FormButtons } from '../../components/atoms/form-button/form-button.component';
 import { RecipesContext } from '../../providers/recipes/recipes.provider';
-import { UserContext } from '../../providers/user/user.provider';
+import { AuthContext } from '../../providers/auth/auth.provider';
 import {
     StyledFormWrapper,
     StyledAddInputBtn,
@@ -52,7 +52,7 @@ interface Values {
 const EditRecipeForm: FC<Props> = ({ recipeId }) => {
     const { addToast } = useToasts();
     const { recipeItems, getCategoryTags, editRecipe } = useContext(RecipesContext);
-    const { token } = useContext(UserContext);
+    const { token } = useContext(AuthContext);
     const [catData, setCatData] = useState<iKeyValuePair[]>([]);
     const [currentRecipeItems, setCurrentRecipeItems] = useState<iRecipe[]>(recipeItems);
     const [formValuesInitial, setFormValuesInitial] = useState<Values | undefined>(undefined);
@@ -86,7 +86,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
             })
         }
 
-    }, [recipeItems]);
+    }, [recipeItems, getCategoryTags, recipeId]);
 
     return (
         <StyledFormWrapper>

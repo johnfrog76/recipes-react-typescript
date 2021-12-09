@@ -3,7 +3,7 @@ import { Formik, Form, FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
-import { UserContext } from '../../providers/user/user.provider';
+import { AuthContext } from '../../providers/auth/auth.provider';
 import RecipeTextField from '../../components/atoms/text-field/text-field.component';
 import FormButton, { FormButtons } from '../../components/atoms/form-button/form-button.component';
 import { StyledFormWrapper, StyledHRule } from './sign-in-form.styles';
@@ -17,7 +17,7 @@ interface Values {
 const SignInForm = () => {
     const { addToast } = useToasts();
     const navigate = useNavigate();
-    const { setLogin, setUserToken, setUserObject } = useContext(UserContext)
+    const { setLogin, setUserToken, setUserObject } = useContext(AuthContext)
 
     const formValuesInitial = {
         email: '',

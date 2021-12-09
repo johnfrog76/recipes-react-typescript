@@ -7,7 +7,7 @@ import SelectOptionField from '../../components/atoms/select-option-field/select
 import RecipeTextField from '../../components/atoms/text-field/text-field.component';
 import FormButton, { FormButtons } from '../../components/atoms/form-button/form-button.component';
 import { RecipesContext } from '../../providers/recipes/recipes.provider';
-import { UserContext } from '../../providers/user/user.provider';
+import { AuthContext } from '../../providers/auth/auth.provider';
 import {
     StyledFormWrapper,
     StyledAddInputBtn,
@@ -44,14 +44,9 @@ interface Values {
     }[];
 }
 
-const createNumericId = (): number => {
-    let d = new Date();
-    return d.getTime();
-}
-
 const AddRecipeForm = () => {
     const { addToast } = useToasts();
-    const { token, user } = useContext(UserContext);
+    const { token, user } = useContext(AuthContext);
     const { recipeItems, setCount, getCategoryTags, addRecipeToList } = useContext(RecipesContext);
     const [catData, setCatData] = useState<iKeyValuePair[]>([]);
     const [currentRecipeItems, setCurrentRecipeItems] = useState<iRecipe[]>(recipeItems);
@@ -78,7 +73,7 @@ const AddRecipeForm = () => {
             return { id: strId, name: category }
         });
         setCatData(data);
-    }, [recipeItems]);
+    }, [recipeItems, getCategoryTags]);
 
     return (
         <StyledFormWrapper>

@@ -11,7 +11,7 @@ const FeaturedRecipes = () => {
 
     useEffect(() => {
         setFeatured(getFeaturedRecipes(recipeItems));
-    }, [recipeItems])
+    }, [recipeItems, getFeaturedRecipes])
 
 
     return (

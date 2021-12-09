@@ -1,5 +1,5 @@
 import React, { FC, createContext, useState, useEffect } from 'react';
-import RECIPES from './recipe-collection.data.json';
+// import RECIPES from './recipe-collection.data.json';
 import { getFeaturedRecipes, getCategoryTags, addRecipeToList, editRecipe, deleteRecipe } from './recipes.utils';
 
 import { iRecipe } from '../../interfaces/recipe/recipe.interface';
