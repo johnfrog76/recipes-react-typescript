@@ -34,7 +34,7 @@ export const StyledDropdownContainer = styled.div<iDropdownStyles>`
     border: 1px solid ${props => props.theme.colors.pageBackground3};
     color: ${props => props.theme.colors.pageForeground1};
     right: 0;
-    z-index: 10;
+    z-index: 21;
     box-sizing: border-box;
     padding: 0.5rem 1.5rem;
     display: ${props => props.isOpen ? 'flex': 'none'};
@@ -51,18 +51,6 @@ export const StyledAnchor = styled.a`
         text-decoration: underline;
     }
 `;
-
-export const StyledBackDrop = styled.div<iDropdownStyles>`
-    background-color: transparent;
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 50px;
-    left: 0;
-    z-index: 9;
-    display: ${props => props.isOpen ? 'block': 'none'};
-`;
-
 
 export const StyledDropDownWrapper = styled.div`
     display: flex;

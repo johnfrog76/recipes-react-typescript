@@ -3,27 +3,13 @@ import React, { useContext, useEffect, useState } from "react";
 
 import NAV_DATA from './primary-nav.data.json';
 import NavBrand from '../../atoms/nav-brand/nav-brand-component';
-import ThemeSwitcher from "../theme-switcher/theme-switcher.component";
 import SignInSignOut from "../sign-in-out/sign-in-out.component";
 import { UserContext } from "../../../providers/user/user.provider";
-import CloseButton from "../../atoms/close-button/close-button.component";
+import Backdrop from "../../atoms/backdrop/backdrop.component";
 import MenuToggle from "../../atoms/menu-toggle/menu-toggle.component";
-import {
-    StyledNavUl,
-    StyledMenuHeader,
-    StyledNavBrandWrap,
-    StyledNavLink,
-    StyledNavBar,
-    StyledBackdrop,
-    StyledListItem,
-    StyledMenuOuter,
-} from './primary.nav.styles';
-
-interface iMainNavItem {
-    text: string;
-    route: string;
-    auth: boolean;
-}
+import MainMenu from "../main-menu/main-menu.component";
+import { iMainNavItem } from "../../../interfaces/nav/nav.interface";
+import { StyledNavBrandWrap, StyledNavBar } from './primary.nav.styles';
 
 const PrimaryNav = () => {
     const [mainNavItems, setMainNavItems] = useState<iMainNavItem[]>(NAV_DATA);
@@ -51,29 +37,8 @@ const PrimaryNav = () => {
                 <NavBrand isOpen={isOpen} toggleClose={handleIsOpen} />
             </StyledNavBrandWrap>
 
-            <StyledMenuOuter isOpen={isOpen}>
-                <div>
-                    <StyledMenuHeader>
-                        <NavBrand isOpen={isOpen} toggleClose={handleIsOpen} />
-                        <CloseButton closeHandler={handleIsOpen} />
-                    </StyledMenuHeader>
-                    <StyledNavUl>
-                        {
-                            mainNavItems.map((item, idx) => (
-                                <StyledListItem key={`item${idx}`} onClick={() => handleIsOpen()}>
-                                    <StyledNavLink to={item.route}>{item.text}</StyledNavLink>
-                                </StyledListItem>
-                            ))
-                        }
-                    </StyledNavUl>
-                </div>
-                <StyledNavUl>
-                    <StyledListItem>
-                        <ThemeSwitcher />
-                    </StyledListItem>
-                </StyledNavUl>
-            </StyledMenuOuter>
-            <StyledBackdrop isOpen={isOpen} onClick={() => handleIsOpen()} />
+            <MainMenu isOpen={isOpen} toggleIsOpen={handleIsOpen} items={mainNavItems} />
+            <Backdrop isOpen={isOpen} toggleClose={() => handleIsOpen()} />
 
             <SignInSignOut isLoggedIn={isLoggedIn} />
 
