@@ -1,22 +1,28 @@
-[{
-    "text": "home",
-    "route": "/",
-    "auth": false
-}, {
-    "text": "users",
-    "route": "/users",
-    "auth": false
-}, {
-    "text": "recipes",
-    "route": "/recipes",
-    "auth": false
-}, {
-    "text": "add recipe",
-    "route": "/add-recipe",
-    "auth": true
-},
-{
-    "text": "my recipes",
-    "route": "/my-recipes",
-    "auth": true
-}]
+[
+    {
+        "text": "home",
+        "route": "/",
+        "auth": false
+    },
+    {
+        "text": "users",
+        "route": "/users",
+        "auth": false
+    },
+    {
+        "text": "recipes",
+        "route": "/recipes",
+        "auth": false
+    },
+    {
+        "text": "add recipe",
+        "route": "/add-recipe",
+        "auth": true
+    },
+    {
+        "text": "my recipes",
+        "route": "/user-recipes",
+        "auth": true,
+        "params": "id"
+    }
+]

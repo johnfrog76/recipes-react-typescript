@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { iMainNavItem } from '../../../interfaces/nav/nav.interface';
 import NavBrand from '../../atoms/nav-brand/nav-brand-component';
 import CloseButton from '../../atoms/close-button/close-button.component';
 import ThemeSwitcher from '../theme-switcher/theme-switcher.component';
+import { AuthContext } from '../../../providers/auth/auth.provider';
 import {
     StyledMenuOuter,
     StyledMenuHeader,
@@ -17,29 +18,35 @@ type Props = {
     items: iMainNavItem[];
 }
 
-const MainMenu: FC<Props> = ({ isOpen, toggleIsOpen, items }) => (
-    <StyledMenuOuter isOpen={isOpen}>
-        <div>
-            <StyledMenuHeader>
-                <NavBrand isOpen={isOpen} toggleClose={toggleIsOpen} />
-                <CloseButton closeHandler={toggleIsOpen} />
-            </StyledMenuHeader>
+const MainMenu: FC<Props> = ({ isOpen, toggleIsOpen, items }) => {
+    const { user } = useContext(AuthContext);
+
+    return (
+        <StyledMenuOuter isOpen={isOpen}>
+            <div>
+                <StyledMenuHeader>
+                    <NavBrand isOpen={isOpen} toggleClose={toggleIsOpen} />
+                    <CloseButton closeHandler={toggleIsOpen} />
+                </StyledMenuHeader>
+                <StyledNavUl>
+                    {
+                        items.map((item, idx) => (
+                            <StyledListItem key={`item${idx}`} onClick={() => toggleIsOpen()}>
+                                <StyledNavLink to={
+                                    item.params ? `${item.route}/${user?.userId}` : item.route
+                                }>{item.text}</StyledNavLink>
+                            </StyledListItem>
+                        ))
+                    }
+                </StyledNavUl>
+            </div>
             <StyledNavUl>
-                {
-                    items.map((item, idx) => (
-                        <StyledListItem key={`item${idx}`} onClick={() => toggleIsOpen()}>
-                            <StyledNavLink to={item.route}>{item.text}</StyledNavLink>
-                        </StyledListItem>
-                    ))
-                }
+                <StyledListItem>
+                    <ThemeSwitcher />
+                </StyledListItem>
             </StyledNavUl>
-        </div>
-        <StyledNavUl>
-            <StyledListItem>
-                <ThemeSwitcher />
-            </StyledListItem>
-        </StyledNavUl>
-    </StyledMenuOuter>
-);
+        </StyledMenuOuter>
+    );
+}
 
 export default MainMenu;

@@ -26,7 +26,7 @@ const PrimaryNav = () => {
         } else {
             setMainNavItems(NAV_DATA);
         }
-    }, [isLoggedIn, mainNavItems])
+    }, [isLoggedIn])
 
 
     return (

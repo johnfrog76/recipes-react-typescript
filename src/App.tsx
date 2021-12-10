@@ -11,7 +11,7 @@ import SignUpPage from './pages/sign-up/sign-up.component';
 import UsersPage from './pages/users/users.component';
 import { StyledOuterDiv } from './App.styles';
 import PrimaryNav from './components/molecules/primary-nav/primary.nav.component';
-import MyRecipesPage from './pages/my-recipes/my-recipes.component';
+import UserRecipesPage from './pages/user-recipes/user-recipes.component';
 
 class App extends React.Component {
 
@@ -23,7 +23,7 @@ class App extends React.Component {
           <Route path='/' element={<HomePage />} />
           <Route path='/add-recipe' element={<AddRecipePage />} />
           <Route path='/users' element={<UsersPage />} />
-          <Route path='/my-recipes' element={<MyRecipesPage />} />
+          <Route path='/user-recipes/:id' element={<UserRecipesPage />} />
           <Route path='/recipes' element={<RecipesPage />} />
           <Route path='/sign-in' element={<SignInSignUpPage />} />
           <Route path='/sign-up' element={<SignUpPage />} />
