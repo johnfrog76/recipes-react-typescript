@@ -9,7 +9,7 @@ import { iUserItem } from '../../interfaces/users/users.interface';
 import RecipeTextField from '../../components/atoms/text-field/text-field.component';
 import FormButton, { FormButtons } from '../../components/atoms/form-button/form-button.component';
 import { StyledFormWrapper, StyledHRule } from './sign-up-form.styles';
-import { signUpUser } from '../../services/user/user.services';
+import { signUpUser } from '../../services/auth/auth.services';
 
 interface Values {
     email: string;

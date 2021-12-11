@@ -7,7 +7,7 @@ import { AuthContext } from '../../providers/auth/auth.provider';
 import RecipeTextField from '../../components/atoms/text-field/text-field.component';
 import FormButton, { FormButtons } from '../../components/atoms/form-button/form-button.component';
 import { StyledFormWrapper, StyledHRule } from './sign-in-form.styles';
-import { logInUser } from '../../services/user/user.services';
+import { logInUser } from '../../services/auth/auth.services';
 
 interface Values {
     email: string;
