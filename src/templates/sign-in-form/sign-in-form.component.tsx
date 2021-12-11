@@ -17,7 +17,7 @@ interface Values {
 const SignInForm = () => {
     const { addToast } = useToasts();
     const navigate = useNavigate();
-    const { setLogin, setUserToken, setUserObject } = useContext(AuthContext)
+    const { setLogin, setUserToken, setUserObject, setUserExpiration, setUserAuth } = useContext(AuthContext)
 
     const formValuesInitial = {
         email: '',
@@ -35,9 +35,13 @@ const SignInForm = () => {
                     const { email, password } = values;
                     logInUser({ email, password }).then((resp) => {
                         const { token, email, userId, name } = resp;
+                        const expires = new Date(new Date().getTime() + 1000 * 60 * 60);
+
                         setUserToken(token);
                         setLogin(true);
                         setUserObject({ token, email, userId, name });
+                        setUserExpiration(Number(expires));
+                        setUserAuth(resp, Number(expires));
                         navigate('/')
                     }).catch((err) => {
                         addToast(

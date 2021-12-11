@@ -12,12 +12,22 @@ import { iMainNavItem } from "../../../interfaces/nav/nav.interface";
 import { StyledNavBrandWrap, StyledNavBar } from './primary.nav.styles';
 
 const PrimaryNav = () => {
-    const [mainNavItems, setMainNavItems] = useState<iMainNavItem[]>(NAV_DATA);
-    const { isLoggedIn } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
+    const [mainNavItems, setMainNavItems] = useState<iMainNavItem[]>(NAV_DATA);
+    const { isLoggedIn, useAuth, getUserAuth, setLogin,
+        setUserToken, setUserObject, setUserExpiration } = useContext(AuthContext);
 
     const handleIsOpen = () => {
         setIsOpen(!isOpen);
+        if (isLoggedIn) {
+            useAuth();
+            if (getUserAuth() === null) {
+                setUserObject(null);
+                setLogin(false);
+                setUserToken(null);
+                setUserExpiration(null);
+            }
+        }
     }
 
     useEffect(() => {
@@ -28,20 +38,15 @@ const PrimaryNav = () => {
         }
     }, [isLoggedIn])
 
-
     return (
         <StyledNavBar>
-
             <StyledNavBrandWrap>
                 <MenuToggle toggleHandler={handleIsOpen} />
                 <NavBrand isOpen={isOpen} toggleClose={handleIsOpen} />
             </StyledNavBrandWrap>
-
             <MainMenu isOpen={isOpen} toggleIsOpen={handleIsOpen} items={mainNavItems} />
             <Backdrop isOpen={isOpen} toggleClose={() => handleIsOpen()} />
-
             <SignInSignOut isLoggedIn={isLoggedIn} />
-
         </StyledNavBar>
     );
 }

@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
 import { AuthContext } from '../../providers/auth/auth.provider';
+import { UsersContext } from '../../providers/users/users.provider';
+import { iUserItem } from '../../interfaces/users/users.interface';
 import RecipeTextField from '../../components/atoms/text-field/text-field.component';
 import FormButton, { FormButtons } from '../../components/atoms/form-button/form-button.component';
 import { StyledFormWrapper, StyledHRule } from './sign-up-form.styles';
@@ -18,7 +20,8 @@ interface Values {
 const SignUpForm = () => {
     const { addToast } = useToasts();
     const navigate = useNavigate();
-    const { setLogin, setUserToken, setUserObject } = useContext(AuthContext);
+    const { addUserItem, userItems } = useContext(UsersContext);
+    const { setLogin, setUserToken, setUserObject, setUserExpiration, setUserAuth } = useContext(AuthContext);
     const [isVisible, setIsVisable] = useState(false);
 
     const formValuesInitial = {
@@ -42,16 +45,19 @@ const SignUpForm = () => {
                     const { email, password, name } = values;
                     signUpUser({ email, password, name }).then((resp) => {
                         const { token, email, userId, name } = resp;
+                        const expires = new Date(new Date().getTime() + 1000 * 60 * 60);
+                        const userToAdd: iUserItem = {
+                            _id: userId,
+                            id: userId,
+                            email: email,
+                            name: name
+                        };
                         setUserToken(token);
                         setLogin(true);
                         setUserObject({ token, email, userId, name });
-                        addToast(
-                            'Success',
-                            {
-                                appearance: 'success',
-                                autoDismiss: true
-                            }
-                        );
+                        setUserExpiration(Number(expires));
+                        setUserAuth(resp, Number(expires));
+                        addUserItem(userToAdd, userItems);
                         navigate('/')
                     }).catch((err) => {
                         addToast(

@@ -1,6 +1,7 @@
-import React, { FC, createContext, useState } from 'react';
+import React, { FC, createContext, useState, useEffect } from 'react';
 
 import { iUser } from '../../interfaces/user/user.interface';
+import { setUserAuth, getUserAuth, StoredAuthType, useAuth } from './auth.utilities';
 
 type UserContextType = {
     user: iUser | null;
@@ -9,6 +10,11 @@ type UserContextType = {
     setLogin: (val: boolean) => void;
     setUserToken: (val: any) => void;
     setUserObject: (val: any) => void;
+    setUserExpiration: (val: any) => void;
+    expiration: number | null;
+    setUserAuth: (user: iUser, expires: number) => void;
+    getUserAuth: () => void;
+    useAuth: () => void;
 }
 
 export const AuthContext = createContext<UserContextType>({
@@ -17,7 +23,12 @@ export const AuthContext = createContext<UserContextType>({
     token: null,
     setLogin: () => { },
     setUserToken: (val) => { },
-    setUserObject: (val) => { }
+    setUserObject: (val) => { },
+    expiration: null,
+    setUserExpiration: (val) => { },
+    setUserAuth: () => { },
+    getUserAuth: () => { },
+    useAuth: () => { }
 });
 
 interface Props {
@@ -25,21 +36,41 @@ interface Props {
 }
 
 const AuthProvider: FC<Props> = ({ children }) => {
+
     const [user, setUser] = useState<iUser | null>(null);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-    const [token, setToken] = useState(null);
+    const [token, setToken] = useState<string | null>(null);
+    const [expiration, setExpiration] = useState<number | null>(null);
     const setLogin = (val = false) => setIsLoggedIn(val);
     const setUserToken = (val = null) => setToken(val);
     const setUserObject = (val = null) => setUser(val);
+    const setUserExpiration = (val = null) => setExpiration(val);
+
+    useEffect(() => {
+        useAuth();
+        const storageUser = getUserAuth();
+
+        if (storageUser) {
+            setUser(storageUser.user);
+            setIsLoggedIn(true);
+            setToken(storageUser.user.token);
+            setExpiration(storageUser.expires);
+        }
+    }, [])
 
     return (
         <AuthContext.Provider value={{
             user,
             isLoggedIn,
             token,
+            expiration,
             setLogin,
             setUserToken,
-            setUserObject
+            setUserObject,
+            setUserExpiration,
+            setUserAuth,
+            getUserAuth,
+            useAuth
         }}>{children}</AuthContext.Provider>
     )
 }

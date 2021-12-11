@@ -2,18 +2,21 @@ import React, { createContext, FC, useState } from 'react';
 
 import USERS_LIST from './users-collection.data.json';
 import { iUserItem } from '../../interfaces/users/users.interface';
+import { addUserItem } from './users.utilities';
 
 
 type UsersContextType = {
     userItems: iUserItem[];
     isLoading: boolean;
     userCount: number;
+    addUserItem: (val1: iUserItem, val2: iUserItem[]) => iUserItem[];
 }
 
 export const UsersContext = createContext<UsersContextType>({
     userItems: [],
     userCount: 0,
-    isLoading: true
+    isLoading: true,
+    addUserItem: addUserItem
 });
 
 interface Props {
@@ -28,7 +31,8 @@ const UsersProvider: FC<Props> = ({ children }) => {
     return (<UsersContext.Provider value={{
         userItems,
         userCount,
-        isLoading
+        isLoading,
+        addUserItem
     }}>
         {children}
     </UsersContext.Provider>)

@@ -46,7 +46,7 @@ const RecipesProvider: FC<Props> = ({ children }) => {
 
     useEffect(() => {
         if (makeRequest) {
-            console.log('make request');
+            // console.log('make request');
             setMakeRequest(false);
             getRecipes().then((resp) => {
                 // delay is to see spinner
