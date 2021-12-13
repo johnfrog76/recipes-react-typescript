@@ -1,4 +1,4 @@
-import {grey, teal, pink, purple} from 'material-colors-ts';
+import {grey, pink, purple} from 'material-colors-ts';
 
 export const darkTheme = {
     colors: {
