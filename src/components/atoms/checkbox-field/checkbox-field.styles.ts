@@ -23,7 +23,7 @@ export const StyledLabel = styled.label<iStyledLabel>`
 `;
 
 export const StyledFieldWrapper = styled.div`
-    margin-bottom: 1rem;
+    margin: 1.5rem 0 1rem 0;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
@@ -36,7 +36,7 @@ export const CheckBoxIcon = styled(Check)<iStyledProps>`
     background-color: ${props => props.isChecked ? props.theme.colors.navBarBackground : 'transparent' };
     font-size: 2rem !important;
     padding: 0;
-    margin: 0;
+    margin: 0 0.5rem 0 0;
 `;
 
 export const StyledCheckBox = styled.input`
