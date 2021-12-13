@@ -1,17 +1,17 @@
-import { PALLETS } from "./color-palletes"
+import {grey, teal, pink, purple} from 'material-colors-ts';
 
 export const darkTheme = {
     colors: {
-        pageBackground1: PALLETS.grey[900],
-        pageBackground2: PALLETS.grey[800],
-        pageBackground3: PALLETS.grey[700],
-        pageBorderColor1: PALLETS.grey[500],
-        pageForeground1: PALLETS.grey[50],
-        pageLinkColor1: PALLETS.teal.A200,
-        pageHighLight1: PALLETS.teal.A100,
-        pageHighLight2: PALLETS.teal.A700,
-        navBarBackground: PALLETS.teal[800],
-        pageSecondaryColor1: PALLETS.teal[700],
+        pageBackground1: grey[900],
+        pageBackground2: grey[800],
+        pageBackground3: grey[700],
+        pageBorderColor1: grey[500],
+        pageForeground1: grey[50],
+        pageLinkColor1: pink.A200,
+        pageHighLight1: pink.A100,
+        pageHighLight2: pink.A700,
+        navBarBackground: pink[800],
+        pageSecondaryColor1: pink[700],
         pageToastSuccess: '#2E7D32',
         pageToastError: '#C62828'
     },
@@ -26,16 +26,16 @@ export const darkTheme = {
 
 export const lightTheme = {
     colors: {
-        pageBackground1: PALLETS.grey[50],
-        pageBackground2: PALLETS.grey[200],
-        pageBackground3: PALLETS.grey[300],
-        pageBorderColor1: PALLETS.grey[500],
-        pageForeground1: PALLETS.grey[900],
-        pageLinkColor1: PALLETS.blue[900],
-        pageHighLight1: PALLETS.blue.A100,
-        pageHighLight2: PALLETS.blue.A700,
-        navBarBackground: PALLETS.blue[800],
-        pageSecondaryColor1: PALLETS.blue[700],
+        pageBackground1: grey[50],
+        pageBackground2: grey[200],
+        pageBackground3: grey[300],
+        pageBorderColor1: grey[500],
+        pageForeground1: grey[900],
+        pageLinkColor1: purple[900],
+        pageHighLight1: purple.A100,
+        pageHighLight2: purple.A700,
+        navBarBackground: purple[800],
+        pageSecondaryColor1: purple[700],
         pageToastSuccess: '#2E7D32',
         pageToastError: '#C62828'
     },
