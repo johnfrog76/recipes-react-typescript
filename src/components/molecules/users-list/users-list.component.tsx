@@ -2,32 +2,35 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { iUserItem } from '../../../interfaces/users/users.interface';
 import { UsersContext } from '../../../providers/users/users.provider';
-import { StyledUserCard, StyledNavLink, StyledUserCardList } from './users-list.styles';
-import UserAvatar from '../../atoms/user-avatar/user-avatar.component';
+import { RecipesContext } from '../../../providers/recipes/recipes.provider';
+import UserCard from '../user-card/user-card.component';
+import { StyledUserCardList } from './users-list.styles';
+import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
 
 const UsersList = () => {
+    const { recipeItems } = useContext(RecipesContext);
     const { userItems } = useContext(UsersContext);
     const [users, setUsers] = useState<iUserItem[]>([]);
 
     useEffect(() => {
-        setUsers(userItems);
+        const usersWithRecipe = userItems.map(user => {
+            const recipes: string[] = recipeItems.filter(
+                r => r.shared === true && r.user_id === user.id
+            ).map(r => r.r_name);
 
+            return {
+                ...user,
+                recipes: recipes || []
+            }
+        })
+        setUsers(usersWithRecipe);
     }, [userItems])
-
 
     return (
         <StyledUserCardList>
             {
-                users.map((item, idx) => (
-                    <li key={idx}>
-                        <StyledUserCard title={item.email}>
-                            <UserAvatar name={item.name} />
-                            <div>
-                                <div>{item.name}</div>
-                                <StyledNavLink to={`/user-recipes/${item.id}`}>View recipes</StyledNavLink>
-                            </div>
-                        </StyledUserCard>
-                    </li>
+                users.map(({ name, id, recipes }, idx) => (
+                    <UserCard key={idx} name={name} id={id} recipes={recipes || []} />
                 ))
             }
         </StyledUserCardList >

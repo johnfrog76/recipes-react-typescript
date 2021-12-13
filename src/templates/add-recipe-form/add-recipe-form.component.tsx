@@ -5,6 +5,7 @@ import { useToasts } from 'react-toast-notifications';
 
 import SelectOptionField from '../../components/atoms/select-option-field/select-option-field.component';
 import RecipeTextField from '../../components/atoms/text-field/text-field.component';
+import CheckBoxField from '../../components/atoms/checkbox-field/checkbox-field.component';
 import FormButton, { FormButtons } from '../../components/atoms/form-button/form-button.component';
 import { RecipesContext } from '../../providers/recipes/recipes.provider';
 import { AuthContext } from '../../providers/auth/auth.provider';
@@ -149,6 +150,11 @@ const AddRecipeForm = () => {
                             ]}
                         />
 
+                        <CheckBoxField
+                            id="shared"
+                            name="shared"
+                            label="Share Recipe"
+                        />
 
                         <div>
                             <FieldArray

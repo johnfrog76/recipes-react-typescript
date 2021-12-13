@@ -34,7 +34,7 @@ const UserRecipesPage = () => {
         <MainSection>
             <PageTitle>
                 {user ? (
-                    <span>Recipes from {user.name} ({usersRecipes.length})</span>
+                    <span>{user.name} Recipes ({usersRecipes.length})</span>
                 ) : (
                     <span>User Recipes</span>
                 )
