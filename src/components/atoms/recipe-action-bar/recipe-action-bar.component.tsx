@@ -18,18 +18,22 @@ import {
     StyledButton,
     StyledTextarea
 } from './recipe-action-bar.styles';
+import { iUserItem } from '../../../interfaces/users/users.interface';
+import { iUser } from '../../../interfaces/user/user.interface';
 
 const RecicipeActionBar = () => {
     let { id } = useParams();
     let navigate = useNavigate();
     const { addToast } = useToasts();
     const { recipeItems, deleteRecipe, setSpinner, setCount } = useContext(RecipesContext);
-    const { token, isLoggedIn } = useContext(AuthContext);
+    const { token, isLoggedIn, user } = useContext(AuthContext);
 
     const [recipe, setRecipe] = useState<iRecipe | undefined>(undefined);
     const [open, setOpen] = useState<boolean>(false);
     const [copied, setCopied] = useState<boolean>(false);
     const [value, setValue] = useState<string>('');
+    const [authUser, setAuthUser] = useState<iUser | null>(null);
+    const [isOwner, setIsOwner] = useState<boolean>(false);
 
     useEffect(() => {
         const recipe = recipeItems.find(r => r._id === id);
@@ -38,6 +42,12 @@ const RecicipeActionBar = () => {
             setValue(`localhost:3000/recipes/${recipe._id}`)
         }
     }, [recipeItems, id]);
+
+    useEffect(() => {
+        if (recipe && user && recipe.user_id === user.userId) {
+            setIsOwner(true);
+        }
+    }, [user, recipe])
 
     const handleDelete = () => {
         setSpinner(true);
@@ -80,7 +90,7 @@ const RecicipeActionBar = () => {
         <React.Fragment>
             <StyledRecipeActionBar>
                 {
-                    isLoggedIn && (
+                    isLoggedIn && isOwner && (
                         <React.Fragment>
                             <StyledButton title="Delete" onClick={() => handleClickOpen()}>
                                 <StyledDeleteIcon />

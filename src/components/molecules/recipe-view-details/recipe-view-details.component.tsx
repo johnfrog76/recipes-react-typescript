@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import CommentItem from '../../atoms/comments-list-item/comments-list-item.component';
+import RecipeContentOwner from '../../atoms/recipe-content-owner/recipe-content-owner.component';
 import { StyledDetailsDiv, StyledH4, StyledListItem, StyledList, StyledHRule } from './recipe-view-details.styles'
 import { iRecipe } from "../../../interfaces/recipe/recipe.interface";
 
@@ -19,7 +20,6 @@ const RecipeViewDetails: FC<Props> = ({ recipe, id }) => {
     }
     const { ingredients, steps, comments } = recipe;
 
-
     return (
         <StyledDetailsDiv>
             <StyledH4>Ingredients</StyledH4>
@@ -36,7 +36,7 @@ const RecipeViewDetails: FC<Props> = ({ recipe, id }) => {
                     steps?.map((item, key) => (<StyledListItem key={key}>{item}</StyledListItem>))
                 }
             </ul>
-            {comments?.length !== 0 && <StyledHRule />}
+            <StyledHRule />
             <ul>
                 {
                     comments?.map((item, key) => (
@@ -44,6 +44,7 @@ const RecipeViewDetails: FC<Props> = ({ recipe, id }) => {
                     ))
                 }
             </ul>
+            <RecipeContentOwner shared={recipe.shared} userId={recipe.user_id} />
         </StyledDetailsDiv>
     );
 }

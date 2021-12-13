@@ -6,7 +6,7 @@ interface iStyledLabel {
 }
 
 interface iStyledProps {
-    isChecked: boolean;
+    ison: string;
 }
 
 export const StyledLabel = styled.label<iStyledLabel>`
@@ -32,8 +32,8 @@ export const StyledFieldWrapper = styled.div`
 `;
 
 export const CheckBoxIcon = styled(Check)<iStyledProps>`
-    color: ${props => props.isChecked ? '#fff': 'transparent'};
-    background-color: ${props => props.isChecked ? props.theme.colors.navBarBackground : 'transparent' };
+    color: ${props => props.ison === 'yes' ? '#fff': 'transparent'};
+    background-color: ${props => props.ison === 'yes' ? props.theme.colors.navBarBackground : 'transparent' };
     font-size: 2rem !important;
     padding: 0;
     margin: 0 0.5rem 0 0;

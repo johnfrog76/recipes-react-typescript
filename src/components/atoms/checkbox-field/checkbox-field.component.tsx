@@ -19,7 +19,7 @@ const CheckBoxField: FC<Props> = ({ required = false, label, name, id }) => {
                 label && (<StyledLabel Required={required} htmlFor={id}>{label}</StyledLabel>)
             }
             <label htmlFor={id}>
-                <CheckBoxIcon isChecked={field.value} />
+                <CheckBoxIcon ison={field.value ? 'yes' : 'no'} />
             </label>
             <StyledCheckBox
                 type="checkbox"
