@@ -146,6 +146,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                                     as="select"
                                     id="cat_id"
                                     name="cat_id"
+                                    required={true}
                                     label="Category"
                                     defaultOptionText="Select Recipe Category"
                                     optionData={catData}
@@ -155,6 +156,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                                     as="select"
                                     id="rating"
                                     name="rating"
+                                    required={true}
                                     label="Rating"
                                     defaultOptionText="Ex: Four Stars"
                                     optionData={[

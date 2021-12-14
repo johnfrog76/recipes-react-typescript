@@ -132,6 +132,7 @@ const AddRecipeForm = () => {
                             id="cat_id"
                             name="cat_id"
                             label="Category"
+                            required={true}
                             defaultOptionText="Select Recipe Category"
                             optionData={catData}
                         />
@@ -141,6 +142,7 @@ const AddRecipeForm = () => {
                             id="rating"
                             name="rating"
                             label="Rating"
+                            required={true}
                             defaultOptionText="Ex: Four Stars"
                             optionData={[
                                 { id: '1', name: 'One Star' },

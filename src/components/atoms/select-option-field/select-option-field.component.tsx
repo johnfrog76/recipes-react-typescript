@@ -35,8 +35,6 @@ const SelectOptionField: FC<Props> = ({
     const [field, meta, helpers] = useField({ name, id });
     const { setValue } = helpers;
 
-    const [isFirstElementSelected, setIsFirstElementSelected] = useState<boolean>(field.value === undefined);
-
     if (!optionData) {
         optionData = [];
     }
@@ -50,7 +48,7 @@ const SelectOptionField: FC<Props> = ({
 
     return (
         <FieldWrapper>
-            {label && (<StyledLabel htmlFor={id}>{label}</StyledLabel>)}
+            {label && (<StyledLabel Required={required} htmlFor={id}>{label}</StyledLabel>)}
             <StyledSelect>
                 <Field
                     as="select"
@@ -61,13 +59,8 @@ const SelectOptionField: FC<Props> = ({
                     datatype={dataType || "string"}
                     disabled={disabled}
                     required={required}
-                    onChange={(event: React.ChangeEvent) => {
-                        field.onChange(event);
-                        (event.target as HTMLSelectElement).selectedIndex === 0 ? setIsFirstElementSelected(true) : setIsFirstElementSelected(false);
-                    }
-                    }
                 >
-                    {defaultOptionText && <option disabled={required} selected>{defaultOptionText}</option>}
+                    {defaultOptionText && <option value="">{defaultOptionText}</option>}
                     {
                         optionData.map((item: iKeyValuePair) => (
                             <option key={item.id} value={item.id}>

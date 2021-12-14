@@ -5,7 +5,6 @@ interface iDropdownStyles {
     isOpen: boolean;
 }
 
-
 export const StyledAccountIcon = styled(AccountCircle)`
     color: #fff;
     font-size: 2rem !important;
