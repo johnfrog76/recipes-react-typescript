@@ -3,6 +3,7 @@ import { iRecipe } from '../../interfaces/recipe/recipe.interface';
 
 const baseURL = process.env.REACT_APP_BASEURL;
 const endpoint = process.env.REACT_APP_RECIPE_ENDPOINT;
+const commentEndpoint = process.env.REACT_APP_RECIPE_COMMENT_ENDPOINT;
 
 export const getRecipes = async () => {
     try {
@@ -57,6 +58,23 @@ export const removeRecipe = async (recipe: iRecipe, token: string | null) => {
         })
 
         return resp.data.message;
+    } catch (err) {
+        throw(err)
+    }
+}
+
+export const addRecipeComment = async (commentItem: { comment: string, user: string}, recipeId: string, token: string | null) => {
+    try {
+        const resp = await axios({
+            method: 'patch',
+            url: `${baseURL}${commentEndpoint}/${recipeId}`,
+            data: commentItem,
+            headers: {
+                Authorization: `Bearer ${token ? token : 'none'}`
+            }
+        });
+
+        return resp.data.recipe;
     } catch (err) {
         throw(err)
     }

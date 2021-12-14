@@ -13,7 +13,7 @@ const RecipeContentOwner: FC<Props> = ({ userId, shared }) => {
     const [user, setUser] = useState<iUserItem | null>(null);
 
     const { userItems } = useContext(UsersContext);
-    const action = shared ? 'shared by' : 'posted by';
+    const action = shared ? 'Shared by' : 'Posted by';
 
     useEffect(() => {
         const findUser = userItems.find(u => u.id === userId);
@@ -25,7 +25,7 @@ const RecipeContentOwner: FC<Props> = ({ userId, shared }) => {
 
     return (
         <StyledDiv>
-            <span>Recipe {action} {user?.name || 'admin'}</span>
+            <span>{action} {user?.name || 'admin'}</span>
         </StyledDiv>
     );
 }

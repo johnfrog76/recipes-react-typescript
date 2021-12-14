@@ -12,13 +12,14 @@ import {
 
 
 const SignOutButton = () => {
-    const { setLogin, setUserToken, user, setUserAuth } = useContext(AuthContext);
+    const { setLogin, setUserToken, setUserObject, user, setUserAuth } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const handleSignOut = () => {
         if (user) {
             const expires = new Date(new Date().getTime());
             setUserAuth(user, Number(expires));
+            setUserObject(null);
         }
         setLogin(false);
         setUserToken(null);
