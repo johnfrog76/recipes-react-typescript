@@ -3,6 +3,7 @@ import { iMainNavItem } from '../../../interfaces/nav/nav.interface';
 import NavBrand from '../../atoms/nav-brand/nav-brand-component';
 import CloseButton from '../../atoms/close-button/close-button.component';
 import ThemeSwitcher from '../theme-switcher/theme-switcher.component';
+import ThemePalletSwitcher from '../theme-palette-switcher/theme-palette-switcher.component';
 import { AuthContext } from '../../../providers/auth/auth.provider';
 import {
     StyledMenuOuter,
@@ -42,6 +43,7 @@ const MainMenu: FC<Props> = ({ isOpen, toggleIsOpen, items }) => {
             </div>
             <StyledNavUl>
                 <StyledListItem>
+                    <ThemePalletSwitcher />
                     <ThemeSwitcher />
                 </StyledListItem>
             </StyledNavUl>
