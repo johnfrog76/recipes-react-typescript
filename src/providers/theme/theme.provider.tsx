@@ -49,7 +49,7 @@ const MyTheme: FC<Props> = ({ children }) => {
 
         if (str) {
             const parsed = JSON.parse(str);
-            setPaletteLight(parsed.palletLight);
+            setPaletteLight(parsed.paletteLight);
             setPaletteDark(parsed.paletteDark);
             setCurrentDark(parsed.currentDark);
             setCurrentLight(parsed.currentLight);
