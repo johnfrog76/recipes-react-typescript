@@ -12,21 +12,12 @@ import {
     StyledNavLink,
     StyledHome, StyledUsers, StyledMenu, StyledWidget, StyledSetting, StyledAddCircle
 } from './main-menu.styles';
-import { JsxElement } from 'typescript';
 
 type Props = {
     isOpen: boolean;
     toggleIsOpen: () => void;
     items: iMainNavItem[];
     isLoggedIn: boolean;
-}
-
-type itemsWithIconsType = {
-    text: string;
-    route: string;
-    auth: boolean;
-    params?: string;
-    icon: JsxElement | null
 }
 
 const MainMenu: FC<Props> = ({ isOpen, toggleIsOpen, items, isLoggedIn }) => {

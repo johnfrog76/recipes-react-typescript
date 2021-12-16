@@ -1,6 +1,12 @@
+import { Theme } from '@material-ui/core';
 import styled from 'styled-components';
+import {Theme as ThemEnum} from '../.../../../../providers/theme/theme.provider';
 
-export const CardItem = styled.div`
+interface iThemeStyleProp {
+    ThemeStyle: ThemEnum;
+}
+
+export const CardItem = styled.div<iThemeStyleProp>`
     background-color: ${(props) => props.theme.colors.pageSecondaryColor1};
     padding: 1rem;
     color: #fff;
@@ -8,6 +14,12 @@ export const CardItem = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    ${props => props.ThemeStyle === ThemEnum.Light && `
+        background-color: #fff;
+        border: 2px solid ${props.theme.colors.pageSecondaryColor1};
+        border-top: 0.5rem solid ${props.theme.colors.pageSecondaryColor1};
+        color: ${props.theme.colors.pageForeground1};
+    `}
 `;
 
 export const CardCopy = styled.p`
@@ -26,7 +38,7 @@ display: -webkit-box;
 overflow: hidden;
 `;
 
-export const CardBottomWrapper = styled.div`
+export const CardBottomWrapper = styled.div<iThemeStyleProp>`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -43,15 +55,21 @@ export const CardBottomWrapper = styled.div`
             flex: 0 0 24px;
         }
     }
+    ${props => props.ThemeStyle === ThemEnum.Light && `
+        a {
+            color: ${props.theme.colors.pageLinkColor1};
+        }
+    `}
 `;
 
-export const CardMetaInfo = styled.div`
+export const CardMetaInfo = styled.div<iThemeStyleProp>`
     display: flex;
     align-items: top;
     justify-content: left;
     * {
         flex: 1;
     }
+
     span {
         position: relative;
         padding-right: 8px;
@@ -66,5 +84,10 @@ export const CardMetaInfo = styled.div`
             background-color: #fff;
             opacity: 0.5;
         }
+        ${props => props.ThemeStyle === ThemEnum.Light && `
+            &::before {
+                background-color: ${props.theme.colors.pageForeground1};
+            }
+        `}
     }
 `;
