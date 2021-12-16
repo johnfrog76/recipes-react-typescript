@@ -48,6 +48,7 @@ export const getDarkTheme = (palette: any) => {
         fonts: ["sans-serif", "Roboto"],
         fontSizes: {
             small: "1em",
+            smallPlus: "1.2em",
             regular: "1.5em",
             medium: "2em",
             large: "3em"
@@ -74,6 +75,7 @@ export const getLightTheme = (palette: any) => {
         fonts: ["sans-serif", "Roboto"],
         fontSizes: {
             small: "1em",
+            smallPlus: "1.2em",
             regular: "1.5em",
             medium: "2em",
             large: "3em"

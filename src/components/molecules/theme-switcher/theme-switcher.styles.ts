@@ -22,15 +22,20 @@ export const StyledThemeButton = styled.button<iButtonProps>`
         color: #fff;
         justify-content: center;
         margin-top: 1.5rem;
+        padding: 0.75rem 1.5rem;
+        font-size: ${props.theme.fontSizes.smallPlus};
+        > span {
+            margin-left: -0.25rem;
+        }
     `}
 `;
 
 export const StyledLightModeIcon = styled(LightMode)`
-    font-size: 1.25rem !important;
-    margin-right: 5px;
+    font-size: 2rem !important;
+    margin-right: 1rem;
 `;
 
 export const StyledDarkModeIcon = styled(DarkMode)`
-    font-size: 1.25rem !important;
-    margin-right: 5px;
+    font-size: 2rem !important;
+    margin-right: 1rem;
 `;

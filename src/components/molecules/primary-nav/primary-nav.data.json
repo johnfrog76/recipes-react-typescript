@@ -10,7 +10,7 @@
         "auth": false
     },
     {
-        "text": "all recipes",
+        "text": "recipes list",
         "route": "/recipes",
         "auth": false
     },

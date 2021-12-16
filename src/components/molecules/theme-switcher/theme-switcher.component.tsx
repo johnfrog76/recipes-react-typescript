@@ -33,7 +33,7 @@ const ThemeSwitcher: FC<Props> = ({ settingsPresentation = false }) => {
                     :
                     (<StyledDarkModeIcon />)
             }
-            &nbsp;theme
+            <span>theme</span>
         </StyledThemeButton>
     )
 }
