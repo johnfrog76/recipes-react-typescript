@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Theme, ThemeContext } from '../../../providers/theme/theme.provider';
 import SelectOptionPlain, { iKeyValuePair } from '../../atoms/select-option-plain/select-option-plain.component';
-import { StyledWrapDiv } from './theme-palette-switcher.styles';
+import { StyledWrapDiv, StyledFormWrapper } from './theme-palette-switcher.styles';
 
 
 const ThemePaletteSwitcher = () => {
@@ -41,7 +41,9 @@ const ThemePaletteSwitcher = () => {
                     id: item
                 }
             }
-        );
+        ).sort((a: iKeyValuePair, b: iKeyValuePair) => (
+            a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1
+        ));
 
         setThemeColors(temp)
     }, [paletteItems]);
@@ -52,29 +54,27 @@ const ThemePaletteSwitcher = () => {
     }, [currentDark, currentLight]);
 
     return (
-        <StyledWrapDiv>
-            {
-                theme === Theme.Dark ? (
-                    <SelectOptionPlain
-                        id="dark"
-                        name="dark"
-                        value={selectValDark}
-                        handleChange={handleChangeDark}
-                        optionData={themeColors}
-                        labelText="Dark Theme Palette"
-                    />
-                ) : (
-                    <SelectOptionPlain
-                        id="light"
-                        name="light"
-                        value={selectValLight}
-                        handleChange={handleChangeLight}
-                        optionData={themeColors}
-                        labelText="Light Theme Palette"
-                    />
-                )
-            }
-        </StyledWrapDiv>
+        <React.Fragment>
+
+            <SelectOptionPlain
+                id="dark"
+                name="dark"
+                value={selectValDark}
+                handleChange={handleChangeDark}
+                optionData={themeColors}
+                labelText="Dark Theme Palette"
+            />
+
+            <SelectOptionPlain
+                id="light"
+                name="light"
+                value={selectValLight}
+                handleChange={handleChangeLight}
+                optionData={themeColors}
+                labelText="Light Theme Palette"
+            />
+
+        </React.Fragment>
     );
 
 }

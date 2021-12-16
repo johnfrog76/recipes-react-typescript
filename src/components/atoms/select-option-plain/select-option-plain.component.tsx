@@ -1,5 +1,6 @@
 import React, { FC, ChangeEvent } from 'react';
 
+import FieldWrapper from '../../atoms/field-wrapper/field-wrapper.component';
 import { StyledLabel, StyledSelect } from './select-option-plain.styles';
 
 export interface iKeyValuePair {
@@ -17,7 +18,7 @@ interface Props {
 }
 
 const SelectOptionPlain: FC<Props> = ({ id, name, value, handleChange, optionData, labelText }) => (
-    <React.Fragment>
+    <FieldWrapper>
         {
             labelText && (<StyledLabel htmlFor={id} Required={false}>{labelText}</StyledLabel>)
         }
@@ -29,7 +30,7 @@ const SelectOptionPlain: FC<Props> = ({ id, name, value, handleChange, optionDat
             }
         </StyledSelect>
 
-    </React.Fragment>
+    </FieldWrapper>
 );
 
 export default SelectOptionPlain;

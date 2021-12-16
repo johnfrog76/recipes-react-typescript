@@ -10,9 +10,15 @@
         "auth": false
     },
     {
-        "text": "recipes",
+        "text": "all recipes",
         "route": "/recipes",
         "auth": false
+    },
+    {
+        "text": "my recipes",
+        "route": "/user-recipes",
+        "auth": true,
+        "params": "id"
     },
     {
         "text": "add recipe",
@@ -20,9 +26,8 @@
         "auth": true
     },
     {
-        "text": "my recipes",
-        "route": "/user-recipes",
-        "auth": true,
-        "params": "id"
+        "text": "settings",
+        "route": "/settings",
+        "auth": false
     }
 ]
