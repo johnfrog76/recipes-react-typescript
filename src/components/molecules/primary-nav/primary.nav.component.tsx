@@ -44,7 +44,7 @@ const PrimaryNav = () => {
                 <MenuToggle toggleHandler={handleIsOpen} />
                 <NavBrand isOpen={isOpen} toggleClose={handleIsOpen} />
             </StyledNavBrandWrap>
-            <MainMenu isOpen={isOpen} toggleIsOpen={handleIsOpen} items={mainNavItems} isLoggedIn={isLoggedIn} />
+            <MainMenu isOpen={isOpen} toggleIsOpen={handleIsOpen} items={mainNavItems} />
             <Backdrop isOpen={isOpen} toggleClose={() => handleIsOpen()} />
             <SignInSignOut isLoggedIn={isLoggedIn} />
         </StyledNavBar>

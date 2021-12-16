@@ -17,29 +17,36 @@ type Props = {
     isOpen: boolean;
     toggleIsOpen: () => void;
     items: iMainNavItem[];
-    isLoggedIn: boolean;
 }
 
-const MainMenu: FC<Props> = ({ isOpen, toggleIsOpen, items, isLoggedIn }) => {
+export enum Icons {
+    home = 0,
+    users = 1,
+    list = 2,
+    my = 3,
+    add = 4,
+    settings = 5
+}
+
+const returnIconsByKey = (id: Icons) => {
+    const map = {
+        "0": StyledHome,
+        "1": StyledUsers,
+        "2": StyledMenu,
+        "3": StyledWidget,
+        "4": StyledAddCircle,
+        "5": StyledSetting
+    };
+    return map[id] || null;
+}
+
+const MainMenu: FC<Props> = ({ isOpen, toggleIsOpen, items }) => {
     const { user } = useContext(AuthContext);
-    const icons = isLoggedIn ? [
-        StyledHome,
-        StyledUsers,
-        StyledMenu,
-        StyledWidget,
-        StyledAddCircle,
-        StyledSetting
-    ] : [
-        StyledHome,
-        StyledUsers,
-        StyledMenu,
-        StyledSetting
-    ]
+
     const itemsWithIcons = items.map((i, idx) => {
-        const icon = icons[idx] ? icons[idx] : null
         return {
             ...i,
-            icon: icon
+            icon: returnIconsByKey(i.svgIcon)
         }
     });
 

@@ -2,32 +2,38 @@
     {
         "text": "home",
         "route": "/",
-        "auth": false
+        "auth": false,
+        "svgIcon": 0
     },
     {
         "text": "users",
         "route": "/users",
-        "auth": false
+        "auth": false,
+        "svgIcon": 1
     },
     {
         "text": "recipes list",
         "route": "/recipes",
-        "auth": false
+        "auth": false,
+        "svgIcon": 2
     },
     {
         "text": "my recipes",
         "route": "/user-recipes",
         "auth": true,
-        "params": "id"
+        "params": "id",
+        "svgIcon": 3
     },
     {
         "text": "add recipe",
         "route": "/add-recipe",
-        "auth": true
+        "auth": true,
+        "svgIcon": 4
     },
     {
         "text": "settings",
         "route": "/settings",
-        "auth": false
+        "auth": false,
+        "svgIcon": 5
     }
 ]
