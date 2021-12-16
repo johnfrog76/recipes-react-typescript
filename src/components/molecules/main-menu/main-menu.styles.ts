@@ -2,45 +2,40 @@ import styled from 'styled-components';
 
 import { NavLink } from "react-router-dom";
 import {Home, PeopleAlt, MenuBook, Widgets, AddCircle, Settings} from '@material-ui/icons';
+import { getThemeProps } from '@material-ui/styles';
 
 interface iStyledMenuOuter {
     isOpen: boolean;
 }
 
-export const StyledHome = styled(Home)`
-    color: ${props => props.theme.colors.pageLinkColor1};
+const common = (props: any) => `
+    color: ${props.theme.colors.navBarBackground};
     font-size: 1.75rem !important;
     margin-right: 1rem;
+`
+
+export const StyledHome = styled(Home)`
+    ${props => common(props)}
 `;
 
 export const StyledUsers = styled(PeopleAlt)`
-    color: ${props => props.theme.colors.pageLinkColor1};
-    font-size: 1.75rem !important;
-    margin-right: 1rem;
+    ${props => common(props)}
 `;
 
 export const StyledMenu = styled(MenuBook)`
-    color: ${props => props.theme.colors.pageLinkColor1};
-    font-size: 1.75rem !important;
-    margin-right: 1rem;
+    ${props => common(props)}
 `;
 
 export const StyledWidget = styled(Widgets)`
-    color: ${props => props.theme.colors.pageLinkColor1};
-    font-size: 1.75rem !important;
-    margin-right: 1rem;
+    ${props => common(props)}
 `;
 
 export const StyledAddCircle = styled(AddCircle)`
-    color: ${props => props.theme.colors.pageLinkColor1};
-    font-size: 1.75rem !important;
-    margin-right: 1rem;
+    ${props => common(props)}
 `;
 
 export const StyledSetting = styled(Settings)`
-    color: ${props => props.theme.colors.pageLinkColor1};
-    font-size: 1.75rem !important;
-    margin-right: 1rem;
+    ${props => common(props)}
 `;
 
 export const StyledNavUl = styled.ul`
