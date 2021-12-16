@@ -1,7 +1,7 @@
 import React, { FC, createContext, useState, useEffect } from 'react';
 
 import { iUser } from '../../interfaces/user/user.interface';
-import { setUserAuth, getUserAuth, StoredAuthType, useAuth } from './auth.utilities';
+import { setUserAuth, getUserAuth, StoredAuthType, expireAuth } from './auth.utilities';
 
 type UserContextType = {
     user: iUser | null;
@@ -14,7 +14,7 @@ type UserContextType = {
     expiration: number | null;
     setUserAuth: (user: iUser, expires: number) => void;
     getUserAuth: () => void;
-    useAuth: () => void;
+    expireAuth: () => void;
 }
 
 export const AuthContext = createContext<UserContextType>({
@@ -28,7 +28,7 @@ export const AuthContext = createContext<UserContextType>({
     setUserExpiration: (val) => { },
     setUserAuth: () => { },
     getUserAuth: () => { },
-    useAuth: () => { }
+    expireAuth: () => { }
 });
 
 interface Props {
@@ -47,7 +47,7 @@ const AuthProvider: FC<Props> = ({ children }) => {
     const setUserExpiration = (val = null) => setExpiration(val);
 
     useEffect(() => {
-        useAuth();
+        expireAuth();
         const storageUser = getUserAuth();
 
         if (storageUser) {
@@ -70,7 +70,7 @@ const AuthProvider: FC<Props> = ({ children }) => {
             setUserExpiration,
             setUserAuth,
             getUserAuth,
-            useAuth
+            expireAuth
         }}>{children}</AuthContext.Provider>
     )
 }

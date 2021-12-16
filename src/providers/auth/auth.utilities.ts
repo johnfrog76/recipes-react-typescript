@@ -17,7 +17,7 @@ export const setUserAuth = (user: iUser, expires: number):void => {
     )
 }
 
-export const useAuth = () => {
+export const expireAuth = () => {
     const data:string | null = localStorage.getItem('userData');
 
     if (data) {

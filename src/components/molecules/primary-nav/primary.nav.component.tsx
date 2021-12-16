@@ -14,13 +14,13 @@ import { StyledNavBrandWrap, StyledNavBar } from './primary.nav.styles';
 const PrimaryNav = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [mainNavItems, setMainNavItems] = useState<iMainNavItem[]>(NAV_DATA);
-    const { isLoggedIn, useAuth, getUserAuth, setLogin,
+    const { isLoggedIn, expireAuth, getUserAuth, setLogin,
         setUserToken, setUserObject, setUserExpiration } = useContext(AuthContext);
 
     const handleIsOpen = () => {
         setIsOpen(!isOpen);
         if (isLoggedIn) {
-            useAuth();
+            expireAuth();
             if (getUserAuth() === null) {
                 setUserObject(null);
                 setLogin(false);
