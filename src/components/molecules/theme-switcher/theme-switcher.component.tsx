@@ -1,9 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, FC } from 'react';
 import { Theme, ThemeContext } from "../../../providers/theme/theme.provider";
 import { StyledThemeButton, StyledDarkModeIcon, StyledLightModeIcon } from './theme-switcher.styles';
 
 
-const ThemeSwitcher = () => {
+interface Props {
+    settingsPresentation?: boolean;
+}
+
+const ThemeSwitcher: FC<Props> = ({ settingsPresentation = false }) => {
     const { theme, setTheme } = useContext(ThemeContext);
     const handleTheme = () => {
         if (theme === Theme.Dark) {
@@ -14,7 +18,7 @@ const ThemeSwitcher = () => {
     };
 
     return (
-        <StyledThemeButton
+        <StyledThemeButton Settings={settingsPresentation}
             title={
                 theme === Theme.Dark ?
                     'Switch to Light Theme'
@@ -29,6 +33,7 @@ const ThemeSwitcher = () => {
                     :
                     (<StyledDarkModeIcon />)
             }
+            <span>theme</span>
         </StyledThemeButton>
     )
 }

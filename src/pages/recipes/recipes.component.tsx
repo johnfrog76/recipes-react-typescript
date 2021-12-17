@@ -11,14 +11,14 @@ import Spinner from "../../components/molecules/spinner/spinner.component";
 
 const RecipesPage = () => {
     const [isGridView, setIsGridView] = useState<boolean>(true);
-    const { recipeItems, isLoading } = useContext(RecipesContext);
+    const { recipeItems, recipeCount, isLoading } = useContext(RecipesContext);
 
     const onButtonClick = () => setIsGridView(!isGridView);
 
     return (
         <MainSection>
             <StyledTitleWrapper>
-                <PageTitle>Recipes ({recipeItems.length})</PageTitle>
+                <PageTitle>Recipes ({recipeCount})</PageTitle>
                 <ListGridToggleButton grid={isGridView} onClick={onButtonClick} />
             </StyledTitleWrapper>
             {

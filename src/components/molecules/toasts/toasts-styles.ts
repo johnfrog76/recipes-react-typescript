@@ -29,6 +29,8 @@ export const StyledToast = styled.div<iStyledToast>`
     position: fixed;
     top: 55px;
     left: 45%;
+    left: ${props => props.Appearance === 'success' ?
+    '45%' : 'calc(50% - 275px/2)'};
     padding: 0.75rem 2.5rem;
     font-family: 'Roboto', sans-serif;
     font-size: 1rem;
@@ -37,4 +39,6 @@ export const StyledToast = styled.div<iStyledToast>`
     display: flex;
     align-items: center;
     justify-content: center;
+    width: ${props => props.Appearance === 'success' ?
+    'auto' : '275px'};
 `;

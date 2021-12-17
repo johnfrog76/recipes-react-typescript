@@ -1,12 +1,14 @@
 import React, { useContext, useState, useEffect, FC } from 'react';
 import { Formik, FieldArray, Form, FormikHelpers } from 'formik';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
-import SelectOptionField from '../../atoms/select-option-field/select-option-field.component';
-import RecipeTextField from '../../atoms/text-field/text-field.component';
-import FormButton, { FormButtons } from '../../atoms/form-button/form-button.component';
-import { RecipesContext } from '../../../providers/recipes/recipes.provider';
+import SelectOptionField from '../../components/atoms/select-option-field/select-option-field.component';
+import CheckBoxField from '../../components/atoms/checkbox-field/checkbox-field.component';
+import RecipeTextField from '../../components/atoms/text-field/text-field.component';
+import FormButton, { FormButtons } from '../../components/atoms/form-button/form-button.component';
+import { RecipesContext } from '../../providers/recipes/recipes.provider';
+import { AuthContext } from '../../providers/auth/auth.provider';
 import {
     StyledFormWrapper,
     StyledAddInputBtn,
@@ -19,7 +21,8 @@ import {
     StyledHRule,
     StyledFieldArrayEmptyButton
 } from './edit-recipe-form.styles';
-import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
+import { iRecipe } from '../../interfaces/recipe/recipe.interface';
+import { updateRecipe } from '../../services/recipes/recipes.services';
 
 interface iKeyValuePair {
     id: string;
@@ -27,12 +30,12 @@ interface iKeyValuePair {
 }
 
 interface Props {
-    recipeId: number;
+    recipeId?: string;
 }
 
 interface Values {
-    id?: number;
-    user_id: number;
+    _id?: string;
+    user_id: string;
     user: string;
     r_name: string;
     cat_id?: string;
@@ -50,6 +53,7 @@ interface Values {
 const EditRecipeForm: FC<Props> = ({ recipeId }) => {
     const { addToast } = useToasts();
     const { recipeItems, getCategoryTags, editRecipe } = useContext(RecipesContext);
+    const { token } = useContext(AuthContext);
     const [catData, setCatData] = useState<iKeyValuePair[]>([]);
     const [currentRecipeItems, setCurrentRecipeItems] = useState<iRecipe[]>(recipeItems);
     const [formValuesInitial, setFormValuesInitial] = useState<Values | undefined>(undefined);
@@ -65,25 +69,25 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
         });
         setCatData(data);
 
-        const foundRecipe = recipeItems.find(r => r.id && r.id === recipeId);
+        const foundRecipe = recipeItems.find(r => r._id && r._id === recipeId);
         if (foundRecipe) {
 
             setFormValuesInitial({
-                id: foundRecipe.id,
+                _id: foundRecipe._id || '',
                 user_id: foundRecipe.user_id,
-                user: 'John',
+                user: foundRecipe.user_id,
                 r_name: foundRecipe.r_name,
                 shared: foundRecipe.shared,
                 rating: foundRecipe.rating,
                 cat_id: foundRecipe.cat_id.toString(),
                 category: foundRecipe.category,
-                ingredients: foundRecipe.ingredients,
-                steps: foundRecipe.steps,
-                comments: foundRecipe.comments
+                ingredients: foundRecipe.ingredients || [],
+                steps: foundRecipe.steps || [],
+                comments: foundRecipe.comments || []
             })
         }
 
-    }, [recipeItems]);
+    }, [recipeItems, getCategoryTags, recipeId]);
 
     return (
         <StyledFormWrapper>
@@ -103,19 +107,28 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                                 category: catName?.name || '',
                                 cat_id: cat_id
                             }
-                            setCurrentRecipeItems(editRecipe(currentRecipeItems, vals));
 
-                            addToast(
-                                'Success',
-                                {
-                                    appearance: 'success',
-                                    autoDismiss: true
-                                }
-                            );
-                            setTimeout(() => {
+                            updateRecipe(vals, token).then((resp) => {
+                                addToast(
+                                    'Success',
+                                    {
+                                        appearance: 'success',
+                                        autoDismiss: true
+                                    }
+                                );
+
+                                setCurrentRecipeItems(editRecipe(currentRecipeItems, resp));
                                 setSubmitting(false);
                                 navigate('/')
-                            }, 500);
+                            }).catch((err) => {
+                                addToast(
+                                    `Error: ${err.message}`,
+                                    {
+                                        appearance: 'error',
+                                        autoDismiss: false
+                                    }
+                                );
+                            })
                         }}
                     >
                         {({ values, resetForm, isValid, dirty }) => (
@@ -133,6 +146,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                                     as="select"
                                     id="cat_id"
                                     name="cat_id"
+                                    required={true}
                                     label="Category"
                                     defaultOptionText="Select Recipe Category"
                                     optionData={catData}
@@ -142,6 +156,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                                     as="select"
                                     id="rating"
                                     name="rating"
+                                    required={true}
                                     label="Rating"
                                     defaultOptionText="Ex: Four Stars"
                                     optionData={[
@@ -152,6 +167,11 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                                     ]}
                                 />
 
+                                <CheckBoxField
+                                    id="shared"
+                                    name="shared"
+                                    label="Share Recipe"
+                                />
 
                                 <div>
                                     <FieldArray
@@ -278,7 +298,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                                     type="button"
                                     buttonText={'Cancel'}
                                     FormButton={FormButtons.Secondary}
-                                    onClick={() => navigate(`/recipes/${values.id}`)}
+                                    onClick={() => navigate(`/recipes/${values._id}`)}
                                 />
                             </Form>
 

@@ -3,10 +3,12 @@ import { Formik, FieldArray, Form, FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
-import SelectOptionField from '../../atoms/select-option-field/select-option-field.component';
-import RecipeTextField from '../../atoms/text-field/text-field.component';
-import FormButton, { FormButtons } from '../../atoms/form-button/form-button.component';
-import { RecipesContext } from '../../../providers/recipes/recipes.provider';
+import SelectOptionField from '../../components/atoms/select-option-field/select-option-field.component';
+import RecipeTextField from '../../components/atoms/text-field/text-field.component';
+import CheckBoxField from '../../components/atoms/checkbox-field/checkbox-field.component';
+import FormButton, { FormButtons } from '../../components/atoms/form-button/form-button.component';
+import { RecipesContext } from '../../providers/recipes/recipes.provider';
+import { AuthContext } from '../../providers/auth/auth.provider';
 import {
     StyledFormWrapper,
     StyledAddInputBtn,
@@ -19,7 +21,8 @@ import {
     StyledHRule,
     StyledFieldArrayEmptyButton
 } from './add-recipe-form.styles';
-import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
+import { iRecipe } from '../../interfaces/recipe/recipe.interface';
+import { addRecipe } from '../../services/recipes/recipes.services';
 
 interface iKeyValuePair {
     id: string;
@@ -27,8 +30,8 @@ interface iKeyValuePair {
 }
 
 interface Values {
-    id?: number;
-    user_id: number;
+    _id?: string;
+    user_id: string;
     r_name: string;
     cat_id?: string;
     shared: boolean;
@@ -42,21 +45,17 @@ interface Values {
     }[];
 }
 
-const createNumericId = (): number => {
-    let d = new Date();
-    return d.getTime();
-}
-
 const AddRecipeForm = () => {
     const { addToast } = useToasts();
-    const { recipeItems, getCategoryTags, addRecipeToList } = useContext(RecipesContext);
+    const { token, user } = useContext(AuthContext);
+    const { recipeItems, setCount, getCategoryTags, addRecipeToList } = useContext(RecipesContext);
     const [catData, setCatData] = useState<iKeyValuePair[]>([]);
     const [currentRecipeItems, setCurrentRecipeItems] = useState<iRecipe[]>(recipeItems);
 
     let navigate = useNavigate();
     const formValuesInitial = {
-        user_id: 1,
-        user: 'John',
+        user_id: user?.userId || '1',
+        user: user ? user.name : 'none',
         r_name: '',
         shared: false,
         rating: 0,
@@ -75,7 +74,7 @@ const AddRecipeForm = () => {
             return { id: strId, name: category }
         });
         setCatData(data);
-    }, [recipeItems]);
+    }, [recipeItems, getCategoryTags]);
 
     return (
         <StyledFormWrapper>
@@ -91,22 +90,30 @@ const AddRecipeForm = () => {
                     const vals = {
                         ...values,
                         category: catName?.name || '',
-                        cat_id: cat_id,
-                        id: createNumericId()
+                        cat_id: cat_id
                     }
-                    addToast(
-                        'Success',
-                        {
-                            appearance: 'success',
-                            autoDismiss: true
-                        }
-                    );
-                    setTimeout(() => {
-                        setSubmitting(false);
-                        setCurrentRecipeItems(addRecipeToList(currentRecipeItems, vals));
-                        navigate('/')
 
-                    }, 500);
+                    addRecipe(vals, token).then((resp) => {
+                        setSubmitting(false);
+                        setCurrentRecipeItems(addRecipeToList(currentRecipeItems, resp));
+                        setCount(currentRecipeItems.length)
+                        addToast(
+                            'Success',
+                            {
+                                appearance: 'success',
+                                autoDismiss: true
+                            }
+                        );
+                        navigate('/')
+                    }).catch((err) => {
+                        addToast(
+                            `Error: ${err.message}`,
+                            {
+                                appearance: 'error',
+                                autoDismiss: false
+                            }
+                        );
+                    })
                 }}
             >
                 {({ values, resetForm, dirty, isValid }) => (
@@ -125,6 +132,7 @@ const AddRecipeForm = () => {
                             id="cat_id"
                             name="cat_id"
                             label="Category"
+                            required={true}
                             defaultOptionText="Select Recipe Category"
                             optionData={catData}
                         />
@@ -134,6 +142,7 @@ const AddRecipeForm = () => {
                             id="rating"
                             name="rating"
                             label="Rating"
+                            required={true}
                             defaultOptionText="Ex: Four Stars"
                             optionData={[
                                 { id: '1', name: 'One Star' },
@@ -143,6 +152,11 @@ const AddRecipeForm = () => {
                             ]}
                         />
 
+                        <CheckBoxField
+                            id="shared"
+                            name="shared"
+                            label="Share Recipe"
+                        />
 
                         <div>
                             <FieldArray
@@ -241,7 +255,9 @@ const AddRecipeForm = () => {
                                                             </StyledSubtractInputBtn>
                                                             <StyledAddInputBtn
                                                                 type="button"
-                                                                onClick={() => arrayHelpers.insert(index, { user: 'John', comment: '' })}
+                                                                onClick={() => arrayHelpers.insert(
+                                                                    index, { user: user?.name, comment: '' }
+                                                                )}
                                                             >
                                                                 +
                                                             </StyledAddInputBtn>
@@ -250,7 +266,10 @@ const AddRecipeForm = () => {
                                                 </StyledInputWrapper>
                                             ))
                                         ) : (
-                                            <StyledFieldArrayEmptyButton type="button" onClick={() => arrayHelpers.push({ user: 'John', comment: '' })}>
+                                            <StyledFieldArrayEmptyButton
+                                                type="button"
+                                                onClick={() => arrayHelpers.push({ user: user?.name, comment: '' })
+                                                }>
                                                 Add comment
                                             </StyledFieldArrayEmptyButton>
                                         )}

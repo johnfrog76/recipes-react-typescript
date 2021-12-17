@@ -52,7 +52,7 @@ export const editRecipe = ( recipes: iRecipe[] = [], recipe?: iRecipe) => {
     if (!recipe) {
         return recipes;
     } else {
-        const index = recipes.findIndex(index => index.id === recipe.id);
+        const index = recipes.findIndex(index => index._id === recipe._id);
         const updated = recipes.splice(index, 1, recipe);
         return updated;
     }
@@ -62,7 +62,7 @@ export const deleteRecipe = ( recipes: iRecipe[] = [], recipe?: iRecipe) => {
     if (!recipe) {
         return recipes;
     } else {
-        const index = recipes.findIndex(index => index.id === recipe.id);
+        const index = recipes.findIndex(index => index._id === recipe._id);
         const updated = recipes.splice(index, 1);
         return updated;
     }

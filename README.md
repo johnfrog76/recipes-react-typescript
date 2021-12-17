@@ -1,11 +1,21 @@
 
 # Recipe App
-## Full CRUD of recipes (in memory)
 * Light and Dark Theme
 * Context API
 * Styled Components
 
 ![home screen](./images/home.png)
+
+## Run locally
+* add .env file
+
+```
+#development
+REACT_APP_BASEURL
+REACT_APP_RECIPE_ENDPOINT
+```
+
+using node, express api wip
 
 # Getting Started with Create React App
 

@@ -1,5 +1,6 @@
 {
-  "name": "my-app",
+  "name": "my-typescript-recipes-app",
+  "homepage": "https://johnfrog76.github.io/recipes-react-typescript/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,7 +13,9 @@
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.24.0",
     "formik": "^2.2.9",
+    "material-colors-ts": "^1.0.4",
     "react": "^17.0.2",
     "react-copy-to-clipboard": "^5.0.4",
     "react-dom": "^17.0.2",
@@ -25,8 +28,10 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -b john/full-crud-mongodb -d build",
+    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
+    "lint": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 
-import { StyledListItem, UserAvatar, UserWrapper } from "./comments-list-item.styles";
-
+import { StyledListItem, UserWrapper } from "./comments-list-item.styles";
+import UserAvatar from '../../atoms/user-avatar/user-avatar.component';
 
 interface Props {
     item: { comment: string, user: string }
@@ -13,7 +13,7 @@ const CommentItem: FC<Props> = ({ item }) => {
     return (
         <StyledListItem>
             <UserWrapper>
-                <UserAvatar>{user.slice(0, 1)}</UserAvatar>
+                <UserAvatar name={user} />
                 <div>
                     <div>{user}</div>
                     <div>

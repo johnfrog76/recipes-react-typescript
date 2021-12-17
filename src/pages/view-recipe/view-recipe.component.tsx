@@ -13,9 +13,9 @@ import { SpinnerOuter } from "../../components/molecules/spinner/spinner.styles"
 
 const RecipeDetailPage = () => {
     const { id } = useParams();
-    const numId: number | undefined = id ? parseInt(id) : -1;
-    const { recipeItems, isLoading } = useContext(RecipesContext);
-    const recipe = recipeItems.find(r => r.id === numId);
+
+    const { recipeItems, isLoading, setSpinner } = useContext(RecipesContext);
+    const recipe = recipeItems.find(r => r._id === id);
 
     return (
         <MainSection>

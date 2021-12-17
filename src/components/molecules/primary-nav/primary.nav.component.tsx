@@ -1,25 +1,52 @@
 
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
 
-import { StyledNavUl, StyledNavBar, StyledListItem } from './primary.nav.styles';
+import NAV_DATA from './primary-nav.data.json';
 import NavBrand from '../../atoms/nav-brand/nav-brand-component';
-import ThemeSwitcher from "../theme-switcher/theme-switcher.component";
+import SignInSignOut from "../sign-in-out/sign-in-out.component";
+import { AuthContext } from "../../../providers/auth/auth.provider";
+import Backdrop from "../../atoms/backdrop/backdrop.component";
+import MenuToggle from "../../atoms/menu-toggle/menu-toggle.component";
+import MainMenu from "../main-menu/main-menu.component";
+import { iMainNavItem } from "../../../interfaces/nav/nav.interface";
+import { StyledNavBrandWrap, StyledNavBar } from './primary.nav.styles';
 
 const PrimaryNav = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [mainNavItems, setMainNavItems] = useState<iMainNavItem[]>(NAV_DATA);
+    const { isLoggedIn, expireAuth, getUserAuth, setLogin,
+        setUserToken, setUserObject, setUserExpiration } = useContext(AuthContext);
+
+    const handleIsOpen = () => {
+        setIsOpen(!isOpen);
+        if (isLoggedIn) {
+            expireAuth();
+            if (getUserAuth() === null) {
+                setUserObject(null);
+                setLogin(false);
+                setUserToken(null);
+                setUserExpiration(null);
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            setMainNavItems(mainNavItems.filter(item => item.auth === false));
+        } else {
+            setMainNavItems(NAV_DATA);
+        }
+    }, [isLoggedIn])
 
     return (
         <StyledNavBar>
-            <NavBrand />
-            <StyledNavUl>
-                <StyledListItem>
-                    <NavLink className={isActive => isActive ? 'active' : ''} to="/recipes">recipes</NavLink>
-                </StyledListItem>
-                <StyledListItem>
-                    <NavLink className={isActive => isActive ? 'active' : ''} to="/add-recipe">add-recipe</NavLink>
-                </StyledListItem>
-            </StyledNavUl>
-            <ThemeSwitcher />
+            <StyledNavBrandWrap>
+                <MenuToggle toggleHandler={handleIsOpen} />
+                <NavBrand isOpen={isOpen} toggleClose={handleIsOpen} />
+            </StyledNavBrandWrap>
+            <MainMenu isOpen={isOpen} toggleIsOpen={handleIsOpen} items={mainNavItems} />
+            <Backdrop isOpen={isOpen} toggleClose={() => handleIsOpen()} />
+            <SignInSignOut isLoggedIn={isLoggedIn} />
         </StyledNavBar>
     );
 }

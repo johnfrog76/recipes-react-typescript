@@ -22,7 +22,7 @@ const RecipesByCategory = () => {
             setFiltered(temp);
             setCatName(temp[0].category);
         }
-    }, [recipeItems, isLoading]);
+    }, [recipeItems, isLoading, param_id]);
 
     return (
         <MainSection>
