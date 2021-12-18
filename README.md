@@ -7,7 +7,7 @@ Store and share recipes.
 * Context API
 * Styled Components
 * Typescript
-* node / express backend in seperate repo
+* node / express backend (separate repository)
 
 ## Run locally
 * add .env file
@@ -16,9 +16,19 @@ Store and share recipes.
 #development
 REACT_APP_BASEURL
 REACT_APP_RECIPE_ENDPOINT
+...
 ```
 
-## GH Pages Resource
+## GH Pages Helpful Resources
 * https://create-react-app.dev/docs/deployment/#building-for-relative-paths
 
-![home screen](./images/home.png)
+
+## Publish workflow
+from master branch:
+
+```
+# npm run deploy
+```
+>
+> "deploy": "gh-pages -b master -d build"
+>
