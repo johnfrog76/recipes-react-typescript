@@ -20,6 +20,7 @@ export const SpinnerWrapper = styled.div`
 export const HeroSubTitle = styled.h2`
     font-size: 1.5rem;
     font-weight: 300;
+    line-height: 1.2em;
     color: ${(props) => props.theme.colors.pageForeground1};
 `;
 
@@ -40,9 +41,9 @@ export const HeroWrapper = styled.div`
 
 export const StyledHeroGraphic = styled(Widgets)`
     color: ${(props) => props.theme.colors.pageHighLight2};
-    font-size: 8.6rem !important;
-    margin: -4rem 1.25rem 0 -2.6rem;
-    @media (min-width: 415px) {
+    font-size: 5.6rem !important;
+    margin: -6vw 1.25rem 0 -2.6rem;
+    @media (min-width: 576px) {
         font-size: 11.6rem !important;
         margin: 0 1.25rem 0 -1.25rem;
     }
