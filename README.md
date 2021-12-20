@@ -23,7 +23,10 @@ REACT_APP_RECIPE_ENDPOINT
 
 
 ## Publish workflow
-from master branch:
+- master branch is used for gh pages deploy (do not use it)
+- main branch is default branch
+- from default branch pull latest changes you want to deploy
+- important to remember! Publish workflow below is separate from branch management
 
 ```
 # npm run deploy
