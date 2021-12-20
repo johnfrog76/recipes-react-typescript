@@ -15,7 +15,7 @@ const HomePage = () => {
             <HeroWrapper>
                 <StyledHeroGraphic />
                 <div>
-                    <HeroStyles>Recipe Box test</HeroStyles>
+                    <HeroStyles>Recipe Box</HeroStyles>
                     <HeroSubTitle>A collection of my favorite recipes</HeroSubTitle>
                 </div>
             </HeroWrapper>
