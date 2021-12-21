@@ -9,6 +9,7 @@ import { RecipesContext } from '../../providers/recipes/recipes.provider';
 import { AuthContext } from '../../providers/auth/auth.provider';
 import { iUserItem } from '../../interfaces/users/users.interface';
 import { iRecipe } from '../../interfaces/recipe/recipe.interface';
+import { EmptyMesssage } from '../../components/atoms/empty-message/empty-message.component';
 import RecipesCategoryCardList from '../../components/molecules/recipes-category-card-list/recipes-category-card-list.component';
 
 const UserRecipesPage = () => {
@@ -44,14 +45,21 @@ const UserRecipesPage = () => {
     return (
         <MainSection>
             <PageTitle>
-                {user && isContentOwner ? (
-                    <span>{`${user.name} recipe${usersRecipes.length !== 1 ? 's' : ''} (${usersRecipes.length})`}</span>
-                ) : (
-                    <span>{`${user?.name} shared ${usersRecipes.length} recipe${usersRecipes.length !== 1 ? 's' : ''}`}</span>
-                )
+                {
+                    user && isContentOwner ? (
+                        <span>{`${user.name} recipe${usersRecipes.length !== 1 ? 's' : ''} (${usersRecipes.length})`}</span>
+                    ) : (
+                        <span>{`${user?.name} shared${usersRecipes.length} recipe${usersRecipes.length !== 1 ? 's' : ''}`}</span>
+                    )
                 }
             </PageTitle>
-            <RecipesCategoryCardList recipes={usersRecipes} />
+            {
+                usersRecipes.length !== 0 ? (
+                    <RecipesCategoryCardList recipes={usersRecipes} />
+                ) : (
+                    <EmptyMesssage msg="There are no recipes." />
+                )
+            }
         </MainSection>
     );
 }

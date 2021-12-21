@@ -1,7 +1,7 @@
 import React, { FC, createContext, useState, useEffect } from 'react';
 
 import { iUser } from '../../interfaces/user/user.interface';
-import { setUserAuth, getUserAuth, StoredAuthType, expireAuth } from './auth.utilities';
+import { setUserAuth, getUserAuth, expireAuth } from './auth.utilities';
 
 type UserContextType = {
     user: iUser | null;

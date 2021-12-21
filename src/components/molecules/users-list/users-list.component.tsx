@@ -6,6 +6,7 @@ import { AuthContext } from '../../../providers/auth/auth.provider';
 import { iUserItem } from '../../../interfaces/users/users.interface';
 
 import UserCard from '../user-card/user-card.component';
+import EmptyMesssage from '../../atoms/empty-message/empty-message.component';
 import { StyledUserCardList } from './users-list.styles';
 
 const UsersList = () => {
@@ -37,19 +38,27 @@ const UsersList = () => {
     }, [userItems, authUser]);
 
     return (
-        <StyledUserCardList>
+        <React.Fragment>
             {
-                users.map(({ name, id, recipes }, idx) => (
-                    <UserCard
-                        key={idx}
-                        name={name}
-                        id={id}
-                        isContentOwner={authUser !== null && authUser.userId === id}
-                        recipes={recipes || []}
-                    />
-                ))
+                users.length !== 0 ? (
+                    <StyledUserCardList>
+                        {
+                            users.map(({ name, id, recipes }, idx) => (
+                                <UserCard
+                                    key={idx}
+                                    name={name}
+                                    id={id}
+                                    isContentOwner={authUser !== null && authUser.userId === id}
+                                    recipes={recipes || []}
+                                />
+                            ))
+                        }
+                    </StyledUserCardList >
+                ) : (
+                    <EmptyMesssage msg={'There are no users.'} />
+                )
             }
-        </StyledUserCardList >
+        </React.Fragment>
     )
 }
 

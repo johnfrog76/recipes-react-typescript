@@ -1,5 +1,4 @@
 import React, { FC, createContext, useState, useEffect } from 'react';
-// import RECIPES from './recipe-collection.data.json';
 import { getFeaturedRecipes, getCategoryTags, addRecipeToList, editRecipe, deleteRecipe } from './recipes.utils';
 
 import { iRecipe } from '../../interfaces/recipe/recipe.interface';
@@ -61,22 +60,6 @@ const RecipesProvider: FC<Props> = ({ children }) => {
                 setSpinner(false);
                 console.log(err);
             })
-
-            // keep this to push this to populate recipe JSON
-            // let myRecipeList = RECIPES.map(({ _id, ...rest }) => rest);
-            // let count = 0;
-            // const addItem = () => {
-            //     addRecipe(myRecipeList[count]).then((resp) => {
-            //         count += 1;
-            //         if (count < myRecipeList.length) {
-            //             addItem()
-            //         } else {
-            //             console.log('finished')
-            //         }
-            //     })
-
-            // };
-            //addItem();
         }
 
     }, [makeRequest])
