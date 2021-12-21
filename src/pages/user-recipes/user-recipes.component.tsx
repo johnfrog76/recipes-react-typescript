@@ -49,7 +49,7 @@ const UserRecipesPage = () => {
                     user && isContentOwner ? (
                         <span>{`${user.name} recipe${usersRecipes.length !== 1 ? 's' : ''} (${usersRecipes.length})`}</span>
                     ) : (
-                        <span>{`${user?.name} shared${usersRecipes.length} recipe${usersRecipes.length !== 1 ? 's' : ''}`}</span>
+                        <span>{`${user?.name} shared ${usersRecipes.length} recipe${usersRecipes.length !== 1 ? 's' : ''}`}</span>
                     )
                 }
             </PageTitle>
