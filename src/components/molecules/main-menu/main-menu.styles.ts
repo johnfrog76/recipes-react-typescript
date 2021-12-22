@@ -89,7 +89,7 @@ export const StyledMenuOuter = styled.div<iStyledMenuOuter>`
     top: 0;
     left: ${props => props.isOpen ? '0px' : '-300px' };
     width: 300px;
-    height: 100vh;
+    height: 100%;
     border-right: 1px solid ${props => props.theme.colors.pageBorderColor1};
     z-index: 20;
     display: flex;
