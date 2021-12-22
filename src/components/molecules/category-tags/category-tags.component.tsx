@@ -5,7 +5,6 @@ import { TagContainer, TagList } from './category-tabs.styles';
 import { RecipesContext } from '../../../providers/recipes/recipes.provider';
 import { AuthContext } from "../../../providers/auth/auth.provider";
 import { iRecipe } from "../../../interfaces/recipe/recipe.interface";
-import { UsersContext } from "../../../providers/users/users.provider";
 
 const CategoryTags = () => {
     const { recipeItems, getCategoryTags } = useContext(RecipesContext);

@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 import { NavLink } from "react-router-dom";
 import {Home, PeopleAlt, MenuBook, Widgets, AddCircle, Settings} from '@material-ui/icons';
-import { getThemeProps } from '@material-ui/styles';
 
 interface iStyledMenuOuter {
     isOpen: boolean;
