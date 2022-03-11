@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Delete, Edit, Share, Print } from '@material-ui/icons';
+import { Delete, Edit, Share, Print, Favorite, FavoriteBorderOutlined } from '@material-ui/icons';
 
 export const StyledTextarea = styled.textarea`
     width: 1px;
@@ -7,6 +7,15 @@ export const StyledTextarea = styled.textarea`
     margin: 0;
     visibility: hidden;
 `;
+
+export const StyledFavoriteIcon = styled(Favorite)`
+    font-size: 1.5rem !important;
+`;
+
+export const StyledFavoriteOutlineIcon = styled(FavoriteBorderOutlined)`
+    font-size: 1.5rem !important;
+`;
+
 
 export const StyledEditIcon = styled(Edit)`
     font-size: 1.5rem !important;

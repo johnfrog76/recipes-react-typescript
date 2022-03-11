@@ -4,4 +4,5 @@ export interface iUserItem {
     email: string;
     name: string;
     recipes?: string[];
+    favorites?: {id: string; _id: string}[];
 }
