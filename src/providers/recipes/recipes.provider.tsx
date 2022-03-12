@@ -1,5 +1,7 @@
 import React, { FC, createContext, useState, useEffect } from 'react';
-import { getFeaturedRecipes, getCategoryTags, addRecipeToList, editRecipe, deleteRecipe } from './recipes.utils';
+import {
+    getFeaturedRecipes, getCategoryTags, addRecipeToList, editRecipe, deleteRecipe
+} from './recipes.utils';
 
 import { iRecipe } from '../../interfaces/recipe/recipe.interface';
 import { getRecipes } from '../../services/recipes/recipes.services';
@@ -45,7 +47,6 @@ const RecipesProvider: FC<Props> = ({ children }) => {
 
     useEffect(() => {
         if (makeRequest) {
-            // console.log('make request');
             setMakeRequest(false);
             getRecipes().then((resp) => {
                 // delay is to see spinner
@@ -58,7 +59,7 @@ const RecipesProvider: FC<Props> = ({ children }) => {
                 }, 1500);
             }).catch((err) => {
                 setSpinner(false);
-                console.log(err);
+                console.error(err);
             })
         }
 

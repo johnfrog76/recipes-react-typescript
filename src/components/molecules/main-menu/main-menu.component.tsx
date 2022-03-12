@@ -10,6 +10,7 @@ import {
     StyledNavUl,
     StyledListItem,
     StyledNavLink,
+    StyledFavorite,
     StyledHome, StyledUsers, StyledMenu, StyledWidget, StyledSetting, StyledAddCircle
 } from './main-menu.styles';
 
@@ -35,7 +36,8 @@ const returnIconsByKey = (id: Icons) => {
         "2": StyledMenu,
         "3": StyledWidget,
         "4": StyledAddCircle,
-        "5": StyledSetting
+        "5": StyledSetting,
+        "6": StyledFavorite
     };
     return map[id] || null;
 }

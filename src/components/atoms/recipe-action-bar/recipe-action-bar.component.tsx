@@ -4,10 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { RecipesContext } from '../../../providers/recipes/recipes.provider';
-import { UsersContext } from '../../../providers/users/users.provider';
 import { AuthContext } from '../../../providers/auth/auth.provider';
 import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
-import { iUserItem } from '../../../interfaces/users/users.interface';
 import { removeRecipe, addFavorite, removeFavorite } from '../../../services/recipes/recipes.services';
 import ConfirmDialog from '../../molecules/confirm-dialog/confirm-dialog.component';
 
@@ -27,9 +25,9 @@ const RecicipeActionBar = () => {
     let { id } = useParams();
     let navigate = useNavigate();
     const { addToast } = useToasts();
-    const { recipeItems, deleteRecipe, setSpinner, setCount } = useContext(RecipesContext);
+    const { recipeItems, deleteRecipe, setSpinner, setCount,
+        editRecipe } = useContext(RecipesContext);
     const { token, isLoggedIn, user } = useContext(AuthContext);
-    const { userItems } = useContext(UsersContext);
 
     const [favDisabled, setFavDisabled] = useState<boolean>(false);
     const [isFav, setIsFav] = useState<boolean>(false);
@@ -56,14 +54,14 @@ const RecicipeActionBar = () => {
     }, [user, recipe]);
 
     useEffect(() => {
-        const tempUser: iUserItem | undefined = userItems.find(u => u._id === user?.userId);
-        if (tempUser?.favorites) {
-            const tempFav = tempUser?.favorites.find(fav => fav.id === id);
+        if (recipe?.favorites) {
+            let tempFav = recipe.favorites.find(f => f === user?.userId);
             if (tempFav) {
                 setIsFav(true)
             }
         }
-    }, [userItems, user, id]);
+
+    }, [recipe, user]);
 
     const handleDelete = () => {
         setSpinner(true);
@@ -106,15 +104,33 @@ const RecicipeActionBar = () => {
         setFavDisabled(true);
         if (isFav) {
             removeFavorite(id, user?.userId, token).then((resp) => {
+
                 if (resp.message === 'favorite removed') {
                     setIsFav(false);
+
+                    if (user && recipe) {
+                        let tempRecipe: iRecipe = recipe;
+                        if (!tempRecipe.favorites) {
+                            tempRecipe.favorites = [];
+                        }
+                        let idx = tempRecipe?.favorites.findIndex(item => item = user.userId);
+                        tempRecipe.favorites?.splice(idx, 1);
+                        setIsFav(false);
+                        editRecipe(recipeItems, tempRecipe);
+                    }
                 }
                 setFavDisabled(false);
             });
         } else {
             addFavorite(id, user?.userId, token).then((resp) => {
+
                 if (resp.message === 'favorite added') {
-                    setIsFav(true);
+                    if (user && recipe) {
+                        let tempRecipe: iRecipe = recipe;
+                        tempRecipe.favorites?.push(user?.userId);
+                        setIsFav(true);
+                        editRecipe(recipeItems, tempRecipe);
+                    }
                 }
                 setFavDisabled(false);
             });
