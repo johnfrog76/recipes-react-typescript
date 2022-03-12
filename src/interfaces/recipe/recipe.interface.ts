@@ -12,4 +12,5 @@ export interface iRecipe {
         comment: string;
         user: string;
     }[];
+    favorites?: string[];
 }

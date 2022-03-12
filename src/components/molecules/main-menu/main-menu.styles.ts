@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { NavLink } from "react-router-dom";
-import {Home, PeopleAlt, MenuBook, Widgets, AddCircle, Settings} from '@material-ui/icons';
+import {Home, PeopleAlt, MenuBook, Widgets, AddCircle, Settings, Favorite} from '@material-ui/icons';
 
 interface iStyledMenuOuter {
     isOpen: boolean;
@@ -34,6 +34,10 @@ export const StyledAddCircle = styled(AddCircle)`
 `;
 
 export const StyledSetting = styled(Settings)`
+    ${props => common(props)}
+`;
+
+export const StyledFavorite = styled(Favorite)`
     ${props => common(props)}
 `;
 

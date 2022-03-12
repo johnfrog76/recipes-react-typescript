@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './pages/home/home.component';
 import RecipesPage from './pages/recipes/recipes.component';
+import FavoritesPage from './pages/favorites/favorites.component';
 import AddRecipePage from './pages/add-recipe/add-recipe.component';
 import RecipeDetailPage from './pages/view-recipe/view-recipe.component';
 import EditRecipePage from './pages/edit-recipe/edit-recipe.component';
@@ -27,6 +28,7 @@ class App extends React.Component {
           <Route path='/users' element={<UsersPage />} />
           <Route path='/user-recipes/:id' element={<UserRecipesPage />} />
           <Route path='/recipes' element={<RecipesPage />} />
+          <Route path='/favorites' element={<FavoritesPage />} />
           <Route path='/sign-in' element={<SignInSignUpPage />} />
           <Route path='/sign-up' element={<SignUpPage />} />
           <Route path='/recipes/:id' element={<RecipeDetailPage />} />

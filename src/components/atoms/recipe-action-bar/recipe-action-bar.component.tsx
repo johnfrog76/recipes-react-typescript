@@ -5,9 +5,9 @@ import { useToasts } from 'react-toast-notifications';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { RecipesContext } from '../../../providers/recipes/recipes.provider';
 import { AuthContext } from '../../../providers/auth/auth.provider';
-import ConfirmDialog from '../../molecules/confirm-dialog/confirm-dialog.component';
 import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
-import { removeRecipe } from '../../../services/recipes/recipes.services';
+import { removeRecipe, addFavorite, removeFavorite } from '../../../services/recipes/recipes.services';
+import ConfirmDialog from '../../molecules/confirm-dialog/confirm-dialog.component';
 
 import {
     StyledDeleteIcon,
@@ -16,30 +16,34 @@ import {
     StyledShareIcon,
     StyledRecipeActionBar,
     StyledButton,
-    StyledTextarea
+    StyledTextarea,
+    StyledFavoriteOutlineIcon,
+    StyledFavoriteIcon
 } from './recipe-action-bar.styles';
-import { iUserItem } from '../../../interfaces/users/users.interface';
-import { iUser } from '../../../interfaces/user/user.interface';
 
 const RecicipeActionBar = () => {
     let { id } = useParams();
     let navigate = useNavigate();
     const { addToast } = useToasts();
-    const { recipeItems, deleteRecipe, setSpinner, setCount } = useContext(RecipesContext);
+    const { recipeItems, deleteRecipe, setSpinner, setCount,
+        editRecipe } = useContext(RecipesContext);
     const { token, isLoggedIn, user } = useContext(AuthContext);
 
+    const [favDisabled, setFavDisabled] = useState<boolean>(false);
+    const [isFav, setIsFav] = useState<boolean>(false);
     const [recipe, setRecipe] = useState<iRecipe | undefined>(undefined);
     const [open, setOpen] = useState<boolean>(false);
     const [copied, setCopied] = useState<boolean>(false);
     const [value, setValue] = useState<string>('');
-    const [authUser, setAuthUser] = useState<iUser | null>(null);
     const [isOwner, setIsOwner] = useState<boolean>(false);
 
     useEffect(() => {
         const recipe = recipeItems.find(r => r._id === id);
+        const base = process.env.REACT_APP_BASEURL;
+
         if (recipe) {
             setRecipe(recipe);
-            setValue(`localhost:3000/recipes/${recipe._id}`)
+            setValue(`${base}/recipes/${recipe._id}`)
         }
     }, [recipeItems, id]);
 
@@ -47,7 +51,17 @@ const RecicipeActionBar = () => {
         if (recipe && user && recipe.user_id === user.userId) {
             setIsOwner(true);
         }
-    }, [user, recipe])
+    }, [user, recipe]);
+
+    useEffect(() => {
+        if (recipe?.favorites) {
+            let tempFav = recipe.favorites.find(f => f === user?.userId);
+            if (tempFav) {
+                setIsFav(true)
+            }
+        }
+
+    }, [recipe, user]);
 
     const handleDelete = () => {
         setSpinner(true);
@@ -86,19 +100,74 @@ const RecicipeActionBar = () => {
         setOpen(false);
     };
 
+    const handleFavorite = () => {
+        setFavDisabled(true);
+        if (isFav) {
+            removeFavorite(id, user?.userId, token).then((resp) => {
+
+                if (resp.message === 'favorite removed') {
+                    setIsFav(false);
+
+                    if (user && recipe) {
+                        let tempRecipe: iRecipe = recipe;
+                        if (!tempRecipe.favorites) {
+                            tempRecipe.favorites = [];
+                        }
+                        let idx = tempRecipe?.favorites.findIndex(item => item = user.userId);
+                        tempRecipe.favorites?.splice(idx, 1);
+                        setIsFav(false);
+                        editRecipe(recipeItems, tempRecipe);
+                    }
+                }
+                setFavDisabled(false);
+            });
+        } else {
+            addFavorite(id, user?.userId, token).then((resp) => {
+
+                if (resp.message === 'favorite added') {
+                    if (user && recipe) {
+                        let tempRecipe: iRecipe = recipe;
+                        tempRecipe.favorites?.push(user?.userId);
+                        setIsFav(true);
+                        editRecipe(recipeItems, tempRecipe);
+                    }
+                }
+                setFavDisabled(false);
+            });
+        }
+    }
+
     return (
         <React.Fragment>
             <StyledRecipeActionBar>
-                {
-                    isLoggedIn && isOwner && (
-                        <React.Fragment>
-                            <StyledButton title="Delete" onClick={() => handleClickOpen()}>
-                                <StyledDeleteIcon />
-                            </StyledButton>
 
-                            <StyledButton title="Edit" onClick={() => navigate(`/edit-recipe/${id}`)}>
-                                <StyledEditIcon />
-                            </StyledButton>
+                {
+                    isLoggedIn && (
+                        <React.Fragment>
+                            {
+                                isFav ? (
+                                    <StyledButton title="Remove Favorite" disabled={favDisabled} onClick={() => handleFavorite()}>
+                                        <StyledFavoriteIcon />
+                                    </StyledButton>
+                                ) : (
+                                    <StyledButton title="Add Favorite" disabled={favDisabled} onClick={() => handleFavorite()}>
+                                        <StyledFavoriteOutlineIcon />
+                                    </StyledButton>
+                                )
+                            }
+                            {
+                                isOwner && (
+                                    <React.Fragment>
+                                        <StyledButton title="Delete" onClick={() => handleClickOpen()}>
+                                            <StyledDeleteIcon />
+                                        </StyledButton>
+
+                                        <StyledButton title="Edit" onClick={() => navigate(`/edit-recipe/${id}`)}>
+                                            <StyledEditIcon />
+                                        </StyledButton>
+                                    </React.Fragment>
+                                )
+                            }
                         </React.Fragment>
                     )
                 }
@@ -107,7 +176,7 @@ const RecicipeActionBar = () => {
                     onCopy={() => setCopied(true)}
                     text={value}
                 >
-                    <StyledButton title={copied ? `copied url` : 'Share'}>
+                    <StyledButton title={copied ? `Copied URL` : 'Share'}>
                         <StyledShareIcon />
                     </StyledButton>
                 </CopyToClipboard>

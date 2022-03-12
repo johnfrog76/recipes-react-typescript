@@ -18,6 +18,12 @@
         "svgIcon": 2
     },
     {
+        "text": "favorites",
+        "route": "/favorites",
+        "auth": true,
+        "svgIcon": 6
+    },
+    {
         "text": "my recipes",
         "route": "/user-recipes",
         "auth": true,

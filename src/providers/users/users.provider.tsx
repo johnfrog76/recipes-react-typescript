@@ -30,8 +30,8 @@ const UsersProvider: FC<Props> = ({ children }) => {
     const [userCount, setUserCount] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-
     useEffect(() => {
+
         getUsers().then(({ users }) => {
             if (users) {
                 const sorted = users.sort(
