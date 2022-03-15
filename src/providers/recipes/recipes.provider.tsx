@@ -15,8 +15,10 @@ type RecipeContextType = {
     editRecipe: (recipes: iRecipe[], recipe?: iRecipe) => iRecipe[];
     deleteRecipe: (recipes: iRecipe[], recipe?: iRecipe) => iRecipe[];
     setSpinner: (val: boolean) => void;
+    makeFreshPull: (val: boolean) => void;
     setCount: (val: number) => void;
     isLoading: boolean;
+    makeRequest: boolean;
 }
 
 export const RecipesContext = createContext<RecipeContextType>({
@@ -29,7 +31,9 @@ export const RecipesContext = createContext<RecipeContextType>({
     deleteRecipe: ([]) => [],
     setSpinner: () => { },
     setCount: () => { },
-    isLoading: true
+    makeFreshPull: () => { },
+    isLoading: true,
+    makeRequest: true
 });
 
 
@@ -43,6 +47,7 @@ const RecipesProvider: FC<Props> = ({ children }) => {
     const [makeRequest, setMakeRequest] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const setSpinner = (val = true) => setIsLoading(val);
+    const makeFreshPull = (val = true) => setMakeRequest(val);
     const setCount = (val = 0) => setRecipeCount(val);
 
     useEffect(() => {
@@ -76,7 +81,9 @@ const RecipesProvider: FC<Props> = ({ children }) => {
             deleteRecipe,
             setSpinner,
             setCount,
-            isLoading
+            isLoading,
+            makeRequest,
+            makeFreshPull
         }}
     >{children}</RecipesContext.Provider>)
 };

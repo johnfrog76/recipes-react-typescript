@@ -1,10 +1,12 @@
+import { Size } from '@material-ui/core';
 import styled from 'styled-components';
 
 import {FormButtons } from './form-button.component';
 
 
 interface iButtonStyleProps {
-    FormButton: FormButtons
+    FormButton: FormButtons;
+    Size?: Size;
 }
 
 export const StyledPrimaryButton = styled.button<iButtonStyleProps>`
@@ -16,7 +18,7 @@ export const StyledPrimaryButton = styled.button<iButtonStyleProps>`
         margin-right: ${props => props.FormButton === FormButtons.Primary ? '1rem' : 0 };
         width: auto;
     }
-    font-size: ${props => props.theme.fontSizes.regular};
+    font-size: ${props => props.Size ? props.theme.fontSizes.small : props.theme.fontSizes.regular};
     background-color: ${props => props.FormButton === FormButtons.Primary ?
         props.theme.colors.navBarBackground : props.theme.colors.pageBackground3};
     border: 0;

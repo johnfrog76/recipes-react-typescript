@@ -12,14 +12,23 @@ interface Props {
     type: 'button' | 'submit';
     FormButton: FormButtons;
     onClick?: () => void;
-    disabled?: boolean
+    disabled?: boolean;
+    size?: 'small' | undefined;
 }
 
 
 
-const FormButton: FC<Props> = ({ buttonText, type = 'button', FormButton, onClick, disabled = false }) => {
+const FormButton: FC<Props> = ({ buttonText, type = 'button', FormButton, onClick, disabled = false, size }) => {
     return (
-        <StyledPrimaryButton onClick={onClick} FormButton={FormButton} type={type} disabled={disabled}>{buttonText}</StyledPrimaryButton>
+        <StyledPrimaryButton
+            Size={size}
+            onClick={onClick}
+            FormButton={FormButton}
+            type={type}
+            disabled={disabled}
+        >
+            {buttonText}
+        </StyledPrimaryButton>
     )
 }
 
