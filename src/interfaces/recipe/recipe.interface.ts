@@ -4,6 +4,8 @@ export interface iRecipeComment {
     comment: string;
     user: string;
     userId?: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 export interface iRecipe {
