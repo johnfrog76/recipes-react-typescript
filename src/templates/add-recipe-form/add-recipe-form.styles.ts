@@ -38,9 +38,9 @@ export const StyledAddInputBtn = styled.button`
     border-radius: 50%;
     background-color: ${props => props.theme.colors.navBarBackground};
     cursor: pointer;
-`;
-
-export const StyledSubtractInputBtn = styled.button`
+    `;
+    
+    export const StyledSubtractInputBtn = styled.button`
     color: ${props => props.theme.colors.pageForeground1};
     border: 0;
     width: 2rem;
@@ -52,6 +52,26 @@ export const StyledSubtractInputBtn = styled.button`
     border-radius: 50%;
     background-color: ${props => props.theme.colors.pageBackground3};
     cursor: pointer;
+    `;
+
+interface iStyledAccordionContent {
+    Collapsed: 'expanded' | 'collapsed';
+}
+
+export const StyledAccordionContent = styled.div<iStyledAccordionContent>`
+    height: auto;
+
+    @media (min-width: 576px) {
+        padding: 1.5rem;
+        border: 1px solid ${props => props.theme.colors.pageBackground3};
+    }
+
+    ${props => props.Collapsed === 'collapsed' && `
+        height: 0;
+        padding: 0 !important;
+        overflow: hidden;
+        border: none !important;
+    `}
 `;
 
 export const StyledLabel = styled.label<iRequiredLabel>`
@@ -104,7 +124,9 @@ export const StyledFieldArrayEmptyButton = styled.button`
     font-size: 1rem;
     color: ${props => props.theme.colors.pageForeground1};
     padding: 0.5rem 1rem;
-    margin: 0.5rem 0;
+    margin: 1.5rem 0;
     cursor: pointer;
 `;
+
+
 

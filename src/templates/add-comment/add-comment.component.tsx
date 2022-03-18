@@ -5,9 +5,10 @@ import { useToasts } from 'react-toast-notifications';
 import RecipeTextField from '../../components/atoms/text-field/text-field.component';
 import FormButton, { FormButtons } from '../../components/atoms/form-button/form-button.component';
 import { AuthContext } from '../../providers/auth/auth.provider';
-import { StyledFormWrapper, StyledButtonToggle } from './add-comment.styles';
+import { StyledFormWrapper, StyledAccordionContent } from './add-comment.styles';
 import { iRecipe } from '../../interfaces/recipe/recipe.interface';
 import { addRecipeComment } from '../../services/recipes/recipes.services';
+import AccordionToggle from '../../components/atoms/accordion-toggle/accordion-toggle.component';
 
 interface iKeyValuePair {
     id: string;
@@ -19,10 +20,10 @@ interface Props {
     handleSubmit: (recipe: iRecipe) => void;
 }
 
-
 interface Values {
     comment: string;
     user: string;
+    userId: string;
 }
 
 const AddCommentForm: FC<Props> = ({ recipeId, handleSubmit }) => {
@@ -37,7 +38,8 @@ const AddCommentForm: FC<Props> = ({ recipeId, handleSubmit }) => {
         if (user) {
             setFormValuesInitial({
                 user: user.name,
-                comment: ''
+                comment: '',
+                userId: user.userId
             })
         }
     }, [user, setFormValuesInitial]);
@@ -49,58 +51,60 @@ const AddCommentForm: FC<Props> = ({ recipeId, handleSubmit }) => {
 
     return (
         <React.Fragment>
-            <StyledButtonToggle onClick={() => toggleForm()}>Add Comment</StyledButtonToggle>
-            {
-                showForm && (
-                    <StyledFormWrapper>
-                        {
-                            formValuesInitial && (
-                                <Formik
-                                    initialValues={formValuesInitial}
-                                    onSubmit={(
-                                        values: Values,
-                                        { setSubmitting }: FormikHelpers<Values>
-                                    ) => {
-                                        addRecipeComment(values, recipeId || '', token).then((resp) => {
-                                            setSubmitting(false);
-                                            handleSubmit(resp);
-                                            setShowForm(false);
-                                        }).catch((err) => {
-                                            addToast(
-                                                `Error: ${err.message}`,
-                                                {
-                                                    appearance: 'error',
-                                                    autoDismiss: false
-                                                }
-                                            );
-                                        })
-                                    }}
-                                >
-                                    {({ values, resetForm, isValid, dirty }) => (
-                                        <Form>
+            <AccordionToggle
+                toggleHandler={() => toggleForm()}
+                isOpen={showForm}
+                buttonText="Add Comment"
+                spacing={false}
+            />
+            <StyledAccordionContent Collapsed={showForm ? 'expanded' : 'collapsed'}>
+                <StyledFormWrapper>
+                    {
+                        formValuesInitial && (
+                            <Formik
+                                initialValues={formValuesInitial}
+                                onSubmit={(
+                                    values: Values,
+                                    { setSubmitting }: FormikHelpers<Values>
+                                ) => {
+                                    addRecipeComment(values, recipeId || '', token).then((resp) => {
+                                        setSubmitting(false);
+                                        handleSubmit(resp);
+                                        setShowForm(false);
+                                    }).catch((err) => {
+                                        addToast(
+                                            `Error: ${err.message}`,
+                                            {
+                                                appearance: 'error',
+                                                autoDismiss: false
+                                            }
+                                        );
+                                    })
+                                }}
+                            >
+                                {({ values, resetForm, isValid, dirty }) => (
+                                    <Form>
 
-                                            <RecipeTextField
-                                                id="comment"
-                                                name="comment"
-                                                placeholder="Add a comment"
-                                                required
-                                            />
+                                        <RecipeTextField
+                                            id="comment"
+                                            name="comment"
+                                            placeholder="Add a comment"
+                                            required
+                                        />
 
-                                            <FormButton
-                                                type="submit"
-                                                buttonText={'Ok'}
-                                                FormButton={FormButtons.Primary}
-                                                disabled={!dirty || !isValid}
-                                            />
-                                        </Form>
-
-                                    )}
-                                </Formik>
-                            )
-                        }
-                    </StyledFormWrapper >
-                )
-            }
+                                        <FormButton
+                                            type="submit"
+                                            buttonText={'Ok'}
+                                            FormButton={FormButtons.Primary}
+                                            disabled={!dirty || !isValid}
+                                        />
+                                    </Form>
+                                )}
+                            </Formik>
+                        )
+                    }
+                </StyledFormWrapper>
+            </StyledAccordionContent>
         </React.Fragment>
     );
 }

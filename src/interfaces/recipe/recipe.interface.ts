@@ -1,3 +1,11 @@
+
+
+export interface iRecipeComment {
+    comment: string;
+    user: string;
+    userId?: string;
+}
+
 export interface iRecipe {
     _id?: string | undefined;
     user_id: string;
@@ -8,9 +16,6 @@ export interface iRecipe {
     category: string;
     ingredients?: string[];
     steps?: string[];
-    comments?: {
-        comment: string;
-        user: string;
-    }[];
+    comments?: iRecipeComment[];
     favorites?: string[];
 }

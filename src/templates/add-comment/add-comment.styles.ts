@@ -6,17 +6,16 @@ export const StyledFormWrapper = styled.div`
     margin-bottom: 0.5rem;
 `;
 
-export const StyledButtonToggle = styled.button`
-    padding: 0;
-    margin: 0 0 1rem 1rem;
-    border: 0;
-    font-size: 1rem;
-    color: ${props => props.theme.colors.pageLinkColor1};
-    background-color: transparent;
-    cursor: pointer;
-    &:hover {
-        text-decoration: underline;
-    }
+interface iStyledAccordionContent {
+    Collapsed: 'expanded' | 'collapsed';
+}
+
+export const StyledAccordionContent = styled.div<iStyledAccordionContent>`
+    height: auto;
+    ${props => props.Collapsed === 'collapsed' && `
+        height: 0;
+        overflow: hidden;
+    `}
 `;
 
 

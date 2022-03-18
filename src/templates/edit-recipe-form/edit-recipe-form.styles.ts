@@ -54,6 +54,26 @@ export const StyledSubtractInputBtn = styled.button`
     cursor: pointer;
 `;
 
+interface iStyledAccordionContent {
+    Collapsed: 'expanded' | 'collapsed';
+}
+
+export const StyledAccordionContent = styled.div<iStyledAccordionContent>`
+    height: auto;
+
+    @media (min-width: 576px) {
+        padding: 1.5rem;
+        border: 1px solid ${props => props.theme.colors.pageBackground3};
+    }
+
+    ${props => props.Collapsed === 'collapsed' && `
+        height: 0;
+        padding: 0 !important;
+        overflow: hidden;
+        border: none !important;
+    `}
+`;
+
 export const StyledLabel = styled.label<iRequiredLabel>`
     color: ${props => props.theme.colors.pageForeground1};
     display: block;
@@ -78,6 +98,12 @@ export const StyledInput = styled(Field)`
         border: 2px solid ${props => props.theme.colors.navBarBackground};
         outline: 0;
     }
+    &:disabled {
+        opacity: 0.7;
+        border: none;
+        padding: 0;
+        margin-top: -0.5rem;
+    }
 `;
 
 export const StyledHRule = styled.hr`
@@ -91,7 +117,7 @@ export const StyledFieldArrayEmptyButton = styled.button`
     font-size: 1rem;
     color: ${props => props.theme.colors.pageForeground1};
     padding: 0.5rem 1rem;
-    margin: 0.5rem 0;
+    margin: 1.5rem 0;
     cursor: pointer;
 `;
 
