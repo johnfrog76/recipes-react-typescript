@@ -1,9 +1,10 @@
 import React, { FC, useState, useContext } from 'react';
 import { useToasts } from 'react-toast-notifications';
-import { StyledFormWrapper, StyledButtonToggle, StyledToggleWrap, StyledUnderlabel } from './remove-user.styles';
+import { StyledFormWrapper, StyledUnderlabel } from './remove-user.styles';
 import ConfirmDialog from '../../molecules/confirm-dialog/confirm-dialog.component';
 
 import { deleteUserAccount } from '../../../services/users/users.service';
+import AccordionToggle from '../../atoms/accordion-toggle/accordion-toggle.component';
 import FormButton, { FormButtons } from '../../atoms/form-button/form-button.component';
 import { AuthContext } from '../../../providers/auth/auth.provider';
 import { UsersContext } from '../../../providers/users/users.provider';
@@ -68,9 +69,13 @@ const RemoveUserComponent = () => {
             {
                 user && (
                     <div>
-                        <StyledToggleWrap>
-                            <StyledButtonToggle onClick={() => toggleForm()}>Account Settings</StyledButtonToggle>
-                        </StyledToggleWrap>
+                        {
+                            <AccordionToggle
+                                isOpen={showForm}
+                                toggleHandler={() => toggleForm()}
+                                buttonText="Account Settings"
+                            />
+                        }
                         {
                             showForm && (
                                 <StyledFormWrapper>

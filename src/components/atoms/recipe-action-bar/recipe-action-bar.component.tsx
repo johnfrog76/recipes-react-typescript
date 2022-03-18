@@ -39,7 +39,7 @@ const RecicipeActionBar = () => {
 
     useEffect(() => {
         const recipe = recipeItems.find(r => r._id === id);
-        const base = process.env.REACT_APP_BASEURL;
+        const base = process.env.REACT_APP_SHARE_URL;
 
         if (recipe) {
             setRecipe(recipe);

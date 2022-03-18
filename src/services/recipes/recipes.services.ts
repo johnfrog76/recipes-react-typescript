@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { iRecipe } from '../../interfaces/recipe/recipe.interface';
+import { iRecipe, iRecipeComment } from '../../interfaces/recipe/recipe.interface';
 
 const baseURL = process.env.REACT_APP_BASEURL;
 const endpoint = process.env.REACT_APP_RECIPE_ENDPOINT;
@@ -103,7 +103,7 @@ export const removeFavorite = async (recipeId: string | undefined, userId:string
     }
 }
 
-export const addRecipeComment = async (commentItem: { comment: string, user: string}, recipeId: string, token: string | null) => {
+export const addRecipeComment = async (commentItem: iRecipeComment, recipeId: string, token: string | null) => {
     try {
         const resp = await axios({
             method: 'patch',

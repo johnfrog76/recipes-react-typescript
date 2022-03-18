@@ -19,10 +19,12 @@ import {
     InputButtonsWrap,
     FieldArrayItem,
     StyledHRule,
-    StyledFieldArrayEmptyButton
+    StyledFieldArrayEmptyButton,
+    StyledAccordionContent
 } from './add-recipe-form.styles';
-import { iRecipe } from '../../interfaces/recipe/recipe.interface';
+import { iRecipe, iRecipeComment } from '../../interfaces/recipe/recipe.interface';
 import { addRecipe } from '../../services/recipes/recipes.services';
+import AccordionToggle from '../../components/atoms/accordion-toggle/accordion-toggle.component';
 
 interface iKeyValuePair {
     id: string;
@@ -39,10 +41,7 @@ interface Values {
     category?: string;
     ingredients?: string[];
     steps?: string[];
-    comments?: {
-        comment: string;
-        user: string;
-    }[];
+    comments?: iRecipeComment[];
 }
 
 const AddRecipeForm = () => {
@@ -51,6 +50,21 @@ const AddRecipeForm = () => {
     const { recipeItems, setCount, getCategoryTags, addRecipeToList } = useContext(RecipesContext);
     const [catData, setCatData] = useState<iKeyValuePair[]>([]);
     const [currentRecipeItems, setCurrentRecipeItems] = useState<iRecipe[]>(recipeItems);
+    const [isOpenIngredients, setIsOpenIngredients] = useState<boolean>(true);
+    const [isOpenSteps, setIsOpenSteps] = useState<boolean>(true);
+    const [isOpenComments, setIsOpenComments] = useState<boolean>(true);
+
+    const handleToggleIngredients = () => {
+        setIsOpenIngredients(!isOpenIngredients);
+    };
+
+    const handleToggleSteps = () => {
+        setIsOpenSteps(!isOpenSteps);
+    };
+
+    const handleToggleComments = () => {
+        setIsOpenComments(!isOpenComments);
+    };
 
     let navigate = useNavigate();
     const formValuesInitial = {
@@ -64,7 +78,7 @@ const AddRecipeForm = () => {
         ingredients: [''],
         steps: [''],
         comments: []
-    }
+    };
 
     useEffect(() => {
         const uniques = getCategoryTags(recipeItems);
@@ -75,6 +89,8 @@ const AddRecipeForm = () => {
         });
         setCatData(data);
     }, [recipeItems, getCategoryTags]);
+
+
 
     return (
         <StyledFormWrapper>
@@ -164,28 +180,38 @@ const AddRecipeForm = () => {
                                 render={arrayHelpers => (
                                     <div>
                                         {values.ingredients && values.ingredients.length > 0 ? (
-                                            values.ingredients.map((item, index) => (
-                                                <StyledInputWrapper key={index}>
-                                                    <StyledLabel Required={'required'}>Ingredient {index + 1}</StyledLabel>
-                                                    <FieldArrayItem>
-                                                        <StyledInput required name={`ingredients.${index}`} placeholder="Ex: 1 cup milk" />
-                                                        <InputButtonsWrap>
-                                                            <StyledSubtractInputBtn
-                                                                type="button"
-                                                                onClick={() => arrayHelpers.remove(index)}
-                                                            >
-                                                                -
-                                                            </StyledSubtractInputBtn>
-                                                            <StyledAddInputBtn
-                                                                type="button"
-                                                                onClick={() => arrayHelpers.insert(index, '')}
-                                                            >
-                                                                +
-                                                            </StyledAddInputBtn>
-                                                        </InputButtonsWrap>
-                                                    </FieldArrayItem>
-                                                </StyledInputWrapper>
-                                            ))
+                                            <React.Fragment>
+                                                <AccordionToggle
+                                                    buttonText='Ingredients'
+                                                    isOpen={isOpenIngredients}
+                                                    toggleHandler={() => handleToggleIngredients()}
+                                                />
+                                                <StyledAccordionContent Collapsed={!isOpenIngredients ? 'collapsed' : 'expanded'}> {
+                                                    values.ingredients.map((item, index) => (
+                                                        <StyledInputWrapper key={index}>
+                                                            <StyledLabel Required={'required'}>Ingredient {index + 1}</StyledLabel>
+                                                            <FieldArrayItem>
+                                                                <StyledInput required name={`ingredients.${index}`} placeholder="Ex: 1 cup milk" />
+                                                                <InputButtonsWrap>
+                                                                    <StyledSubtractInputBtn
+                                                                        type="button"
+                                                                        onClick={() => arrayHelpers.remove(index)}
+                                                                    >
+                                                                        -
+                                                                    </StyledSubtractInputBtn>
+                                                                    <StyledAddInputBtn
+                                                                        type="button"
+                                                                        onClick={() => arrayHelpers.insert(index, '')}
+                                                                    >
+                                                                        +
+                                                                    </StyledAddInputBtn>
+                                                                </InputButtonsWrap>
+                                                            </FieldArrayItem>
+                                                        </StyledInputWrapper>
+                                                    ))
+                                                }
+                                                </StyledAccordionContent>
+                                            </React.Fragment>
                                         ) : (
                                             <StyledFieldArrayEmptyButton type="button" onClick={() => arrayHelpers.push('')}>
                                                 Add Ingredients
@@ -202,28 +228,39 @@ const AddRecipeForm = () => {
                                 render={arrayHelpers => (
                                     <div>
                                         {values.steps && values.steps.length > 0 ? (
-                                            values.steps.map((item, index) => (
-                                                <StyledInputWrapper key={index}>
-                                                    <StyledLabel Required={'required'}>Step {index + 1}</StyledLabel>
-                                                    <FieldArrayItem>
-                                                        <StyledInput required name={`steps.${index}`} placeholder="Add step" />
-                                                        <InputButtonsWrap>
-                                                            <StyledSubtractInputBtn
-                                                                type="button"
-                                                                onClick={() => arrayHelpers.remove(index)}
-                                                            >
-                                                                -
-                                                            </StyledSubtractInputBtn>
-                                                            <StyledAddInputBtn
-                                                                type="button"
-                                                                onClick={() => arrayHelpers.insert(index, '')}
-                                                            >
-                                                                +
-                                                            </StyledAddInputBtn>
-                                                        </InputButtonsWrap>
-                                                    </FieldArrayItem>
-                                                </StyledInputWrapper>
-                                            ))
+                                            <React.Fragment>
+                                                <AccordionToggle
+                                                    buttonText='Steps'
+                                                    isOpen={isOpenSteps}
+                                                    toggleHandler={() => handleToggleSteps()}
+                                                />
+                                                <StyledAccordionContent Collapsed={isOpenSteps ? 'expanded' : 'collapsed'}>
+                                                    {
+                                                        values.steps.map((item, index) => (
+                                                            <StyledInputWrapper key={index}>
+                                                                <StyledLabel Required={'required'}>Step {index + 1}</StyledLabel>
+                                                                <FieldArrayItem>
+                                                                    <StyledInput required name={`steps.${index}`} placeholder="Add step" />
+                                                                    <InputButtonsWrap>
+                                                                        <StyledSubtractInputBtn
+                                                                            type="button"
+                                                                            onClick={() => arrayHelpers.remove(index)}
+                                                                        >
+                                                                            -
+                                                                        </StyledSubtractInputBtn>
+                                                                        <StyledAddInputBtn
+                                                                            type="button"
+                                                                            onClick={() => arrayHelpers.insert(index, '')}
+                                                                        >
+                                                                            +
+                                                                        </StyledAddInputBtn>
+                                                                    </InputButtonsWrap>
+                                                                </FieldArrayItem>
+                                                            </StyledInputWrapper>
+                                                        ))
+                                                    }
+                                                </StyledAccordionContent>
+                                            </React.Fragment>
                                         ) : (
                                             <StyledFieldArrayEmptyButton type="button" onClick={() => arrayHelpers.push('')}>
                                                 Add Steps
@@ -240,35 +277,48 @@ const AddRecipeForm = () => {
                                 render={arrayHelpers => (
                                     <div>
                                         {values.comments && values.comments.length > 0 ? (
-                                            values.comments.map((item, index) => (
-                                                <StyledInputWrapper key={index}>
-                                                    <StyledLabel Required={'required'}>Comment {index + 1}</StyledLabel>
-                                                    <FieldArrayItem>
-                                                        <StyledInput type="hidden" name={`comments.${index}.user`} />
-                                                        <StyledInput name={`comments.${index}.comment`} placeholder="Add comment" />
-                                                        <InputButtonsWrap>
-                                                            <StyledSubtractInputBtn
-                                                                type="button"
-                                                                onClick={() => arrayHelpers.remove(index)}
-                                                            >
-                                                                -
-                                                            </StyledSubtractInputBtn>
-                                                            <StyledAddInputBtn
-                                                                type="button"
-                                                                onClick={() => arrayHelpers.insert(
-                                                                    index, { user: user?.name, comment: '' }
-                                                                )}
-                                                            >
-                                                                +
-                                                            </StyledAddInputBtn>
-                                                        </InputButtonsWrap>
-                                                    </FieldArrayItem>
-                                                </StyledInputWrapper>
-                                            ))
+                                            <React.Fragment>
+                                                <AccordionToggle
+                                                    buttonText='Comments'
+                                                    isOpen={isOpenComments}
+                                                    toggleHandler={() => handleToggleComments()}
+                                                />
+                                                <StyledAccordionContent Collapsed={isOpenComments ? 'expanded' : 'collapsed'}>
+                                                    {
+                                                        values.comments.map((item, index) => (
+
+                                                            <StyledInputWrapper key={index}>
+                                                                <StyledLabel Required={'required'}>Comment {index + 1}</StyledLabel>
+                                                                <FieldArrayItem>
+                                                                    <StyledInput type="hidden" name={`comments.${index}.user`} />
+                                                                    <StyledInput type="hidden" name={`comments.${index}.userId`} />
+                                                                    <StyledInput name={`comments.${index}.comment`} placeholder="Add comment" />
+                                                                    <InputButtonsWrap>
+                                                                        <StyledSubtractInputBtn
+                                                                            type="button"
+                                                                            onClick={() => arrayHelpers.remove(index)}
+                                                                        >
+                                                                            -
+                                                                        </StyledSubtractInputBtn>
+                                                                        <StyledAddInputBtn
+                                                                            type="button"
+                                                                            onClick={() => arrayHelpers.insert(
+                                                                                index, { user: user?.name, comment: '', userId: user?.userId }
+                                                                            )}
+                                                                        >
+                                                                            +
+                                                                        </StyledAddInputBtn>
+                                                                    </InputButtonsWrap>
+                                                                </FieldArrayItem>
+                                                            </StyledInputWrapper>
+                                                        ))
+                                                    }
+                                                </StyledAccordionContent>
+                                            </React.Fragment>
                                         ) : (
                                             <StyledFieldArrayEmptyButton
                                                 type="button"
-                                                onClick={() => arrayHelpers.push({ user: user?.name, comment: '' })
+                                                onClick={() => arrayHelpers.push({ user: user?.name, comment: '', userId: user?.userId })
                                                 }>
                                                 Add comment
                                             </StyledFieldArrayEmptyButton>
