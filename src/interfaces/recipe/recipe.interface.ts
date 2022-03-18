@@ -10,6 +10,8 @@ export interface iRecipeComment {
 
 export interface iRecipe {
     _id?: string | undefined;
+    createdAt?: string;
+    updatedAt?: string;
     user_id: string;
     r_name: string;
     cat_id: number;
