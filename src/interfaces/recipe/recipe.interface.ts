@@ -8,6 +8,12 @@ export interface iRecipeComment {
     updatedAt?: string;
 }
 
+export interface iFavoriteItem {
+    userId: string;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
 export interface iRecipe {
     _id?: string | undefined;
     createdAt?: string;
@@ -21,5 +27,5 @@ export interface iRecipe {
     ingredients?: string[];
     steps?: string[];
     comments?: iRecipeComment[];
-    favorites?: string[];
+    favorites?: iFavoriteItem[];
 }

@@ -55,7 +55,7 @@ const RecicipeActionBar = () => {
 
     useEffect(() => {
         if (recipe?.favorites) {
-            let tempFav = recipe.favorites.find(f => f === user?.userId);
+            let tempFav = recipe.favorites.find(f => f.userId === user?.userId);
             if (tempFav) {
                 setIsFav(true)
             }
@@ -113,27 +113,27 @@ const RecicipeActionBar = () => {
                         if (!tempRecipe.favorites) {
                             tempRecipe.favorites = [];
                         }
-                        let idx = tempRecipe?.favorites.findIndex(item => item = user.userId);
+                        let idx = tempRecipe?.favorites.findIndex(item => item.userId === user.userId);
                         tempRecipe.favorites?.splice(idx, 1);
                         setIsFav(false);
                         editRecipe(recipeItems, tempRecipe);
                     }
                 }
                 setFavDisabled(false);
-            });
+            }).catch(err => console.log(err.message));
         } else {
             addFavorite(id, user?.userId, token).then((resp) => {
 
                 if (resp.message === 'favorite added') {
                     if (user && recipe) {
                         let tempRecipe: iRecipe = recipe;
-                        tempRecipe.favorites?.push(user?.userId);
+                        tempRecipe.favorites?.push({ userId: user?.userId });
                         setIsFav(true);
                         editRecipe(recipeItems, tempRecipe);
                     }
                 }
                 setFavDisabled(false);
-            });
+            }).catch(err => console.log(err.message));
         }
     }
 
