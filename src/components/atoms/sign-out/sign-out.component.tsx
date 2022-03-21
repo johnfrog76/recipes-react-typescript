@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { AuthContext } from '../../../providers/auth/auth.provider';
 import Backdrop from '../../atoms/backdrop/backdrop.component';
@@ -14,12 +15,14 @@ import {
 const SignOutButton = () => {
     const { setLogin, setUserToken, setUserObject, user, setUserAuth } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     const handleSignOut = () => {
         if (user) {
             const expires = new Date(new Date().getTime());
             setUserAuth(user, Number(expires));
             setUserObject(null);
+            navigate('/');
         }
         setLogin(false);
         setUserToken(null);
