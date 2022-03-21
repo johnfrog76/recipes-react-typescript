@@ -1,10 +1,10 @@
-import React, { FC, createContext, useState, useEffect } from 'react';
+import React, { FC, createContext, useState, useEffect, useContext } from 'react';
 import {
     getFeaturedRecipes, getCategoryTags, addRecipeToList, editRecipe, deleteRecipe
 } from './recipes.utils';
-
+import { AuthContext } from '../auth/auth.provider';
 import { iRecipe } from '../../interfaces/recipe/recipe.interface';
-import { getRecipes } from '../../services/recipes/recipes.services';
+import { getRecipes, getRecipesAuth } from '../../services/recipes/recipes.services';
 
 type RecipeContextType = {
     recipeItems: iRecipe[];
@@ -36,7 +36,6 @@ export const RecipesContext = createContext<RecipeContextType>({
     makeRequest: true
 });
 
-
 interface Props {
     children?: React.ReactNode;
 }
@@ -49,10 +48,12 @@ const RecipesProvider: FC<Props> = ({ children }) => {
     const setSpinner = (val = true) => setIsLoading(val);
     const makeFreshPull = (val = true) => setMakeRequest(val);
     const setCount = (val = 0) => setRecipeCount(val);
+    const { token, isLoggedIn } = useContext(AuthContext);
 
     useEffect(() => {
         if (makeRequest) {
             setMakeRequest(false);
+
             getRecipes().then((resp) => {
                 // delay is to see spinner
                 setTimeout(() => {
@@ -65,10 +66,30 @@ const RecipesProvider: FC<Props> = ({ children }) => {
             }).catch((err) => {
                 setSpinner(false);
                 console.error(err);
-            })
-        }
+            });
 
-    }, [makeRequest])
+            if (isLoggedIn) {
+                getRecipesAuth(token).then((resp) => {
+                    // delay is to see spinner
+                    setTimeout(() => {
+                        setRecipeItems(resp);
+                        setCount(resp.length);
+                        setSpinner(false);
+                    }, 1500);
+                }).catch((err) => {
+                    setSpinner(false);
+                    console.log(err)
+                });
+            }
+        }
+    }, [makeRequest]);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            setSpinner(true);
+            makeFreshPull(true);
+        }
+    }, [isLoggedIn])
 
     return (<RecipesContext.Provider
         value={{
