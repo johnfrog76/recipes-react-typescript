@@ -126,10 +126,8 @@ const RecicipeActionBar = () => {
 
                 if (resp.message === 'favorite added') {
                     if (user && recipe) {
-                        let tempRecipe: iRecipe = recipe;
-                        tempRecipe.favorites?.push({ userId: user?.userId });
                         setIsFav(true);
-                        editRecipe(recipeItems, tempRecipe);
+                        editRecipe(recipeItems, resp.data);
                     }
                 }
                 setFavDisabled(false);

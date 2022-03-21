@@ -41,5 +41,11 @@
         "route": "/settings",
         "auth": false,
         "svgIcon": 5
+    },
+    {
+        "text": "activity",
+        "route": "/activities",
+        "auth": true,
+        "svgIcon": 7
     }
 ]

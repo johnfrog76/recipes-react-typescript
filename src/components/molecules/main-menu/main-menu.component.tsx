@@ -11,7 +11,7 @@ import {
     StyledListItem,
     StyledNavLink,
     StyledFavorite,
-    StyledHome, StyledUsers, StyledMenu, StyledWidget, StyledSetting, StyledAddCircle
+    StyledHome, StyledUsers, StyledMenu, StyledWidget, StyledSetting, StyledAddCircle, StyledNotifications
 } from './main-menu.styles';
 
 type Props = {
@@ -26,7 +26,9 @@ export enum Icons {
     list = 2,
     my = 3,
     add = 4,
-    settings = 5
+    settings = 5,
+    favorite = 6,
+    notification = 7
 }
 
 const returnIconsByKey = (id: Icons) => {
@@ -37,7 +39,8 @@ const returnIconsByKey = (id: Icons) => {
         "3": StyledWidget,
         "4": StyledAddCircle,
         "5": StyledSetting,
-        "6": StyledFavorite
+        "6": StyledFavorite,
+        "7": StyledNotifications
     };
     return map[id] || null;
 }
