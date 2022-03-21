@@ -9,11 +9,26 @@ const removeFavoriteEndpoint = process.env.REACT_APP_FAVORITE_REMOVE;
 
 export const getRecipes = async () => {
     try {
-
-        const resp = await axios.get<iRecipe[]>(`${baseURL}${endpoint}`);
+        const resp = await axios.get<iRecipe[]>(`${baseURL}${endpoint}/unauth`);
         return resp.data;
     } catch (err) {
-        throw(err)
+        throw(err);
+    }
+}
+
+export const getRecipesAuth = async (token: string | null) => {
+    try {
+        const resp = await axios({
+            method: 'get',
+            url: `${baseURL}${endpoint}/auth`,
+            headers: {
+                Authorization: `Bearer ${token ? token : 'none'}`
+            }
+        });
+
+        return resp.data;
+    } catch (err) {
+        throw(err);
     }
 }
 
@@ -29,7 +44,7 @@ export const addRecipe = async (recipe: iRecipe, token: string | null) => {
         });
         return resp.data;
     } catch (err) {
-        throw(err)
+        throw(err);
     }
 }
 
