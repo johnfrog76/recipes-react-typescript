@@ -24,7 +24,7 @@ const FavoritesPage = () => {
 
     useEffect(() => {
         if (user) {
-            let filteredItems: iRecipe[] = recipeItems.filter(r => r.favorites?.length && user && r.favorites.includes(user.userId))
+            let filteredItems: iRecipe[] = recipeItems.filter(r => r.favorites?.length && user && r.favorites.some(f => f.userId === user.userId))
             setFilteredRecipes(filteredItems);
         }
     }, [user, recipeItems]);
@@ -52,7 +52,7 @@ const FavoritesPage = () => {
             }
             {
                 !isLoading && filteredRecipes.length === 0 &&
-                <EmptyMesssage msg={'There are no recipes.'} />
+                <EmptyMesssage msg={'No favorite recipes'} />
             }
         </MainSection>
     );

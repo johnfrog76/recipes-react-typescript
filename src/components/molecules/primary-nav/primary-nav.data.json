@@ -12,16 +12,16 @@
         "svgIcon": 1
     },
     {
-        "text": "recipes list",
-        "route": "/recipes",
-        "auth": false,
-        "svgIcon": 2
-    },
-    {
         "text": "favorites",
         "route": "/favorites",
         "auth": true,
         "svgIcon": 6
+    },
+    {
+        "text": "recipes",
+        "route": "/recipes",
+        "auth": false,
+        "svgIcon": 2
     },
     {
         "text": "my recipes",
@@ -41,5 +41,11 @@
         "route": "/settings",
         "auth": false,
         "svgIcon": 5
+    },
+    {
+        "text": "activity",
+        "route": "/activities",
+        "auth": true,
+        "svgIcon": 7
     }
 ]

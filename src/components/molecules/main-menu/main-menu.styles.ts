@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { NavLink } from "react-router-dom";
-import {Home, PeopleAlt, MenuBook, Widgets, AddCircle, Settings, Favorite} from '@material-ui/icons';
+import {Home, PeopleAlt, MenuBook, Widgets, AddCircle, Settings, Notifications, Favorite} from '@material-ui/icons';
 
 interface iStyledMenuOuter {
     isOpen: boolean;
@@ -12,6 +12,10 @@ const common = (props: any) => `
     font-size: 1.75rem !important;
     margin-right: 1rem;
 `
+
+export const StyledNotifications = styled(Notifications)`
+    ${props => common(props)}
+`;
 
 export const StyledHome = styled(Home)`
     ${props => common(props)}
