@@ -54,31 +54,33 @@ const RecipesProvider: FC<Props> = ({ children }) => {
         if (makeRequest) {
             setMakeRequest(false);
 
-            getRecipes().then((resp) => {
-                // delay is to see spinner
-                setTimeout(() => {
-                    setSpinner(false);
-                    if (resp) {
-                        setRecipeItems(resp);
-                        setCount(resp.length);
-                    }
-                }, 1500);
-            }).catch((err) => {
-                setSpinner(false);
-                console.error(err);
-            });
-
             if (isLoggedIn) {
                 getRecipesAuth(token).then((resp) => {
                     // delay is to see spinner
                     setTimeout(() => {
                         setRecipeItems(resp);
+                        //console.log('auth', resp)
                         setCount(resp.length);
                         setSpinner(false);
                     }, 1500);
                 }).catch((err) => {
                     setSpinner(false);
                     console.log(err)
+                });
+            } else {
+                getRecipes().then((resp) => {
+                    // delay is to see spinner
+                    setTimeout(() => {
+                        setSpinner(false);
+                        if (resp) {
+                            setRecipeItems(resp);
+                            setCount(resp.length);
+                            //console.log('unauth', resp)
+                        }
+                    }, 1500);
+                }).catch((err) => {
+                    setSpinner(false);
+                    console.error(err);
                 });
             }
         }
