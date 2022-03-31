@@ -21,6 +21,7 @@ export const StyledMoreIconButton = styled.button`
 
 export const StyledListItem = styled.li`
     line-height: 2rem;
+    white-space: nowrap;
 `
 
 export const StyledToolBarDivider = styled.div`
