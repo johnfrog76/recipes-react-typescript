@@ -30,12 +30,18 @@ export const CardCopy = styled.p`
     overflow: hidden;
 `;
 
+export const CardTitleWrap = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
 export const CardTitle = styled.h3`
-font-weight: 400;
-display: -webkit-box;
--webkit-line-clamp: 2;
--webkit-box-orient: vertical;  
-overflow: hidden;
+    font-weight: 400;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
 `;
 
 export const CardBottomWrapper = styled.div<iThemeStyleProp>`
