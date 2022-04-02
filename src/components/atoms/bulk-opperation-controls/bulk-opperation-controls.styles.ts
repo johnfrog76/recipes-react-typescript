@@ -25,27 +25,26 @@ export const StyledListItem = styled.li`
 `
 
 export const StyledToolBarDivider = styled.div`
-  position: relative;
-  display: flex;
-  padding-right: 0.75rem;
-  margin-right: 0.50rem;
-  line-height: 1.5rem;
+    position: relative;
+    display: flex;
+    padding-right: 0.75rem;
+    margin-right: 0.50rem;
+    line-height: 1.5rem;
 
-  &::after {
-    position: absolute;
-    content: '';
-    right: 0;
-    width: 1px;
-    height: 100%;
-    background-color: ${props => props.theme.colors.pageForeground1};
-    opacity: 0.3;
-  }
+    &::after {
+        position: absolute;
+        content: '';
+        right: 0;
+        width: 1px;
+        height: 100%;
+        background-color: ${props => props.theme.colors.pageForeground1};
+        opacity: 0.3;
+    }
 `;
-
 
 export const StyledMoreIcon = styled(MoreHoriz)`
     font-size: 1.5rem !important;
-`
+`;
 
 export const StyledToggleButton = styled.button`
     font-size: 1rem;

@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import Check from '@mui/icons-material/Check';
 import {Theme as ThemEnum} from '../.../../../../providers/theme/theme.provider';
 
-
 interface iStyledProps {
     ison: string;
 }

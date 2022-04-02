@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-
 import {GridOn, List} from '@material-ui/icons';
 
 export const StyledButton = styled.button`
@@ -12,8 +11,8 @@ export const StyledButton = styled.button`
 
 export const StyledGridOnIcon = styled(GridOn)`
     color: ${props => props.theme.colors.pageHighLight2};
-`
+`;
 
 export const StyledListIcon = styled(List)`
     color: ${props => props.theme.colors.pageHighLight2};
-`
+`;
