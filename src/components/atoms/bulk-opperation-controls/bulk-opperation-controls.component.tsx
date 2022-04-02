@@ -1,11 +1,32 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useContext } from 'react';
+import { useToasts } from 'react-toast-notifications';
+
+import Backdrop from '../backdrop/backdrop.component';
+import ButtonLink from '../button-link/button-link.component';
+import ConfirmDialog from '../../molecules/confirm-dialog/confirm-dialog.component';
+import { AuthContext } from '../../../providers/auth/auth.provider';
+import { RecipesContext } from '../../../providers/recipes/recipes.provider';
+import {
+    addFavoriteBulk, removeFavoriteBulk, addShareBulk, removeShareBulk
+} from '../../../services/recipes/recipes.services';
 import {
     StyledControlWrap, StyledListItem, StyledMoreIconButton, StyledToolBarDivider, StyledMoreIcon,
     StyledToggleButton, StyledMenuContent
 } from './bulk-opperation-controls.styles';
-import Backdrop from '../backdrop/backdrop.component';
-import ButtonLink from '../button-link/button-link.component';
-import ConfirmDialog from '../../molecules/confirm-dialog/confirm-dialog.component';
+
+
+enum actionItemEnums {
+    favorite = "favorites add",
+    unfavorite = "favorites remove",
+    share = "sharing add",
+    noshare = "sharing remove"
+}
+
+interface iActionItem {
+    id: keyof typeof actionItemEnums;
+    name: actionItemEnums;
+    notAllowed: boolean;
+}
 
 type Props = {
     bulkCount: number;
@@ -15,13 +36,10 @@ type Props = {
     isMixedList: boolean;
 }
 
-interface iActionItem {
-    id: string;
-    name: string;
-    notAllowed: boolean;
-}
-
 const BulkOpperationsControls: FC<Props> = ({ bulkCount, bulkList, handleEditMode, selectMode, isMixedList }) => {
+    const { addToast } = useToasts();
+    const { user, token } = useContext(AuthContext);
+    const { makeFreshPull } = useContext(RecipesContext);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
     const [actionType, setActionType] = useState<string>('');
@@ -35,10 +53,97 @@ const BulkOpperationsControls: FC<Props> = ({ bulkCount, bulkList, handleEditMod
     };
 
     const handleConfirmed = () => {
-        console.log('confirmed', bulkList, 'action', actionType);
+        const getPlural = () => bulkCount !== 1 ? 's' : '';
+        let confirmMsg = `${bulkCount} item${getPlural()} updated`;
         setConfirmOpen(false);
-        // TODO: make request, success, failure
+        setIsOpen(false);
+        handleEditMode();
 
+        if (user?.userId) {
+            switch (actionType) {
+                case "favorite":
+                    addFavoriteBulk(bulkList, user.userId, token).then(resp => {
+
+                        makeFreshPull(true);
+                        addToast(
+                            `Success: ${confirmMsg}`,
+                            {
+                                appearance: 'success',
+                                autoDismiss: true
+                            }
+                        );
+                    }).catch(err => {
+                        addToast(
+                            `Error: ${err.message}`,
+                            {
+                                appearance: 'error',
+                                autoDismiss: false
+                            }
+                        );
+                    })
+                    break;
+                case "unfavorite":
+                    removeFavoriteBulk(bulkList, user.userId, token).then(resp => {
+                        makeFreshPull(true);
+                        addToast(
+                            `Success: ${confirmMsg}`,
+                            {
+                                appearance: 'success',
+                                autoDismiss: true
+                            }
+                        );
+                    }).catch(err => {
+                        addToast(
+                            `Error: ${err.message}`,
+                            {
+                                appearance: 'error',
+                                autoDismiss: false
+                            }
+                        );
+                    })
+                    break;
+                case "share":
+                    addShareBulk(bulkList, user.userId, token).then(resp => {
+                        makeFreshPull(true);
+                        addToast(
+                            `Success: ${confirmMsg}`,
+                            {
+                                appearance: 'success',
+                                autoDismiss: true
+                            }
+                        );
+                    }).catch(err => {
+                        addToast(
+                            `Error: ${err.message}`,
+                            {
+                                appearance: 'error',
+                                autoDismiss: false
+                            }
+                        );
+                    })
+                    break;
+                case "noshare":
+                    removeShareBulk(bulkList, user.userId, token).then(resp => {
+                        makeFreshPull(true);
+                        addToast(
+                            `Success: ${confirmMsg}`,
+                            {
+                                appearance: 'success',
+                                autoDismiss: true
+                            }
+                        );
+                    }).catch(err => {
+                        addToast(
+                            `Error: ${err.message}`,
+                            {
+                                appearance: 'error',
+                                autoDismiss: false
+                            }
+                        );
+                    })
+                    break;
+            }
+        }
     };
 
     const handleActionClick = (evt: React.MouseEvent<HTMLButtonElement>) => {
@@ -47,13 +152,11 @@ const BulkOpperationsControls: FC<Props> = ({ bulkCount, bulkList, handleEditMod
         setConfirmOpen(true);
     }
 
-
     const actionItems: iActionItem[] = [
-        { id: "favorite", name: 'add favorites', notAllowed: false },
-        { id: "unfavorite", name: 'remove favorites', notAllowed: false },
-        { id: "copy", name: 'copy recipes', notAllowed: false },
-        { id: "share", name: 'share recipes', notAllowed: isMixedList },
-        { id: "delete", name: 'delete recipes', notAllowed: isMixedList }
+        { id: "favorite", name: actionItemEnums.favorite, notAllowed: false },
+        { id: "unfavorite", name: actionItemEnums.unfavorite, notAllowed: false },
+        { id: "share", name: actionItemEnums.share, notAllowed: isMixedList },
+        { id: "noshare", name: actionItemEnums.noshare, notAllowed: isMixedList }
     ];
 
     return (
@@ -98,7 +201,7 @@ const BulkOpperationsControls: FC<Props> = ({ bulkCount, bulkList, handleEditMod
             <ConfirmDialog
                 open={confirmOpen}
                 title={"Are you sure?"}
-                confirmText={`${actionType} ${bulkCount} ${bulkCount !== 1 ? 'items' : 'item'}`}
+                confirmText={`${actionItemEnums[actionType as keyof typeof actionItemEnums]} for ${bulkCount} ${bulkCount !== 1 ? 'items' : 'item'}`}
                 handleCancel={handleConfirmCancel}
                 handleConfirm={handleConfirmed}
             />

@@ -58,7 +58,7 @@ export const editRecipe = ( recipes: iRecipe[] = [], recipe?: iRecipe) => {
     }
 }
 
-export const deleteRecipe = ( recipes: iRecipe[] = [], recipe?: iRecipe) => {
+export const deleteRecipe = (recipes: iRecipe[] = [], recipe?: iRecipe) => {
     if (!recipe) {
         return recipes;
     } else {
@@ -66,5 +66,19 @@ export const deleteRecipe = ( recipes: iRecipe[] = [], recipe?: iRecipe) => {
         const updated = recipes.splice(index, 1);
         return updated;
     }
+}
+
+export const bulkUpdateRecipes = (itemsToUpdate: iRecipe[], recipesList: iRecipe[]) => {
+
+    if (itemsToUpdate.length === 0) {
+        return recipesList;
+    }
+
+    const updated = recipesList.map(r => {
+        const updatedItem = itemsToUpdate.find(i => i._id === r._id);
+        return updatedItem ? updatedItem : r;
+    });
+
+    return updated;
 }
 
