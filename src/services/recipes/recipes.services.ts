@@ -6,6 +6,10 @@ const endpoint = process.env.REACT_APP_RECIPE_ENDPOINT;
 const commentEndpoint = process.env.REACT_APP_RECIPE_COMMENT_ENDPOINT;
 const addFavoriteEndpoint = process.env.REACT_APP_FAVORITE_ADD;
 const removeFavoriteEndpoint = process.env.REACT_APP_FAVORITE_REMOVE;
+const addFavoriteBulkEndpoint = process.env.REACT_APP_BULK_FAVORITE_ADD;
+const removeFavoriteBulkEndpoint = process.env.REACT_APP_BULK_FAVORITE_REMOVE;
+const addSharingBulkEndpoint = process.env.REACT_APP_BULK_SHARE_ADD;
+const removeSharingBulkEndpoint = process.env.REACT_APP_BULK_SHARE_REMOVE;
 
 export const getRecipes = async () => {
     try {
@@ -14,7 +18,7 @@ export const getRecipes = async () => {
     } catch (err) {
         throw(err);
     }
-}
+};
 
 export const getRecipesAuth = async (token: string | null) => {
     try {
@@ -30,7 +34,7 @@ export const getRecipesAuth = async (token: string | null) => {
     } catch (err) {
         throw(err);
     }
-}
+};
 
 export const addRecipe = async (recipe: iRecipe, token: string | null) => {
     try {
@@ -46,7 +50,7 @@ export const addRecipe = async (recipe: iRecipe, token: string | null) => {
     } catch (err) {
         throw(err);
     }
-}
+};
 
 export const updateRecipe = async (recipe: iRecipe, token: string | null) => {
     try {
@@ -62,7 +66,7 @@ export const updateRecipe = async (recipe: iRecipe, token: string | null) => {
     } catch (err) {
         throw(err)
     }
-}
+};
 
 export const removeRecipe = async (recipe: iRecipe, token: string | null) => {
     try {
@@ -78,7 +82,7 @@ export const removeRecipe = async (recipe: iRecipe, token: string | null) => {
     } catch (err) {
         throw(err)
     }
-}
+};
 
 export const addFavorite = async (recipeId: string | undefined, userId:string | undefined, token: string | null) => {
     try {
@@ -97,7 +101,7 @@ export const addFavorite = async (recipeId: string | undefined, userId:string | 
     } catch (err) {
         throw(err)
     }
-}
+};
 
 export const removeFavorite = async (recipeId: string | undefined, userId:string | undefined, token: string | null) => {
     try {
@@ -116,7 +120,7 @@ export const removeFavorite = async (recipeId: string | undefined, userId:string
     } catch (err) {
         throw(err)
     }
-}
+};
 
 export const addRecipeComment = async (commentItem: iRecipeComment, recipeId: string, token: string | null) => {
     try {
@@ -133,4 +137,80 @@ export const addRecipeComment = async (commentItem: iRecipeComment, recipeId: st
     } catch (err) {
         throw(err)
     }
-}
+};
+
+export const addFavoriteBulk = async (recipesList: string[], userId:string | undefined, token: string | null) => {
+    try {
+        const resp = await axios({
+            method: 'post',
+            url: `${baseURL}${addFavoriteBulkEndpoint}`,
+            data: {
+                recipesList: recipesList,
+                userId: userId || 'none'
+            },
+            headers: {
+                Authorization: `Bearer ${token ? token : 'none'}`
+            }
+        });
+        return resp.data;
+    } catch (err) {
+        throw(err)
+    }
+};
+
+export const removeFavoriteBulk = async (recipesList: string[], userId:string | undefined, token: string | null) => {
+    try {
+        const resp = await axios({
+            method: 'post',
+            url: `${baseURL}${removeFavoriteBulkEndpoint}`,
+            data: {
+                recipesList: recipesList,
+                userId: userId || 'none'
+            },
+            headers: {
+                Authorization: `Bearer ${token ? token : 'none'}`
+            }
+        });
+        return resp.data;
+    } catch (err) {
+        throw(err)
+    }
+};
+
+export const removeShareBulk = async (recipesList: string[], userId:string | undefined, token: string | null) => {
+    try {
+        const resp = await axios({
+            method: 'patch',
+            url: `${baseURL}${removeSharingBulkEndpoint}`,
+            data: {
+                recipesList: recipesList,
+                userId: userId || 'none'
+            },
+            headers: {
+                Authorization: `Bearer ${token ? token : 'none'}`
+            }
+        });
+        return resp.data;
+    } catch (err) {
+        throw(err)
+    }
+};
+
+export const addShareBulk = async (recipesList: string[], userId:string | undefined, token: string | null) => {
+    try {
+        const resp = await axios({
+            method: 'patch',
+            url: `${baseURL}${addSharingBulkEndpoint}`,
+            data: {
+                recipesList: recipesList,
+                userId: userId || 'none'
+            },
+            headers: {
+                Authorization: `Bearer ${token ? token : 'none'}`
+            }
+        });
+        return resp.data;
+    } catch (err) {
+        throw(err)
+    }
+};

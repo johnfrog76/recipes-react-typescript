@@ -15,3 +15,9 @@ export const StyledSpinnerWrap = styled.div`
   align-items: center;
 `;
 
+export const StyledToolBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+

@@ -5,13 +5,15 @@ import RecipeCardItem from '../../atoms/recipe-card-item/recipe-card-item.compon
 import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
 
 interface Props {
-    recipes?: iRecipe[]
+    recipes?: iRecipe[];
+    selectMode?: boolean;
+    onSelectChange?: (id: string | undefined, checked: boolean) => void;
 }
 
-const RecipesCategoryCardList: FC<Props> = ({ recipes = [] }) => (
+const RecipesCategoryCardList: FC<Props> = ({ recipes = [], selectMode = false, onSelectChange }) => (
     <StyledCardContainer>
         {
-            recipes.map((item, key) => (<RecipeCardItem key={key} item={item} />))
+            recipes.map((item, key) => (<RecipeCardItem key={key} item={item} selectMode={selectMode} onSelectChange={onSelectChange} />))
         }
         {
             recipes.length < 3 && (
