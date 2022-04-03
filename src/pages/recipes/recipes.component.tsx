@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 
 import { MainSection } from "../../components/atoms/main-section/main-section.component";
 import PageTitle from "../../components/atoms/page-title/page-title.component";
@@ -33,7 +33,6 @@ const checkMixedList = (bulkList: string[], recipeItems: iRecipe[], userId: stri
 const RecipesPage = () => {
     const [isGridView, setIsGridView] = useState<boolean>(true);
     const [isMixedList, setIsMixedList] = useState<boolean>(false);
-    const [filteredRecipes, setFilteredRecipes] = useState<iRecipe[]>([]);
     const { recipeItems, isLoading } = useContext(RecipesContext);
     const { user, isLoggedIn } = useContext(AuthContext);
     const [selectMode, setSelectMode] = useState<boolean>(false);
@@ -68,15 +67,10 @@ const RecipesPage = () => {
         }
     }
 
-    useEffect(() => {
-        const filteredItems: iRecipe[] = recipeItems.filter((r) => r.shared || r.user_id === user?.userId);
-        setFilteredRecipes(filteredItems);
-    }, [user, recipeItems]);
-
     return (
         <MainSection>
             <StyledTitleWrapper>
-                <PageTitle>Recipes ({filteredRecipes.length})</PageTitle>
+                <PageTitle>Recipes ({recipeItems.length})</PageTitle>
                 <StyledToolBar>
                     {isGridView && isLoggedIn && (
 
@@ -99,15 +93,15 @@ const RecipesPage = () => {
                 )
             }
             {
-                !isLoading && filteredRecipes.length !== 0 &&
+                !isLoading && recipeItems.length !== 0 &&
                     isGridView ? (
-                    <RecipeCardList recipes={filteredRecipes} selectMode={selectMode} onSelectChange={handleSelectChange} />
+                    <RecipeCardList recipes={recipeItems} selectMode={selectMode} onSelectChange={handleSelectChange} />
                 ) : (
-                    <RecipeList recipes={filteredRecipes} />
+                    <RecipeList recipes={recipeItems} />
                 )
             }
             {
-                !isLoading && filteredRecipes.length === 0 &&
+                !isLoading && recipeItems.length === 0 &&
                 <EmptyMesssage msg={'There are no recipes.'} />
             }
         </MainSection>
