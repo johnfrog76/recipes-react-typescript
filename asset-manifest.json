@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/recipes-react-typescript/static/css/main.3ebf6a35.chunk.css",
-    "main.js": "/recipes-react-typescript/static/js/main.f6198e89.chunk.js",
-    "main.js.map": "/recipes-react-typescript/static/js/main.f6198e89.chunk.js.map",
+    "main.js": "/recipes-react-typescript/static/js/main.6bad130e.chunk.js",
+    "main.js.map": "/recipes-react-typescript/static/js/main.6bad130e.chunk.js.map",
     "runtime-main.js": "/recipes-react-typescript/static/js/runtime-main.f2929158.js",
     "runtime-main.js.map": "/recipes-react-typescript/static/js/runtime-main.f2929158.js.map",
-    "static/js/2.eef045f1.chunk.js": "/recipes-react-typescript/static/js/2.eef045f1.chunk.js",
-    "static/js/2.eef045f1.chunk.js.map": "/recipes-react-typescript/static/js/2.eef045f1.chunk.js.map",
+    "static/js/2.7bb25498.chunk.js": "/recipes-react-typescript/static/js/2.7bb25498.chunk.js",
+    "static/js/2.7bb25498.chunk.js.map": "/recipes-react-typescript/static/js/2.7bb25498.chunk.js.map",
     "static/js/3.d3cd0373.chunk.js": "/recipes-react-typescript/static/js/3.d3cd0373.chunk.js",
     "static/js/3.d3cd0373.chunk.js.map": "/recipes-react-typescript/static/js/3.d3cd0373.chunk.js.map",
     "index.html": "/recipes-react-typescript/index.html",
     "static/css/main.3ebf6a35.chunk.css.map": "/recipes-react-typescript/static/css/main.3ebf6a35.chunk.css.map",
-    "static/js/2.eef045f1.chunk.js.LICENSE.txt": "/recipes-react-typescript/static/js/2.eef045f1.chunk.js.LICENSE.txt"
+    "static/js/2.7bb25498.chunk.js.LICENSE.txt": "/recipes-react-typescript/static/js/2.7bb25498.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.f2929158.js",
-    "static/js/2.eef045f1.chunk.js",
+    "static/js/2.7bb25498.chunk.js",
     "static/css/main.3ebf6a35.chunk.css",
-    "static/js/main.f6198e89.chunk.js"
+    "static/js/main.6bad130e.chunk.js"
   ]
 }
