@@ -1,6 +1,6 @@
 import React, { FC, createContext, useState, useEffect, useContext } from 'react';
 import {
-    getFeaturedRecipes, getCategoryTags, addRecipeToList, editRecipe, deleteRecipe
+    getFeaturedRecipes, getCategoryTags, addRecipeToList, editRecipe, deleteRecipe, bulkUpdateRecipes
 } from './recipes.utils';
 import { AuthContext } from '../auth/auth.provider';
 import { iRecipe } from '../../interfaces/recipe/recipe.interface';
@@ -9,6 +9,7 @@ import { getRecipes, getRecipesAuth } from '../../services/recipes/recipes.servi
 type RecipeContextType = {
     recipeItems: iRecipe[];
     recipeCount: number;
+    bulkUpdateRecipes: (itemsToUpdate: iRecipe[], recipes: iRecipe[]) => iRecipe[];
     getFeaturedRecipes: (recipes: iRecipe[]) => iRecipe[];
     getCategoryTags: (recipes: iRecipe[]) => iRecipe[];
     addRecipeToList: (recipes: iRecipe[], recipe?: iRecipe) => iRecipe[];
@@ -17,6 +18,7 @@ type RecipeContextType = {
     setSpinner: (val: boolean) => void;
     makeFreshPull: (val: boolean) => void;
     setCount: (val: number) => void;
+    setRecipeItems: (recipes: iRecipe[]) => void;
     isLoading: boolean;
     makeRequest: boolean;
 }
@@ -24,6 +26,7 @@ type RecipeContextType = {
 export const RecipesContext = createContext<RecipeContextType>({
     recipeItems: [],
     recipeCount: 0,
+    bulkUpdateRecipes: ([], []) => [],
     getFeaturedRecipes: ([]) => [],
     getCategoryTags: ([]) => [],
     addRecipeToList: ([]) => [],
@@ -32,6 +35,7 @@ export const RecipesContext = createContext<RecipeContextType>({
     setSpinner: () => { },
     setCount: () => { },
     makeFreshPull: () => { },
+    setRecipeItems: ([]) => [],
     isLoading: true,
     makeRequest: true
 });
@@ -56,10 +60,8 @@ const RecipesProvider: FC<Props> = ({ children }) => {
 
             if (isLoggedIn) {
                 getRecipesAuth(token).then((resp) => {
-                    // delay is to see spinner
                     setTimeout(() => {
                         setRecipeItems(resp);
-                        //console.log('auth', resp)
                         setCount(resp.length);
                         setSpinner(false);
                     }, 1500);
@@ -69,13 +71,11 @@ const RecipesProvider: FC<Props> = ({ children }) => {
                 });
             } else {
                 getRecipes().then((resp) => {
-                    // delay is to see spinner
                     setTimeout(() => {
                         setSpinner(false);
                         if (resp) {
                             setRecipeItems(resp);
                             setCount(resp.length);
-                            //console.log('unauth', resp)
                         }
                     }, 1500);
                 }).catch((err) => {
@@ -91,15 +91,17 @@ const RecipesProvider: FC<Props> = ({ children }) => {
             setSpinner(true);
             makeFreshPull(true);
         }
-    }, [isLoggedIn])
+    }, [isLoggedIn]);
 
     return (<RecipesContext.Provider
         value={{
             recipeItems,
             recipeCount,
+            bulkUpdateRecipes,
             getFeaturedRecipes,
             getCategoryTags,
             addRecipeToList,
+            setRecipeItems,
             editRecipe,
             deleteRecipe,
             setSpinner,

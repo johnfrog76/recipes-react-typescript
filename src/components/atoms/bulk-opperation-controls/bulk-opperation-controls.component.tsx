@@ -39,7 +39,7 @@ type Props = {
 const BulkOpperationsControls: FC<Props> = ({ bulkCount, bulkList, handleEditMode, selectMode, isMixedList }) => {
     const { addToast } = useToasts();
     const { user, token } = useContext(AuthContext);
-    const { makeFreshPull } = useContext(RecipesContext);
+    const { recipeItems, bulkUpdateRecipes, setRecipeItems } = useContext(RecipesContext);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
     const [actionType, setActionType] = useState<string>('');
@@ -64,7 +64,7 @@ const BulkOpperationsControls: FC<Props> = ({ bulkCount, bulkList, handleEditMod
                 case "favorite":
                     addFavoriteBulk(bulkList, user.userId, token).then(resp => {
 
-                        makeFreshPull(true);
+                        setRecipeItems(bulkUpdateRecipes(resp.data, recipeItems));
                         addToast(
                             `Success: ${confirmMsg}`,
                             {
@@ -84,7 +84,7 @@ const BulkOpperationsControls: FC<Props> = ({ bulkCount, bulkList, handleEditMod
                     break;
                 case "unfavorite":
                     removeFavoriteBulk(bulkList, user.userId, token).then(resp => {
-                        makeFreshPull(true);
+                        setRecipeItems(bulkUpdateRecipes(resp.data, recipeItems));
                         addToast(
                             `Success: ${confirmMsg}`,
                             {
@@ -104,7 +104,7 @@ const BulkOpperationsControls: FC<Props> = ({ bulkCount, bulkList, handleEditMod
                     break;
                 case "share":
                     addShareBulk(bulkList, user.userId, token).then(resp => {
-                        makeFreshPull(true);
+                        setRecipeItems(bulkUpdateRecipes(resp.data, recipeItems));
                         addToast(
                             `Success: ${confirmMsg}`,
                             {
@@ -124,7 +124,7 @@ const BulkOpperationsControls: FC<Props> = ({ bulkCount, bulkList, handleEditMod
                     break;
                 case "noshare":
                     removeShareBulk(bulkList, user.userId, token).then(resp => {
-                        makeFreshPull(true);
+                        setRecipeItems(bulkUpdateRecipes(resp.data, recipeItems));
                         addToast(
                             `Success: ${confirmMsg}`,
                             {
