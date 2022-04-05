@@ -5,10 +5,11 @@ import PageTitle from "../../components/atoms/page-title/page-title.component";
 import RecipeList from "../../components/molecules/recipes-list/recipes-list.component";
 import BulkOperationControls from "../../components/atoms/bulk-opperation-controls/bulk-opperation-controls.component";
 import ListGridToggleButton from "../../components/atoms/list-grid-toggle/list-grid-toggle.component";
+import CheckBoxPlain from "../../components/atoms/checkbox-plain/checkbox-plain.component"
 import { RecipesContext } from '../../providers/recipes/recipes.provider';
 import { AuthContext } from "../../providers/auth/auth.provider";
 import RecipeCardList from '../../components/molecules/recipes-category-card-list/recipes-category-card-list.component';
-import { StyledTitleWrapper, StyledSpinnerWrap, StyledToolBar } from './recipes.styles';
+import { StyledTitleWrapper, StyledSpinnerWrap, StyledToolBar, StyledCheckAllWrapper } from './recipes.styles';
 import EmptyMesssage from "../../components/atoms/empty-message/empty-message.component";
 import Spinner from "../../components/molecules/spinner/spinner.component";
 import { iRecipe } from "../../interfaces/recipe/recipe.interface";
@@ -38,18 +39,26 @@ const RecipesPage = () => {
     const [selectMode, setSelectMode] = useState<boolean>(false);
     const [bulkList, setBulkList] = useState<string[]>([]);
     const [bulkCount, setBulkCount] = useState<number>(0);
+    const [isBulkSelected, setIsBulkSelected] = useState<boolean>(false);
+    const [isSelectAllChecked, setIsSelectAllChecked] = useState<boolean>(false);
 
     const onButtonClick = () => {
         setIsGridView(!isGridView);
         setSelectMode(false);
-
     };
 
     const handleEditMode = () => {
         setSelectMode(!selectMode);
         setBulkList([]);
+        setIsBulkSelected(false);
+        setIsSelectAllChecked(false);
         setBulkCount(0);
     };
+
+    const handleToggleAllCheckboxes = (value: string | undefined, checked: boolean) => {
+        setBulkList([]);
+        setIsBulkSelected(checked);
+    }
 
     const handleSelectChange = (id: string | undefined, checked: boolean) => {
         if (id) {
@@ -70,7 +79,9 @@ const RecipesPage = () => {
     return (
         <MainSection>
             <StyledTitleWrapper>
-                <PageTitle>Recipes ({recipeItems.length})</PageTitle>
+                <PageTitle>
+                    Recipes ({recipeItems.length})
+                </PageTitle>
                 <StyledToolBar>
                     {isGridView && isLoggedIn && (
 
@@ -86,6 +97,18 @@ const RecipesPage = () => {
                 </StyledToolBar>
             </StyledTitleWrapper>
             {
+                isGridView && isLoggedIn && selectMode && (
+                    <StyledCheckAllWrapper>
+                        <CheckBoxPlain
+                            id="selectAllItems"
+                            inputChangeHandler={handleToggleAllCheckboxes}
+                            value=""
+                            isChecked={isSelectAllChecked}
+                        />
+                    </StyledCheckAllWrapper>
+                )
+            }
+            {
                 isLoading && (
                     <StyledSpinnerWrap>
                         <Spinner />
@@ -95,7 +118,7 @@ const RecipesPage = () => {
             {
                 !isLoading && recipeItems.length !== 0 &&
                     isGridView ? (
-                    <RecipeCardList recipes={recipeItems} selectMode={selectMode} onSelectChange={handleSelectChange} />
+                    <RecipeCardList recipes={recipeItems} selectMode={selectMode} isBulkSelected={isBulkSelected} onSelectChange={handleSelectChange} />
                 ) : (
                     <RecipeList recipes={recipeItems} />
                 )

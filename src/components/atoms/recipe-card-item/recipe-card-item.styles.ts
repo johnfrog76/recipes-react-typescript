@@ -40,8 +40,9 @@ export const CardTitle = styled.h3`
     font-weight: 400;
     display: -webkit-box;
     -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;  
+    -webkit-box-orient: vertical;
     overflow: hidden;
+    padding-right: 0.5rem;
 `;
 
 export const CardBottomWrapper = styled.div<iThemeStyleProp>`

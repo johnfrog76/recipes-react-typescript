@@ -21,3 +21,7 @@ export const StyledToolBar = styled.div`
   justify-content: space-between;
 `;
 
+export const StyledCheckAllWrapper = styled.div`
+  margin-bottom: -0.375rem;
+  margin-top: 0.75rem;
+`;

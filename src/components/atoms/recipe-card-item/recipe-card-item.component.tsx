@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, FC, useContext } from 'react';
+import React, { FC, useContext, useState, useEffect } from 'react';
 
 import RecipeRating from '../../atoms/rating/rating.component';
 import { Link } from 'react-router-dom';
@@ -12,16 +12,24 @@ type Props = {
     item: iRecipe;
     selectMode?: boolean;
     onSelectChange?: (id: string | undefined, checked: boolean) => void;
+    isBulkSelected?: boolean
 }
 
-const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange }) => {
+const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, isBulkSelected = false }) => {
     const { theme } = useContext(ThemeContext);
+    const [isChecked, setIsChecked] = useState<boolean>(false);
 
     const handleChange = (id: string | undefined, checked: boolean) => {
         if (onSelectChange) {
             onSelectChange(id, checked);
         }
     }
+
+    useEffect(() => {
+        setIsChecked(isBulkSelected);
+        handleChange(item._id, isBulkSelected);
+    }, [isBulkSelected, selectMode]);
+
     return (
         <CardItem ThemeStyle={theme}>
             <CardTitleWrap>
@@ -32,6 +40,7 @@ const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange })
                             id={item._id || 'none'}
                             value={item._id || 'none'}
                             inputChangeHandler={handleChange}
+                            isChecked={isChecked}
                         />
                     )
                 }
