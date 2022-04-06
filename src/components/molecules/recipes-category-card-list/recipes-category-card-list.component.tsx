@@ -21,7 +21,15 @@ const RecipesCategoryCardList: FC<Props> = ({ recipes = [], selectMode = false, 
     return (
         <StyledCardContainer>
             {
-                recipes.map((item, key) => (<RecipeCardItem key={key} item={item} selectMode={selectMode} onSelectChange={onSelectChange} isBulkSelected={isBulk} />))
+                recipes.map((item, key) => (
+                    <RecipeCardItem
+                        key={key}
+                        item={item}
+                        selectMode={selectMode}
+                        onSelectChange={onSelectChange}
+                        isBulkSelected={isBulk}
+                    />
+                ))
             }
             {
                 recipes.length < 3 && (
