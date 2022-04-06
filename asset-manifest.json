@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/recipes-react-typescript/static/css/main.3ebf6a35.chunk.css",
-    "main.js": "/recipes-react-typescript/static/js/main.6bad130e.chunk.js",
-    "main.js.map": "/recipes-react-typescript/static/js/main.6bad130e.chunk.js.map",
+    "main.js": "/recipes-react-typescript/static/js/main.d130dacd.chunk.js",
+    "main.js.map": "/recipes-react-typescript/static/js/main.d130dacd.chunk.js.map",
     "runtime-main.js": "/recipes-react-typescript/static/js/runtime-main.f2929158.js",
     "runtime-main.js.map": "/recipes-react-typescript/static/js/runtime-main.f2929158.js.map",
     "static/js/2.7bb25498.chunk.js": "/recipes-react-typescript/static/js/2.7bb25498.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.f2929158.js",
     "static/js/2.7bb25498.chunk.js",
     "static/css/main.3ebf6a35.chunk.css",
-    "static/js/main.6bad130e.chunk.js"
+    "static/js/main.d130dacd.chunk.js"
   ]
 }
