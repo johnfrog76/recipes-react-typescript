@@ -6,19 +6,15 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { RecipesContext } from '../../../providers/recipes/recipes.provider';
 import { AuthContext } from '../../../providers/auth/auth.provider';
 import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
+import UserActionButtonIcon, { ButtonIconTypeEnum } from '../user-action-button-icon/user-action-button-icon.component';
 import { removeRecipe, addFavorite, removeFavorite } from '../../../services/recipes/recipes.services';
 import ConfirmDialog from '../../molecules/confirm-dialog/confirm-dialog.component';
 
 import {
-    StyledDeleteIcon,
-    StyledEditIcon,
-    StyledPrintIcon,
     StyledShareIcon,
     StyledRecipeActionBar,
     StyledButton,
-    StyledTextarea,
-    StyledFavoriteOutlineIcon,
-    StyledFavoriteIcon
+    StyledTextarea
 } from './recipe-action-bar.styles';
 
 const RecicipeActionBar = () => {
@@ -144,25 +140,16 @@ const RecicipeActionBar = () => {
                         <React.Fragment>
                             {
                                 isFav ? (
-                                    <StyledButton title="Remove Favorite" disabled={favDisabled} onClick={() => handleFavorite()}>
-                                        <StyledFavoriteIcon />
-                                    </StyledButton>
+                                    <UserActionButtonIcon title="Remove Favorite" clickHandler={() => handleFavorite()} disabled={favDisabled} icon={ButtonIconTypeEnum.favorite} />
                                 ) : (
-                                    <StyledButton title="Add Favorite" disabled={favDisabled} onClick={() => handleFavorite()}>
-                                        <StyledFavoriteOutlineIcon />
-                                    </StyledButton>
+                                    <UserActionButtonIcon title="Add Favorite" clickHandler={() => handleFavorite()} disabled={favDisabled} icon={ButtonIconTypeEnum.unfavorite} />
                                 )
                             }
                             {
                                 isOwner && (
                                     <React.Fragment>
-                                        <StyledButton title="Delete" onClick={() => handleClickOpen()}>
-                                            <StyledDeleteIcon />
-                                        </StyledButton>
-
-                                        <StyledButton title="Edit" onClick={() => navigate(`/edit-recipe/${id}`)}>
-                                            <StyledEditIcon />
-                                        </StyledButton>
+                                        <UserActionButtonIcon title="Delete" clickHandler={handleClickOpen} icon={ButtonIconTypeEnum.delete} />
+                                        <UserActionButtonIcon title="Edit" clickHandler={() => navigate(`/edit-recipe/${id}`)} icon={ButtonIconTypeEnum.edit} />
                                     </React.Fragment>
                                 )
                             }
@@ -174,14 +161,12 @@ const RecicipeActionBar = () => {
                     onCopy={() => setCopied(true)}
                     text={value}
                 >
-                    <StyledButton title={copied ? `Copied URL` : 'Share'}>
+                    <StyledButton title={copied ? `Copied URL` : 'Share'} >
                         <StyledShareIcon />
                     </StyledButton>
-                </CopyToClipboard>
 
-                <StyledButton title="Print" onClick={() => window.print()}>
-                    <StyledPrintIcon />
-                </StyledButton>
+                </CopyToClipboard>
+                <UserActionButtonIcon title="Print" clickHandler={() => window.print()} icon={ButtonIconTypeEnum.print} />
             </StyledRecipeActionBar>
             <ConfirmDialog
                 open={open}
