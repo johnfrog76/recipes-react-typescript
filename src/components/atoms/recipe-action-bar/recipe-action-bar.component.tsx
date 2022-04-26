@@ -105,14 +105,8 @@ const RecicipeActionBar = () => {
                     setIsFav(false);
 
                     if (user && recipe) {
-                        let tempRecipe: iRecipe = recipe;
-                        if (!tempRecipe.favorites) {
-                            tempRecipe.favorites = [];
-                        }
-                        let idx = tempRecipe?.favorites.findIndex(item => item.userId === user.userId);
-                        tempRecipe.favorites?.splice(idx, 1);
                         setIsFav(false);
-                        editRecipe(recipeItems, tempRecipe);
+                        editRecipe(recipeItems, resp.data);
                     }
                 }
                 setFavDisabled(false);

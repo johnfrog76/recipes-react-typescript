@@ -90,6 +90,9 @@ const RecipesProvider: FC<Props> = ({ children }) => {
         if (isLoggedIn) {
             setSpinner(true);
             makeFreshPull(true);
+        } else {
+            const tempRecipes = recipeItems.filter(r => r.shared === true);
+            setRecipeItems(tempRecipes);
         }
     }, [isLoggedIn]);
 

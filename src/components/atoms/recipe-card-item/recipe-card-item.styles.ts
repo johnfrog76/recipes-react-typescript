@@ -32,7 +32,7 @@ export const CardCopy = styled.p`
 
 export const CardTitleWrap = styled.div`
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
 `;
 
@@ -81,6 +81,7 @@ export const CardMetaInfo = styled.div<iThemeStyleProp>`
         position: relative;
         padding-right: 8px;
         margin-right: 8px;
+        white-space: nowrap;
         flex: 0;
         &:before {
             position: absolute;

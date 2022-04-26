@@ -8,11 +8,9 @@ export const StyledTextarea = styled.textarea`
     visibility: hidden;
 `;
 
-
 export const StyledShareIcon = styled(Share)`
     font-size: 1.5rem !important;
 `;
-
 
 export const StyledRecipeActionBar = styled.div`
     display: flex;
