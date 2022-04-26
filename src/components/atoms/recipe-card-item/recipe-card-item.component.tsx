@@ -18,7 +18,8 @@ type Props = {
     item: iRecipe;
     selectMode?: boolean;
     onSelectChange?: (id: string | undefined, checked: boolean) => void;
-    isBulkSelected?: boolean
+    isBulkSelected?: boolean,
+    showFavorites?: boolean,
 }
 
 const checkIsFavorite = (item: iRecipe, user: iUser): boolean => {
@@ -32,9 +33,9 @@ const checkIsFavorite = (item: iRecipe, user: iUser): boolean => {
     return false;
 }
 
-const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, isBulkSelected = false }) => {
+const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, isBulkSelected = false, showFavorites = true }) => {
     const { theme } = useContext(ThemeContext);
-    const { editRecipe, recipeItems, bulkUpdateRecipes, setRecipeItems } = useContext(RecipesContext);
+    const { recipeItems, bulkUpdateRecipes, setRecipeItems } = useContext(RecipesContext);
     const [isChecked, setIsChecked] = useState<boolean>(false);
     const { token, isLoggedIn, user } = useContext(AuthContext);
     const [isFav, setIsFav] = useState<boolean>(false);
@@ -53,25 +54,20 @@ const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, i
         setFavDisabled(true);
         if (isFav) {
             removeFavorite(item._id, user?.userId, token).then((resp) => {
-
-                if (resp.message === 'favorite removed') {
-                    if (user && item) {
-                        setIsFav(false);
-                        setRecipeItems(bulkUpdateRecipes([resp.data], recipeItems));
-                    }
-                }
+                setIsFav(false);
+                setRecipeItems(bulkUpdateRecipes([resp.data], recipeItems));
                 setFavDisabled(false);
-            }).catch(err => console.log(err.message));
+            }).catch(err => {
+                console.error(err.message);
+            });
         } else {
             addFavorite(item._id, user?.userId, token).then((resp) => {
-                if (resp.message === 'favorite added') {
-                    if (user && item) {
-                        setIsFav(true);
-                        setRecipeItems(bulkUpdateRecipes([resp.data], recipeItems))
-                    }
-                }
+                setIsFav(true);
+                setRecipeItems(bulkUpdateRecipes([resp.data], recipeItems));
                 setFavDisabled(false);
-            }).catch(err => console.log(err.message));
+            }).catch(err => {
+                console.error(err.message);
+            });
         }
     }
 
@@ -102,13 +98,23 @@ const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, i
                     )
                 }
                 {
-                    !selectMode && isLoggedIn && (
+                    showFavorites && !selectMode && isLoggedIn && (
                         <React.Fragment>
                             {
                                 isFav ? (
-                                    <UserActionButtonIcon disabled={favDisabled} icon={ButtonIconTypeEnum.favorite} title="Remove Favorite" clickHandler={() => onFavoriteAction()} />
+                                    <UserActionButtonIcon
+                                        disabled={favDisabled}
+                                        icon={ButtonIconTypeEnum.favorite}
+                                        title="Remove Favorite"
+                                        clickHandler={() => onFavoriteAction()}
+                                    />
                                 ) : (
-                                    <UserActionButtonIcon disabled={favDisabled} icon={ButtonIconTypeEnum.unfavorite} title="Add Favorite" clickHandler={() => onFavoriteAction()} />
+                                    <UserActionButtonIcon
+                                        disabled={favDisabled}
+                                        icon={ButtonIconTypeEnum.unfavorite}
+                                        title="Add Favorite"
+                                        clickHandler={() => onFavoriteAction()}
+                                    />
                                 )
                             }
                         </React.Fragment>

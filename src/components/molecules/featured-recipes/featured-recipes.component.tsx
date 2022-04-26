@@ -21,7 +21,7 @@ const FeaturedRecipes = () => {
         <CardList>
             {
                 featured.map((item, key) => (
-                    <RecipeCardItem key={key} item={item} />
+                    <RecipeCardItem key={key} item={item} showFavorites={false} />
                 ))
             }
         </CardList>

@@ -100,26 +100,14 @@ const RecicipeActionBar = () => {
         setFavDisabled(true);
         if (isFav) {
             removeFavorite(id, user?.userId, token).then((resp) => {
-
-                if (resp.message === 'favorite removed') {
-                    setIsFav(false);
-
-                    if (user && recipe) {
-                        setIsFav(false);
-                        editRecipe(recipeItems, resp.data);
-                    }
-                }
+                editRecipe(recipeItems, resp.data);
+                setIsFav(false);
                 setFavDisabled(false);
             }).catch(err => console.log(err.message));
         } else {
             addFavorite(id, user?.userId, token).then((resp) => {
-
-                if (resp.message === 'favorite added') {
-                    if (user && recipe) {
-                        setIsFav(true);
-                        editRecipe(recipeItems, resp.data);
-                    }
-                }
+                setIsFav(true);
+                editRecipe(recipeItems, resp.data);
                 setFavDisabled(false);
             }).catch(err => console.log(err.message));
         }
@@ -134,9 +122,19 @@ const RecicipeActionBar = () => {
                         <React.Fragment>
                             {
                                 isFav ? (
-                                    <UserActionButtonIcon title="Remove Favorite" clickHandler={() => handleFavorite()} disabled={favDisabled} icon={ButtonIconTypeEnum.favorite} />
+                                    <UserActionButtonIcon
+                                        title="Remove Favorite"
+                                        clickHandler={() => handleFavorite()}
+                                        disabled={favDisabled}
+                                        icon={ButtonIconTypeEnum.favorite}
+                                    />
                                 ) : (
-                                    <UserActionButtonIcon title="Add Favorite" clickHandler={() => handleFavorite()} disabled={favDisabled} icon={ButtonIconTypeEnum.unfavorite} />
+                                    <UserActionButtonIcon
+                                        title="Add Favorite"
+                                        clickHandler={() => handleFavorite()}
+                                        disabled={favDisabled}
+                                        icon={ButtonIconTypeEnum.unfavorite}
+                                    />
                                 )
                             }
                             {
