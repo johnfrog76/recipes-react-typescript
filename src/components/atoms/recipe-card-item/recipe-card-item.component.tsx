@@ -5,23 +5,69 @@ import { Link } from 'react-router-dom';
 import { ChevronRight } from "@material-ui/icons";
 import CheckBoxPlain from '../checkbox-plain/checkbox-plain.component';
 import { ThemeContext, Theme } from '../../../providers/theme/theme.provider';
+import { AuthContext } from '../../../providers/auth/auth.provider';
+import { RecipesContext } from '../../../providers/recipes/recipes.provider';
 import { CardItem, CardCopy, CardBottomWrapper, CardTitleWrap, CardMetaInfo, CardTitle } from './recipe-card-item.styles';
 import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
+import { iUser } from '../../../interfaces/user/user.interface';
+import UserActionButtonIcon, { ButtonIconTypeEnum } from '../../atoms/user-action-button-icon/user-action-button-icon.component';
+import { addFavorite, removeFavorite } from '../../../services/recipes/recipes.services';
+
 
 type Props = {
     item: iRecipe;
     selectMode?: boolean;
     onSelectChange?: (id: string | undefined, checked: boolean) => void;
-    isBulkSelected?: boolean
+    isBulkSelected?: boolean,
+    showFavorites?: boolean,
 }
 
-const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, isBulkSelected = false }) => {
+const checkIsFavorite = (item: iRecipe, user: iUser): boolean => {
+    if (item?.favorites && user) {
+        let tempFav = item.favorites.find(f => f.userId === user?.userId);
+        if (tempFav) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, isBulkSelected = false, showFavorites = true }) => {
     const { theme } = useContext(ThemeContext);
+    const { recipeItems, bulkUpdateRecipes, setRecipeItems } = useContext(RecipesContext);
     const [isChecked, setIsChecked] = useState<boolean>(false);
+    const { token, isLoggedIn, user } = useContext(AuthContext);
+    const [isFav, setIsFav] = useState<boolean>(false);
+    const [favDisabled, setFavDisabled] = useState<boolean>(false);
 
     const handleChange = (id: string | undefined, checked: boolean) => {
         if (onSelectChange) {
             onSelectChange(id, checked);
+            if (user) {
+                setIsFav(checkIsFavorite(item, user));
+            }
+        }
+    }
+
+    const onFavoriteAction = () => {
+        setFavDisabled(true);
+        if (isFav) {
+            removeFavorite(item._id, user?.userId, token).then((resp) => {
+                setIsFav(false);
+                setRecipeItems(bulkUpdateRecipes([resp.data], recipeItems));
+                setFavDisabled(false);
+            }).catch(err => {
+                console.error(err.message);
+            });
+        } else {
+            addFavorite(item._id, user?.userId, token).then((resp) => {
+                setIsFav(true);
+                setRecipeItems(bulkUpdateRecipes([resp.data], recipeItems));
+                setFavDisabled(false);
+            }).catch(err => {
+                console.error(err.message);
+            });
         }
     }
 
@@ -29,6 +75,13 @@ const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, i
         setIsChecked(isBulkSelected);
         handleChange(item._id, isBulkSelected);
     }, [isBulkSelected, selectMode]);
+
+    useEffect(() => {
+        if (item?.favorites && user) {
+            setIsFav(checkIsFavorite(item, user))
+        }
+
+    }, [item, user]);
 
     return (
         <CardItem ThemeStyle={theme}>
@@ -42,6 +95,29 @@ const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, i
                             inputChangeHandler={handleChange}
                             isChecked={isChecked}
                         />
+                    )
+                }
+                {
+                    showFavorites && !selectMode && isLoggedIn && (
+                        <React.Fragment>
+                            {
+                                isFav ? (
+                                    <UserActionButtonIcon
+                                        disabled={favDisabled}
+                                        icon={ButtonIconTypeEnum.favorite}
+                                        title="Remove Favorite"
+                                        clickHandler={() => onFavoriteAction()}
+                                    />
+                                ) : (
+                                    <UserActionButtonIcon
+                                        disabled={favDisabled}
+                                        icon={ButtonIconTypeEnum.unfavorite}
+                                        title="Add Favorite"
+                                        clickHandler={() => onFavoriteAction()}
+                                    />
+                                )
+                            }
+                        </React.Fragment>
                     )
                 }
             </CardTitleWrap>
