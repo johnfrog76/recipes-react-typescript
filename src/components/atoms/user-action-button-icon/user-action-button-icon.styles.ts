@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 import { Delete, Edit, Share, Print, Favorite, FavoriteBorderOutlined } from '@material-ui/icons';
+import {Theme as ThemeEnum } from '../../../providers/theme/theme.provider';
+
+interface iThemeStyleProp {
+    ThemeStyle?: ThemeEnum;
+    inverse: string;
+}
 
 export const StyledFavoriteIcon = styled(Favorite)`
     font-size: 1.5rem !important;
@@ -26,7 +32,7 @@ export const StyledPrintIcon = styled(Print)`
     font-size: 1.5rem !important;
 `;
 
-export const StyledButton = styled.button`
+export const StyledButton = styled.button<iThemeStyleProp>`
     opacity: 0.5;
     border: 0;
     padding: 0;
@@ -36,6 +42,10 @@ export const StyledButton = styled.button`
     cursor: pointer;
     background-color: transparent;
     color: ${props => props.theme.colors.pageLinkColor1};
+    ${props => props.inverse === 'yes' && `
+        color: #fff;
+        opacity: 0.7;
+    `};
     margin: 0 1rem 0 0;
     &:last-child {
         margin: 0;
