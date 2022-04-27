@@ -4,7 +4,6 @@ import {
     StyledDeleteIcon,
     StyledEditIcon,
     StyledPrintIcon,
-    StyledShareIcon,
     StyledButton,
     StyledFavoriteOutlineIcon,
     StyledFavoriteIcon
@@ -15,6 +14,7 @@ interface Props {
     clickHandler: (evt: React.SyntheticEvent) => void;
     disabled?: boolean;
     title?: string;
+    inverse?: boolean;
 }
 
 export enum ButtonIconTypeEnum {
@@ -25,9 +25,9 @@ export enum ButtonIconTypeEnum {
     unfavorite = 5
 }
 
-const UserActionButtonIcon: FC<Props> = ({ icon, clickHandler, disabled = false, title }) => {
+const UserActionButtonIcon: FC<Props> = ({ icon, clickHandler, disabled = false, title, inverse = true }) => {
     return (
-        <StyledButton title={title} disabled={disabled} onClick={(evt) => clickHandler(evt)}>
+        <StyledButton inverse={inverse ? 'no' : 'yes'} title={title} disabled={disabled} onClick={(evt) => clickHandler(evt)}>
             {
                 icon === ButtonIconTypeEnum.delete && (
                     <StyledDeleteIcon />
