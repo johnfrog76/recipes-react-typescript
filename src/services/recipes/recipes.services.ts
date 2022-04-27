@@ -5,6 +5,7 @@ const baseURL = process.env.REACT_APP_BASEURL;
 const endpoint = process.env.REACT_APP_RECIPE_ENDPOINT;
 const commentEndpoint = process.env.REACT_APP_RECIPE_COMMENT_ENDPOINT;
 const addFavoriteEndpoint = process.env.REACT_APP_FAVORITE_ADD;
+const copyRecipeEndpoint = process.env.REACT_APP_RECIPE_COPY;
 const removeFavoriteEndpoint = process.env.REACT_APP_FAVORITE_REMOVE;
 const addFavoriteBulkEndpoint = process.env.REACT_APP_BULK_FAVORITE_ADD;
 const removeFavoriteBulkEndpoint = process.env.REACT_APP_BULK_FAVORITE_REMOVE;
@@ -35,6 +36,27 @@ export const getRecipesAuth = async (token: string | null) => {
         throw(err);
     }
 };
+
+
+export const copyRecipe = async (recipeId: string, userId: string, token: string | null) => {
+    try {
+        const resp = await axios({
+            method: 'post',
+            url: `${baseURL}${copyRecipeEndpoint}`,
+            data: {
+                userId: userId,
+                recipeId: recipeId
+            },
+            headers: {
+                Authorization: `Bearer ${token ? token : 'none'}`
+            }
+        });
+        return resp.data;
+    } catch (err) {
+        throw(err);
+    }
+};
+
 
 export const addRecipe = async (recipe: iRecipe, token: string | null) => {
     try {

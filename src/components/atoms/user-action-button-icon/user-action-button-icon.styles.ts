@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Delete, Edit, Share, Print, Favorite, FavoriteBorderOutlined } from '@material-ui/icons';
+import { ContentCopy } from '@mui/icons-material';
 import {Theme as ThemeEnum } from '../../../providers/theme/theme.provider';
 
 interface iThemeStyleProp {
@@ -29,6 +30,10 @@ export const StyledShareIcon = styled(Share)`
 `;
 
 export const StyledPrintIcon = styled(Print)`
+    font-size: 1.5rem !important;
+`;
+
+export const StyledCopyIcon = styled(ContentCopy)`
     font-size: 1.5rem !important;
 `;
 

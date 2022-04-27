@@ -6,7 +6,8 @@ import {
     StyledPrintIcon,
     StyledButton,
     StyledFavoriteOutlineIcon,
-    StyledFavoriteIcon
+    StyledFavoriteIcon,
+    StyledCopyIcon
 } from './user-action-button-icon.styles';
 
 interface Props {
@@ -22,7 +23,8 @@ export enum ButtonIconTypeEnum {
     edit = 1,
     print = 2,
     favorite = 4,
-    unfavorite = 5
+    unfavorite = 5,
+    copy = 6
 }
 
 const UserActionButtonIcon: FC<Props> = ({ icon, clickHandler, disabled = false, title, inverse = false }) => {
@@ -51,6 +53,11 @@ const UserActionButtonIcon: FC<Props> = ({ icon, clickHandler, disabled = false,
             {
                 icon === ButtonIconTypeEnum.unfavorite && (
                     <StyledFavoriteOutlineIcon />
+                )
+            }
+            {
+                icon === ButtonIconTypeEnum.copy && (
+                    <StyledCopyIcon />
                 )
             }
         </StyledButton>

@@ -1,45 +1,35 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-
 import { useToasts } from 'react-toast-notifications';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+
 import { RecipesContext } from '../../../providers/recipes/recipes.provider';
 import { AuthContext } from '../../../providers/auth/auth.provider';
 import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
 import UserActionButtonIcon, { ButtonIconTypeEnum } from '../user-action-button-icon/user-action-button-icon.component';
-import { removeRecipe, addFavorite, removeFavorite } from '../../../services/recipes/recipes.services';
+import { StyledRecipeActionBar } from './recipe-action-bar.styles';
+import { removeRecipe, addFavorite, removeFavorite, copyRecipe } from '../../../services/recipes/recipes.services';
 import ConfirmDialog from '../../molecules/confirm-dialog/confirm-dialog.component';
-
-import {
-    StyledShareIcon,
-    StyledRecipeActionBar,
-    StyledButton,
-    StyledTextarea
-} from './recipe-action-bar.styles';
 
 const RecicipeActionBar = () => {
     let { id } = useParams();
     let navigate = useNavigate();
     const { addToast } = useToasts();
     const { recipeItems, deleteRecipe, setSpinner, setCount,
-        editRecipe } = useContext(RecipesContext);
+        editRecipe, setRecipeItems } = useContext(RecipesContext);
     const { token, isLoggedIn, user } = useContext(AuthContext);
 
     const [favDisabled, setFavDisabled] = useState<boolean>(false);
     const [isFav, setIsFav] = useState<boolean>(false);
     const [recipe, setRecipe] = useState<iRecipe | undefined>(undefined);
     const [open, setOpen] = useState<boolean>(false);
-    const [copied, setCopied] = useState<boolean>(false);
-    const [value, setValue] = useState<string>('');
+    const [copyOpen, setCopyOpen] = useState<boolean>(false);
     const [isOwner, setIsOwner] = useState<boolean>(false);
 
     useEffect(() => {
         const recipe = recipeItems.find(r => r._id === id);
-        const base = process.env.REACT_APP_SHARE_URL;
 
         if (recipe) {
             setRecipe(recipe);
-            setValue(`${base}/recipes/${recipe._id}`)
         }
     }, [recipeItems, id]);
 
@@ -96,6 +86,41 @@ const RecicipeActionBar = () => {
         setOpen(false);
     };
 
+    const confirmCopyRecipe = () => {
+        setCopyOpen(true);
+    };
+
+    const handleCopyClose = () => {
+        setCopyOpen(false);
+    }
+
+    const handleCopy = () => {
+        setCopyOpen(false);
+        if (id && user) {
+            copyRecipe(id, user.userId, user?.token).then((resp) => {
+                let tempItems = recipeItems;
+                tempItems.push(resp.data);
+                setRecipeItems(tempItems);
+                addToast(
+                    'Success',
+                    {
+                        appearance: 'success',
+                        autoDismiss: true
+                    }
+                );
+                navigate('/recipes');
+            }).catch(err => {
+                addToast(
+                    `Error: ${err.message}`,
+                    {
+                        appearance: 'error',
+                        autoDismiss: false
+                    }
+                );
+            });
+        }
+    }
+
     const handleFavorite = () => {
         setFavDisabled(true);
         if (isFav) {
@@ -145,19 +170,14 @@ const RecicipeActionBar = () => {
                                     </React.Fragment>
                                 )
                             }
+                            <UserActionButtonIcon
+                                title="Copy this Recipe"
+                                clickHandler={() => confirmCopyRecipe()}
+                                icon={ButtonIconTypeEnum.copy}
+                            />
                         </React.Fragment>
                     )
                 }
-
-                <CopyToClipboard
-                    onCopy={() => setCopied(true)}
-                    text={value}
-                >
-                    <StyledButton title={copied ? `Copied URL` : 'Share'} >
-                        <StyledShareIcon />
-                    </StyledButton>
-
-                </CopyToClipboard>
                 <UserActionButtonIcon title="Print" clickHandler={() => window.print()} icon={ButtonIconTypeEnum.print} />
             </StyledRecipeActionBar>
             <ConfirmDialog
@@ -167,12 +187,12 @@ const RecicipeActionBar = () => {
                 handleCancel={handleClose}
                 handleConfirm={handleDelete}
             />
-            <StyledTextarea
-                value={value}
-                onChange={(e) => {
-                    setValue(e.target.value);
-                    setCopied(false);
-                }}
+            <ConfirmDialog
+                open={copyOpen}
+                title={"Are you sure?"}
+                confirmText={`Copy ${recipe?.r_name} recipe to a new recipe?`}
+                handleCancel={handleCopyClose}
+                handleConfirm={handleCopy}
             />
         </React.Fragment>
     );
