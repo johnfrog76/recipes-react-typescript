@@ -25,9 +25,9 @@ export enum ButtonIconTypeEnum {
     unfavorite = 5
 }
 
-const UserActionButtonIcon: FC<Props> = ({ icon, clickHandler, disabled = false, title, inverse = true }) => {
+const UserActionButtonIcon: FC<Props> = ({ icon, clickHandler, disabled = false, title, inverse = false }) => {
     return (
-        <StyledButton inverse={inverse ? 'no' : 'yes'} title={title} disabled={disabled} onClick={(evt) => clickHandler(evt)}>
+        <StyledButton inverse={inverse ? 'yes' : 'no'} title={title} disabled={disabled} onClick={(evt) => clickHandler(evt)}>
             {
                 icon === ButtonIconTypeEnum.delete && (
                     <StyledDeleteIcon />

@@ -107,7 +107,7 @@ const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, i
                                         icon={ButtonIconTypeEnum.favorite}
                                         title="Remove Favorite"
                                         clickHandler={() => onFavoriteAction()}
-                                        inverse={theme === Theme.Light}
+                                        inverse={theme !== Theme.Light}
                                     />
                                 ) : (
                                     <UserActionButtonIcon
@@ -115,7 +115,7 @@ const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, i
                                         icon={ButtonIconTypeEnum.unfavorite}
                                         title="Add Favorite"
                                         clickHandler={() => onFavoriteAction()}
-                                        inverse={theme === Theme.Light}
+                                        inverse={theme !== Theme.Light}
                                     />
                                 )
                             }
