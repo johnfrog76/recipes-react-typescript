@@ -37,11 +37,11 @@ export const ThemeContext = createContext<ThemeContextType>({
 export const useTheme = () => useContext(ThemeContext);
 
 const MyTheme: FC<Props> = ({ children }) => {
-    const [currentDark, setCurrentDark] = useState('pink');
-    const [currentLight, setCurrentLight] = useState('blue');
+    const [currentDark, setCurrentDark] = useState('lightBlue');
+    const [currentLight, setCurrentLight] = useState('deepPurple');
     const [theme, setTheme] = useState(Theme.Dark);
-    const [paletteDark, setPaletteDark] = useState(paletteItems['pink']);
-    const [paletteLight, setPaletteLight] = useState(paletteItems['blue']);
+    const [paletteDark, setPaletteDark] = useState(paletteItems['lightBlue']);
+    const [paletteLight, setPaletteLight] = useState(paletteItems['deepPurple']);
 
 
     useEffect(() => {

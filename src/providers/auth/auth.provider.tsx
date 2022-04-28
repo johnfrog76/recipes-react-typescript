@@ -1,7 +1,7 @@
 import React, { FC, createContext, useState, useEffect } from 'react';
 
 import { iUser } from '../../interfaces/user/user.interface';
-import { setUserAuth, getUserAuth, expireAuth } from './auth.utilities';
+import { setUserAuth, getUserAuth, expireAuth, getRemainingTime } from './auth.utilities';
 
 type UserContextType = {
     user: iUser | null;
@@ -15,6 +15,7 @@ type UserContextType = {
     setUserAuth: (user: iUser, expires: number) => void;
     getUserAuth: () => void;
     expireAuth: () => void;
+    getRemainingTime: () => number;
 }
 
 export const AuthContext = createContext<UserContextType>({
@@ -28,7 +29,8 @@ export const AuthContext = createContext<UserContextType>({
     setUserExpiration: (val) => { },
     setUserAuth: () => { },
     getUserAuth: () => { },
-    expireAuth: () => { }
+    expireAuth: () => { },
+    getRemainingTime: () => 0
 });
 
 interface Props {
@@ -70,7 +72,8 @@ const AuthProvider: FC<Props> = ({ children }) => {
             setUserExpiration,
             setUserAuth,
             getUserAuth,
-            expireAuth
+            expireAuth,
+            getRemainingTime
         }}>{children}</AuthContext.Provider>
     )
 }

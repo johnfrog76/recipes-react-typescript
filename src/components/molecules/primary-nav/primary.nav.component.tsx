@@ -1,5 +1,6 @@
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import NAV_DATA from './primary-nav.data.json';
 import NavBrand from '../../atoms/nav-brand/nav-brand-component';
@@ -12,29 +13,39 @@ import { iMainNavItem } from "../../../interfaces/nav/nav.interface";
 import { StyledNavBrandWrap, StyledNavBar } from './primary.nav.styles';
 
 const PrimaryNav = () => {
+    let logoutTimer: ReturnType<typeof setTimeout>;
+    const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const [mainNavItems, setMainNavItems] = useState<iMainNavItem[]>(NAV_DATA);
-    const { isLoggedIn, expireAuth, getUserAuth, setLogin,
-        setUserToken, setUserObject, setUserExpiration } = useContext(AuthContext);
+    const { isLoggedIn, expireAuth, setLogin,
+        setUserToken, setUserObject, setUserExpiration, getRemainingTime } = useContext(AuthContext);
+
+    const logout = useCallback(() => {
+        expireAuth();
+        setUserObject(null);
+        setLogin(false);
+        setUserToken(null);
+        setUserExpiration(null);
+        localStorage.removeItem('userData');
+        navigate('/');
+    }, []);
 
     const handleIsOpen = () => {
         setIsOpen(!isOpen);
-        if (isLoggedIn) {
-            expireAuth();
-            if (getUserAuth() === null) {
-                setUserObject(null);
-                setLogin(false);
-                setUserToken(null);
-                setUserExpiration(null);
-            }
-        }
     }
 
     useEffect(() => {
         if (!isLoggedIn) {
             setMainNavItems(mainNavItems.filter(item => item.auth === false));
+            clearTimeout(logoutTimer);
         } else {
             setMainNavItems(NAV_DATA);
+            setTimeout(() => {
+                let timeLeft = getRemainingTime();
+                let mins = (timeLeft / (60 * 1000)).toFixed();
+                console.log(`${mins} minutes remaining in session`);
+                logoutTimer = setTimeout(logout, timeLeft);
+            });
         }
     }, [isLoggedIn])
 
