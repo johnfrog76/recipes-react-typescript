@@ -42,6 +42,10 @@ export const StyledIconWrap = styled.div`
     align-items: center;
 `;
 
+export const StyledDateTimeSpan = styled.span`
+    opacity: 0.33;
+`;
+
 export const StyledCardInner = styled.div`
     flex: 1;
 `;
