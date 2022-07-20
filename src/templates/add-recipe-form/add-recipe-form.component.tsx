@@ -35,7 +35,7 @@ interface Values {
     _id?: string;
     user_id: string;
     r_name: string;
-    cat_id?: string;
+    cat_id: string;
     shared: boolean;
     rating: number;
     category?: string;
@@ -102,7 +102,7 @@ const AddRecipeForm = () => {
                 ) => {
 
                     const catName = catData.find(i => i.id === values.cat_id);
-                    const cat_id = Number(values.cat_id);
+                    const cat_id = values.cat_id;
                     const vals = {
                         ...values,
                         category: catName?.name || '',

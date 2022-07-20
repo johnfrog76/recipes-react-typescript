@@ -40,7 +40,7 @@ interface Values {
     user_id: string;
     user: string;
     r_name: string;
-    cat_id?: string;
+    cat_id: string;
     shared: boolean;
     rating: number;
     category?: string;
@@ -94,7 +94,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                 r_name: foundRecipe.r_name,
                 shared: foundRecipe.shared,
                 rating: foundRecipe.rating,
-                cat_id: foundRecipe.cat_id.toString(),
+                cat_id: foundRecipe.cat_id,
                 category: foundRecipe.category,
                 ingredients: foundRecipe.ingredients || [],
                 steps: foundRecipe.steps || [],
@@ -116,7 +116,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                         ) => {
 
                             const catName = catData.find(i => i.id === values.cat_id);
-                            const cat_id = Number(values.cat_id);
+                            const cat_id = values.cat_id;
                             const vals = {
                                 ...values,
                                 category: catName?.name || '',

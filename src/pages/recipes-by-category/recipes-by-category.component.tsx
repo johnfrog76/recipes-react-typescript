@@ -16,15 +16,17 @@ const RecipesByCategory = () => {
     const [filtered, setFiltered] = useState<iRecipe[]>([]);
     const [catName, setCatName] = useState<string>('');
     const { cat_id } = useParams();
-    const param_id = cat_id ? parseInt(cat_id) : -1;
+    const param_id = cat_id;
 
     useEffect(() => {
         if (!isLoading && param_id) {
-            const filterList: iRecipe[] = recipeItems.filter((r) => r.cat_id === param_id && (r.shared || r.user_id === user?.userId));
+            const filterList: iRecipe[] = recipeItems.filter((r) => String(r.cat_id) === param_id && (r.shared || r.user_id === user?.userId));
 
             if (filterList.length > 0) {
                 setFiltered(filterList);
                 setCatName(filterList[0].category);
+            } else {
+                setCatName('Not found')
             }
         }
     }, [recipeItems, isLoading, param_id]);
