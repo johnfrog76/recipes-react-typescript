@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/recipes-react-typescript/static/css/main.3ebf6a35.chunk.css",
-    "main.js": "/recipes-react-typescript/static/js/main.4ee9329e.chunk.js",
-    "main.js.map": "/recipes-react-typescript/static/js/main.4ee9329e.chunk.js.map",
-    "runtime-main.js": "/recipes-react-typescript/static/js/runtime-main.26ce55f9.js",
-    "runtime-main.js.map": "/recipes-react-typescript/static/js/runtime-main.26ce55f9.js.map",
-    "static/js/2.248c6a2c.chunk.js": "/recipes-react-typescript/static/js/2.248c6a2c.chunk.js",
-    "static/js/2.248c6a2c.chunk.js.map": "/recipes-react-typescript/static/js/2.248c6a2c.chunk.js.map",
-    "static/js/3.660d4159.chunk.js": "/recipes-react-typescript/static/js/3.660d4159.chunk.js",
-    "static/js/3.660d4159.chunk.js.map": "/recipes-react-typescript/static/js/3.660d4159.chunk.js.map",
+    "main.js": "/recipes-react-typescript/static/js/main.ffc06d84.chunk.js",
+    "main.js.map": "/recipes-react-typescript/static/js/main.ffc06d84.chunk.js.map",
+    "runtime-main.js": "/recipes-react-typescript/static/js/runtime-main.f2929158.js",
+    "runtime-main.js.map": "/recipes-react-typescript/static/js/runtime-main.f2929158.js.map",
+    "static/js/2.9764d755.chunk.js": "/recipes-react-typescript/static/js/2.9764d755.chunk.js",
+    "static/js/2.9764d755.chunk.js.map": "/recipes-react-typescript/static/js/2.9764d755.chunk.js.map",
+    "static/js/3.d3cd0373.chunk.js": "/recipes-react-typescript/static/js/3.d3cd0373.chunk.js",
+    "static/js/3.d3cd0373.chunk.js.map": "/recipes-react-typescript/static/js/3.d3cd0373.chunk.js.map",
     "index.html": "/recipes-react-typescript/index.html",
     "static/css/main.3ebf6a35.chunk.css.map": "/recipes-react-typescript/static/css/main.3ebf6a35.chunk.css.map",
-    "static/js/2.248c6a2c.chunk.js.LICENSE.txt": "/recipes-react-typescript/static/js/2.248c6a2c.chunk.js.LICENSE.txt"
+    "static/js/2.9764d755.chunk.js.LICENSE.txt": "/recipes-react-typescript/static/js/2.9764d755.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.26ce55f9.js",
-    "static/js/2.248c6a2c.chunk.js",
+    "static/js/runtime-main.f2929158.js",
+    "static/js/2.9764d755.chunk.js",
     "static/css/main.3ebf6a35.chunk.css",
-    "static/js/main.4ee9329e.chunk.js"
+    "static/js/main.ffc06d84.chunk.js"
   ]
 }
