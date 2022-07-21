@@ -1,0 +1,67 @@
+[
+    {
+        "name": "Baked Goods",
+        "custom": false,
+        "userId": null
+    },
+    {
+        "name": "Cakes",
+        "custom": false,
+        "userId": null
+    },
+    {
+        "name": "Cookies",
+        "custom": false,
+        "userId": null
+    },
+    {
+        "name": "Deserts",
+        "custom": false,
+        "userId": null
+    },
+    {
+        "name": "Entree",
+        "custom": false,
+        "userId": null
+    },
+    {
+        "name": "Italian",
+        "custom": false,
+        "userId": null
+    },
+    {
+        "name": "Meat",
+        "custom": false,
+        "userId": null
+    },
+    {
+        "name": "Mexican",
+        "custom": false,
+        "userId": null
+    },
+    {
+        "name": "Pies",
+        "custom": false,
+        "userId": null
+    },
+    {
+        "name": "Salad",
+        "custom": false,
+        "userId": null
+    },
+    {
+        "name": "Sandwiches",
+        "custom": false,
+        "userId": null
+    },
+    {
+        "name": "Side Dish",
+        "custom": false,
+        "userId": null
+    },
+    {
+        "name": "Soup",
+        "custom": false,
+        "userId": null
+    }
+]

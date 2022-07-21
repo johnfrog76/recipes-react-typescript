@@ -3,18 +3,32 @@ import { Link } from "react-router-dom";
 
 import { TagContainer, TagList } from './category-tabs.styles';
 import { RecipesContext } from '../../../providers/recipes/recipes.provider';
-import { AuthContext } from "../../../providers/auth/auth.provider";
-import { iRecipe } from "../../../interfaces/recipe/recipe.interface";
+import { CategoriesContext } from "../../../providers/categories/categories.provider";
+import { iRecipeCategory } from "../../../interfaces/category/category.interface";
 
 const CategoryTags = () => {
-    const { recipeItems, getCategoryTags } = useContext(RecipesContext);
-    const { user } = useContext(AuthContext);
-    const [uniques, setUniques] = useState<iRecipe[]>([]);
+    const { recipeItems } = useContext(RecipesContext);
+    const { categoryItems } = useContext(CategoriesContext);
+    const [uniques, setUniques] = useState<iRecipeCategory[]>([]);
 
     useEffect(() => {
-        const filterList: iRecipe[] = recipeItems.filter((r) => r.shared || r.user_id === user?.userId);
-        setUniques(getCategoryTags(filterList))
-    }, [recipeItems, getCategoryTags, user])
+        const tempItems: iRecipeCategory[] = [];
+
+        for (let i = 0; i < recipeItems.length; i++) {
+            if (!tempItems.find(t => t._id === recipeItems[i].cat_id)) {
+                const catIdx: number = categoryItems.findIndex(c => c._id === recipeItems[i].cat_id);
+                if (catIdx !== -1) {
+                    tempItems.push(categoryItems[catIdx]);
+                }
+            }
+        }
+
+        setUniques(tempItems.sort((a, b) => {
+            var textA = a.name.toLowerCase();
+            var textB = b.name.toLowerCase();
+            return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+        }))
+    }, [recipeItems, categoryItems])
 
     return (
         <React.Fragment>
@@ -24,7 +38,7 @@ const CategoryTags = () => {
                         <TagList>
                             {
                                 uniques.map((item, key) => (<li key={key}>
-                                    <Link to={`/recipes/category/${item.cat_id}`}>{item.category}</Link>
+                                    <Link to={`/recipes/category/${item._id}`}>{item.name}</Link>
                                 </li>))
                             }
                         </TagList>

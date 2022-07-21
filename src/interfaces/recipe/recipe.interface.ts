@@ -20,10 +20,10 @@ export interface iRecipe {
     updatedAt?: string;
     user_id: string;
     r_name: string;
-    cat_id: number;
+    cat_id: string;
+    category: string;
     shared: boolean;
     rating: number;
-    category: string;
     ingredients?: string[];
     steps?: string[];
     comments?: iRecipeComment[];

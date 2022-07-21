@@ -25,6 +25,7 @@ import {
 import { iRecipe, iRecipeComment } from '../../interfaces/recipe/recipe.interface';
 import { updateRecipe } from '../../services/recipes/recipes.services';
 import AccordionToggle from '../../components/atoms/accordion-toggle/accordion-toggle.component';
+import { CategoriesContext } from '../../providers/categories/categories.provider';
 
 interface iKeyValuePair {
     id: string;
@@ -40,7 +41,7 @@ interface Values {
     user_id: string;
     user: string;
     r_name: string;
-    cat_id?: string;
+    cat_id: string;
     shared: boolean;
     rating: number;
     category?: string;
@@ -51,7 +52,8 @@ interface Values {
 
 const EditRecipeForm: FC<Props> = ({ recipeId }) => {
     const { addToast } = useToasts();
-    const { recipeItems, getCategoryTags, editRecipe } = useContext(RecipesContext);
+    const { recipeItems, editRecipe } = useContext(RecipesContext);
+    const { categoryItems } = useContext(CategoriesContext);
     const { token, user } = useContext(AuthContext);
     const [catData, setCatData] = useState<iKeyValuePair[]>([]);
     const [currentRecipeItems, setCurrentRecipeItems] = useState<iRecipe[]>(recipeItems);
@@ -76,11 +78,11 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
     let navigate = useNavigate();
 
     useEffect(() => {
-        const uniques = getCategoryTags(recipeItems);
-        const data = uniques.map((item: iRecipe) => {
-            const { cat_id, category } = item;
-            const strId = String(cat_id);
-            return { id: strId, name: category }
+        const data = categoryItems.map(c => {
+            return {
+                name: c.name,
+                id: c._id
+            }
         });
         setCatData(data);
 
@@ -94,7 +96,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                 r_name: foundRecipe.r_name,
                 shared: foundRecipe.shared,
                 rating: foundRecipe.rating,
-                cat_id: foundRecipe.cat_id.toString(),
+                cat_id: foundRecipe.cat_id,
                 category: foundRecipe.category,
                 ingredients: foundRecipe.ingredients || [],
                 steps: foundRecipe.steps || [],
@@ -102,7 +104,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
             })
         }
 
-    }, [recipeItems, getCategoryTags, recipeId]);
+    }, [recipeItems, recipeId]);
 
     return (
         <StyledFormWrapper>
@@ -116,7 +118,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                         ) => {
 
                             const catName = catData.find(i => i.id === values.cat_id);
-                            const cat_id = Number(values.cat_id);
+                            const cat_id = values.cat_id;
                             const vals = {
                                 ...values,
                                 category: catName?.name || '',

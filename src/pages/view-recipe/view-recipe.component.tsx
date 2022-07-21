@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { DetailsTopWrapper, MetaInfoWrapper, MetaInfoBottom, MetaInfoTop } from './view-recipe.styles';
@@ -10,12 +10,26 @@ import { RecipesContext } from '../../providers/recipes/recipes.provider';
 import RecipeActionBar from '../../components/atoms/recipe-action-bar/recipe-action-bar.component';
 import Spinner from "../../components/molecules/spinner/spinner.component";
 import { SpinnerOuter } from "../../components/molecules/spinner/spinner.styles";
+import { CategoriesContext } from "../../providers/categories/categories.provider";
+import { iRecipe } from "../../interfaces/recipe/recipe.interface";
 
 const RecipeDetailPage = () => {
     const { id } = useParams();
+    const [recipeCategoryName, setRecipeCategoryName] = useState<string>('');
+    const [recipe, setRecipe] = useState<iRecipe>();
+    const { recipeItems, isLoading, setSpinner, getRecipeCategoryName } = useContext(RecipesContext);
+    const { categoryItems } = useContext(CategoriesContext);
 
-    const { recipeItems, isLoading, setSpinner } = useContext(RecipesContext);
-    const recipe = recipeItems.find(r => r._id === id);
+
+    useEffect(() => {
+        setRecipe(recipeItems.find(r => r._id === id));
+    }, [recipeItems]);
+
+    useEffect(() => {
+        if (recipe && recipeItems?.length > 0) {
+            setRecipeCategoryName(getRecipeCategoryName(recipe, categoryItems));
+        }
+    }, [recipe, recipeItems])
 
     return (
         <MainSection>
@@ -37,7 +51,7 @@ const RecipeDetailPage = () => {
                             <MetaInfoWrapper>
                                 <MetaInfoTop>
                                     <RecipeRating rating={recipe?.rating} />
-                                    <span>Cateory: {recipe?.category}</span>
+                                    <span>Cateory: {recipeCategoryName}</span>
                                 </MetaInfoTop>
                                 <MetaInfoBottom>
                                     <RecipeActionBar />

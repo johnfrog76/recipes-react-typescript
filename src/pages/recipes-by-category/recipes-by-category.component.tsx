@@ -9,25 +9,32 @@ import { iRecipe } from "../../interfaces/recipe/recipe.interface";
 import { SpinnerWrapper } from './recipes-by-category.styles';
 import { MainSection } from "../../components/atoms/main-section/main-section.component";
 import Spinner from "../../components/molecules/spinner/spinner.component";
+import { CategoriesContext } from "../../providers/categories/categories.provider";
 
 const RecipesByCategory = () => {
     const { recipeItems, isLoading } = useContext(RecipesContext);
+    const { categoryItems } = useContext(CategoriesContext);
     const { user } = useContext(AuthContext);
     const [filtered, setFiltered] = useState<iRecipe[]>([]);
     const [catName, setCatName] = useState<string>('');
     const { cat_id } = useParams();
-    const param_id = cat_id ? parseInt(cat_id) : -1;
+    const param_id = cat_id;
 
     useEffect(() => {
         if (!isLoading && param_id) {
-            const filterList: iRecipe[] = recipeItems.filter((r) => r.cat_id === param_id && (r.shared || r.user_id === user?.userId));
+            const filterList: iRecipe[] = recipeItems.filter((r) => String(r.cat_id) === param_id && (r.shared || r.user_id === user?.userId));
+            const catIdx = categoryItems.findIndex(c => c._id === param_id);
 
             if (filterList.length > 0) {
                 setFiltered(filterList);
-                setCatName(filterList[0].category);
+                if (catIdx !== -1 && categoryItems) {
+                    setCatName(categoryItems[catIdx].name);
+                }
+            } else {
+                setCatName('Not found')
             }
         }
-    }, [recipeItems, isLoading, param_id]);
+    }, [recipeItems, categoryItems, isLoading, param_id]);
 
     return (
         <MainSection>

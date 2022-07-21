@@ -1,4 +1,5 @@
 import React from 'react';
+import { iRecipeCategory } from '../../interfaces/category/category.interface';
 import { iRecipe } from '../../interfaces/recipe/recipe.interface';
 
 
@@ -18,26 +19,6 @@ export const getFeaturedRecipes = (recipes: iRecipe[]):iRecipe[] => {
     }
     return items;
 };
-
-export const getCategoryTags = (recipes: iRecipe[]):iRecipe[] => {
-    const temp: iRecipe[] = [];
-
-    for (let i = 0; i < recipes.length; i++) {
-        if (!temp.find(item => recipes[i].category === item.category)) {
-            temp.push(recipes[i]);
-        }
-    }
-
-    return temp.sort((a, b) => {
-        if (a.category < b.category) {
-            return -1;
-        }
-        if (a.category > b.category) {
-            return 1;
-        }
-        return 0;
-    })
-}
 
 export const addRecipeToList = ( recipes: iRecipe[] = [], recipe?: iRecipe) => {
     if (!recipe) {
@@ -80,5 +61,10 @@ export const bulkUpdateRecipes = (itemsToUpdate: iRecipe[], recipesList: iRecipe
     });
 
     return updated;
+}
+
+export const getRecipeCategoryName = (recipeItem:iRecipe, categoryList: iRecipeCategory[]):string => {
+    let catIdx:number = categoryList.findIndex(c => c._id === recipeItem.cat_id);
+    return catIdx === -1 ? 'Not found' : categoryList[catIdx].name;
 }
 

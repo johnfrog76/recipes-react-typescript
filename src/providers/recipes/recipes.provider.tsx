@@ -1,20 +1,21 @@
 import React, { FC, createContext, useState, useEffect, useContext } from 'react';
 import {
-    getFeaturedRecipes, getCategoryTags, addRecipeToList, editRecipe, deleteRecipe, bulkUpdateRecipes
+    getFeaturedRecipes, addRecipeToList, getRecipeCategoryName, editRecipe, deleteRecipe, bulkUpdateRecipes
 } from './recipes.utils';
 import { AuthContext } from '../auth/auth.provider';
 import { iRecipe } from '../../interfaces/recipe/recipe.interface';
 import { getRecipes, getRecipesAuth } from '../../services/recipes/recipes.services';
+import { iRecipeCategory } from '../../interfaces/category/category.interface';
 
 type RecipeContextType = {
     recipeItems: iRecipe[];
     recipeCount: number;
     bulkUpdateRecipes: (itemsToUpdate: iRecipe[], recipes: iRecipe[]) => iRecipe[];
     getFeaturedRecipes: (recipes: iRecipe[]) => iRecipe[];
-    getCategoryTags: (recipes: iRecipe[]) => iRecipe[];
     addRecipeToList: (recipes: iRecipe[], recipe?: iRecipe) => iRecipe[];
     editRecipe: (recipes: iRecipe[], recipe?: iRecipe) => iRecipe[];
     deleteRecipe: (recipes: iRecipe[], recipe?: iRecipe) => iRecipe[];
+    getRecipeCategoryName: (recipe: iRecipe, categoryItems: iRecipeCategory[]) => string;
     setSpinner: (val: boolean) => void;
     makeFreshPull: (val: boolean) => void;
     setCount: (val: number) => void;
@@ -28,10 +29,10 @@ export const RecipesContext = createContext<RecipeContextType>({
     recipeCount: 0,
     bulkUpdateRecipes: ([], []) => [],
     getFeaturedRecipes: ([]) => [],
-    getCategoryTags: ([]) => [],
     addRecipeToList: ([]) => [],
     editRecipe: ([]) => [],
     deleteRecipe: ([]) => [],
+    getRecipeCategoryName: ({ }, []) => '',
     setSpinner: () => { },
     setCount: () => { },
     makeFreshPull: () => { },
@@ -102,11 +103,11 @@ const RecipesProvider: FC<Props> = ({ children }) => {
             recipeCount,
             bulkUpdateRecipes,
             getFeaturedRecipes,
-            getCategoryTags,
             addRecipeToList,
             setRecipeItems,
             editRecipe,
             deleteRecipe,
+            getRecipeCategoryName,
             setSpinner,
             setCount,
             isLoading,
