@@ -19,7 +19,8 @@ export const fetchFilterValues = (filter: string, activitesList: iActivity[]): i
 
     switch (filter) {
         case 'dayOne':
-            filterRange = 1000 * 60 * 60 * 24;
+            // timeago rounds to next unit;
+            filterRange = 1000 * 60 * 60 * 47;
             break;
         case 'weekOne':
             filterRange = 1000 * 60 * 60 * 24 * 7;

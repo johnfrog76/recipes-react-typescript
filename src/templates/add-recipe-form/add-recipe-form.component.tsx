@@ -25,6 +25,7 @@ import {
 import { iRecipe, iRecipeComment } from '../../interfaces/recipe/recipe.interface';
 import { addRecipe } from '../../services/recipes/recipes.services';
 import AccordionToggle from '../../components/atoms/accordion-toggle/accordion-toggle.component';
+import { CategoriesContext } from '../../providers/categories/categories.provider';
 
 interface iKeyValuePair {
     id: string;
@@ -47,7 +48,8 @@ interface Values {
 const AddRecipeForm = () => {
     const { addToast } = useToasts();
     const { token, user } = useContext(AuthContext);
-    const { recipeItems, setCount, getCategoryTags, addRecipeToList } = useContext(RecipesContext);
+    const { recipeItems, setCount, addRecipeToList } = useContext(RecipesContext);
+    const { categoryItems } = useContext(CategoriesContext);
     const [catData, setCatData] = useState<iKeyValuePair[]>([]);
     const [currentRecipeItems, setCurrentRecipeItems] = useState<iRecipe[]>(recipeItems);
     const [isOpenIngredients, setIsOpenIngredients] = useState<boolean>(true);
@@ -81,14 +83,14 @@ const AddRecipeForm = () => {
     };
 
     useEffect(() => {
-        const uniques = getCategoryTags(recipeItems);
-        const data = uniques.map((item: iRecipe) => {
-            const { cat_id, category } = item;
-            const strId = String(cat_id);
-            return { id: strId, name: category }
+        const data = categoryItems.map(c => {
+            return {
+                name: c.name,
+                id: c._id
+            }
         });
         setCatData(data);
-    }, [recipeItems, getCategoryTags]);
+    }, [categoryItems]);
 
 
 

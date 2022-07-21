@@ -25,6 +25,7 @@ import {
 import { iRecipe, iRecipeComment } from '../../interfaces/recipe/recipe.interface';
 import { updateRecipe } from '../../services/recipes/recipes.services';
 import AccordionToggle from '../../components/atoms/accordion-toggle/accordion-toggle.component';
+import { CategoriesContext } from '../../providers/categories/categories.provider';
 
 interface iKeyValuePair {
     id: string;
@@ -51,7 +52,8 @@ interface Values {
 
 const EditRecipeForm: FC<Props> = ({ recipeId }) => {
     const { addToast } = useToasts();
-    const { recipeItems, getCategoryTags, editRecipe } = useContext(RecipesContext);
+    const { recipeItems, editRecipe } = useContext(RecipesContext);
+    const { categoryItems } = useContext(CategoriesContext);
     const { token, user } = useContext(AuthContext);
     const [catData, setCatData] = useState<iKeyValuePair[]>([]);
     const [currentRecipeItems, setCurrentRecipeItems] = useState<iRecipe[]>(recipeItems);
@@ -76,11 +78,11 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
     let navigate = useNavigate();
 
     useEffect(() => {
-        const uniques = getCategoryTags(recipeItems);
-        const data = uniques.map((item: iRecipe) => {
-            const { cat_id, category } = item;
-            const strId = String(cat_id);
-            return { id: strId, name: category }
+        const data = categoryItems.map(c => {
+            return {
+                name: c.name,
+                id: c._id
+            }
         });
         setCatData(data);
 
@@ -102,7 +104,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
             })
         }
 
-    }, [recipeItems, getCategoryTags, recipeId]);
+    }, [recipeItems, recipeId]);
 
     return (
         <StyledFormWrapper>

@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState, useEffect } from 'react';
+import React, { FC, useContext, useState, useEffect, useMemo } from 'react';
 
 import RecipeRating from '../../atoms/rating/rating.component';
 import { Link } from 'react-router-dom';
@@ -12,7 +12,7 @@ import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
 import { iUser } from '../../../interfaces/user/user.interface';
 import UserActionButtonIcon, { ButtonIconTypeEnum } from '../../atoms/user-action-button-icon/user-action-button-icon.component';
 import { addFavorite, removeFavorite } from '../../../services/recipes/recipes.services';
-
+import { CategoriesContext } from '../../../providers/categories/categories.provider';
 
 type Props = {
     item: iRecipe;
@@ -35,11 +35,14 @@ const checkIsFavorite = (item: iRecipe, user: iUser): boolean => {
 
 const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, isBulkSelected = false, showFavorites = true }) => {
     const { theme } = useContext(ThemeContext);
-    const { recipeItems, bulkUpdateRecipes, setRecipeItems } = useContext(RecipesContext);
+    const { recipeItems, bulkUpdateRecipes, setRecipeItems, getRecipeCategoryName } = useContext(RecipesContext);
+    const { categoryItems } = useContext(CategoriesContext);
     const [isChecked, setIsChecked] = useState<boolean>(false);
     const { token, isLoggedIn, user } = useContext(AuthContext);
     const [isFav, setIsFav] = useState<boolean>(false);
     const [favDisabled, setFavDisabled] = useState<boolean>(false);
+    const [categoryName, setCatName] = useState<string>('');
+
 
     const handleChange = (id: string | undefined, checked: boolean) => {
         if (onSelectChange) {
@@ -70,6 +73,12 @@ const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, i
             });
         }
     }
+
+    useEffect(() => {
+        if (categoryItems?.length > 0) {
+            setCatName(getRecipeCategoryName(item, categoryItems));
+        }
+    }, [categoryItems]);
 
     useEffect(() => {
         setIsChecked(isBulkSelected);
@@ -126,7 +135,7 @@ const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, i
             <CardCopy>{item?.steps?.join(' ')}</CardCopy>
             <CardBottomWrapper ThemeStyle={theme}>
                 <CardMetaInfo ThemeStyle={theme}>
-                    <span>{item.category}</span>
+                    <span>{categoryName}</span>
                     <RecipeRating inverse={theme === Theme.Light} rating={item.rating} />
                 </CardMetaInfo>
                 <Link to={`/recipes/${item._id}`}>View More <ChevronRight /></Link>
