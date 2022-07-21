@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState, useEffect, useMemo } from 'react';
+import React, { FC, useContext, useState, useEffect } from 'react';
 
 import RecipeRating from '../../atoms/rating/rating.component';
 import { Link } from 'react-router-dom';
