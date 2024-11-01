@@ -1,6 +1,4 @@
 import React, { createContext, FC, useState, useEffect } from 'react';
-
-import USERS_LIST from './users-collection.data.json';
 import { iUserItem } from '../../interfaces/users/users.interface';
 import { addUserItem, removeUserItem } from './users.utilities';
 import { getUsers } from '../../services/users/users.service';
@@ -33,7 +31,6 @@ const UsersProvider: FC<Props> = ({ children }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
-
         getUsers().then(({ users }) => {
             if (users) {
                 const sorted = users.sort(

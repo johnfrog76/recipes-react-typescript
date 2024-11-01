@@ -4,7 +4,7 @@ import {
 } from './recipes.utils';
 import { AuthContext } from '../auth/auth.provider';
 import { iRecipe } from '../../interfaces/recipe/recipe.interface';
-import { getRecipes, getRecipesAuth } from '../../services/recipes/recipes.services';
+import { RecipeService, IRecipeService } from '../../services/recipes/recipes.services';
 import { iRecipeCategory } from '../../interfaces/category/category.interface';
 
 type RecipeContextType = {
@@ -46,6 +46,7 @@ interface Props {
 }
 
 const RecipesProvider: FC<Props> = ({ children }) => {
+    const recipeService: IRecipeService = new RecipeService();
     const [recipeItems, setRecipeItems] = useState<iRecipe[]>([]);
     const [recipeCount, setRecipeCount] = useState<number>(0);
     const [makeRequest, setMakeRequest] = useState<boolean>(true);
@@ -60,7 +61,8 @@ const RecipesProvider: FC<Props> = ({ children }) => {
             setMakeRequest(false);
 
             if (isLoggedIn) {
-                getRecipesAuth(token).then((resp) => {
+                recipeService.getRecipesAuth(token)
+                .then((resp) => {
                     setTimeout(() => {
                         setRecipeItems(resp);
                         setCount(resp.length);
@@ -71,7 +73,8 @@ const RecipesProvider: FC<Props> = ({ children }) => {
                     console.log(err)
                 });
             } else {
-                getRecipes().then((resp) => {
+                recipeService.getRecipes()
+                .then((resp) => {
                     setTimeout(() => {
                         setSpinner(false);
                         if (resp) {
@@ -79,7 +82,8 @@ const RecipesProvider: FC<Props> = ({ children }) => {
                             setCount(resp.length);
                         }
                     }, 1500);
-                }).catch((err) => {
+                })
+                .catch((err) => {
                     setSpinner(false);
                     console.error(err);
                 });

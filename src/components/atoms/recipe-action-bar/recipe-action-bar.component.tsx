@@ -7,10 +7,13 @@ import { AuthContext } from '../../../providers/auth/auth.provider';
 import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
 import UserActionButtonIcon, { ButtonIconTypeEnum } from '../user-action-button-icon/user-action-button-icon.component';
 import { StyledRecipeActionBar } from './recipe-action-bar.styles';
-import { removeRecipe, addFavorite, removeFavorite, copyRecipe } from '../../../services/recipes/recipes.services';
+import {  RecipeService, IRecipeService } from '../../../services/recipes/recipes.services';
+import { FavoritesService, IFavoritesResponse, IFavoritesService } from '../../../services/favorites/favorites.service';
 import ConfirmDialog from '../../molecules/confirm-dialog/confirm-dialog.component';
 
 const RecicipeActionBar = () => {
+    const favoritesService: IFavoritesService = new FavoritesService();
+    const recipeService: IRecipeService = new RecipeService();
     let { id } = useParams();
     let navigate = useNavigate();
     const { addToast } = useToasts();
@@ -52,7 +55,7 @@ const RecicipeActionBar = () => {
     const handleDelete = () => {
         setSpinner(true);
         if (recipe) {
-            removeRecipe(recipe, token).then((resp) => {
+            recipeService.removeRecipe(recipe, token).then((resp) => {
                 deleteRecipe(recipeItems, recipe);
                 setCount(recipeItems.length);
                 setSpinner(false);
@@ -97,8 +100,9 @@ const RecicipeActionBar = () => {
     const handleCopy = () => {
         setCopyOpen(false);
         if (id && user) {
-            copyRecipe(id, user.userId, user?.token).then((resp) => {
-                let tempItems = recipeItems;
+            recipeService.copyRecipe(id, user.userId, user?.token).then((resp) => {
+                debugger;
+                const tempItems = recipeItems;
                 tempItems.push(resp.data);
                 setRecipeItems(tempItems);
                 addToast(
@@ -124,13 +128,13 @@ const RecicipeActionBar = () => {
     const handleFavorite = () => {
         setFavDisabled(true);
         if (isFav) {
-            removeFavorite(id, user?.userId, token).then((resp) => {
+            favoritesService.removeFavorite(id, user?.userId, token).then((resp: IFavoritesResponse) => {
                 editRecipe(recipeItems, resp.data);
                 setIsFav(false);
                 setFavDisabled(false);
             }).catch(err => console.log(err.message));
         } else {
-            addFavorite(id, user?.userId, token).then((resp) => {
+            favoritesService.addFavorite(id, user?.userId, token).then((resp: IFavoritesResponse) => {
                 setIsFav(true);
                 editRecipe(recipeItems, resp.data);
                 setFavDisabled(false);

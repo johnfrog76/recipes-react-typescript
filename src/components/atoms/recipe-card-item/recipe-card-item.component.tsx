@@ -11,7 +11,7 @@ import { CardItem, CardCopy, CardBottomWrapper, CardTitleWrap, CardMetaInfo, Car
 import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
 import { iUser } from '../../../interfaces/user/user.interface';
 import UserActionButtonIcon, { ButtonIconTypeEnum } from '../../atoms/user-action-button-icon/user-action-button-icon.component';
-import { addFavorite, removeFavorite } from '../../../services/recipes/recipes.services';
+import { FavoritesService, IFavoritesResponse, IFavoritesService } from '../../../services/favorites/favorites.service';
 import { CategoriesContext } from '../../../providers/categories/categories.provider';
 
 type Props = {
@@ -34,6 +34,7 @@ const checkIsFavorite = (item: iRecipe, user: iUser): boolean => {
 }
 
 const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, isBulkSelected = false, showFavorites = true }) => {
+    const favoritesService: IFavoritesService = new FavoritesService();
     const { theme } = useContext(ThemeContext);
     const { recipeItems, bulkUpdateRecipes, setRecipeItems, getRecipeCategoryName } = useContext(RecipesContext);
     const { categoryItems } = useContext(CategoriesContext);
@@ -56,7 +57,7 @@ const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, i
     const onFavoriteAction = () => {
         setFavDisabled(true);
         if (isFav) {
-            removeFavorite(item._id, user?.userId, token).then((resp) => {
+            favoritesService.removeFavorite(item._id, user?.userId, token).then((resp: IFavoritesResponse) => {
                 setIsFav(false);
                 setRecipeItems(bulkUpdateRecipes([resp.data], recipeItems));
                 setFavDisabled(false);
@@ -64,7 +65,7 @@ const RecipeCardItem: FC<Props> = ({ item, selectMode = false, onSelectChange, i
                 console.error(err.message);
             });
         } else {
-            addFavorite(item._id, user?.userId, token).then((resp) => {
+            favoritesService.addFavorite(item._id, user?.userId, token).then((resp: IFavoritesResponse) => {
                 setIsFav(true);
                 setRecipeItems(bulkUpdateRecipes([resp.data], recipeItems));
                 setFavDisabled(false);

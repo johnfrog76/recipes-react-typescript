@@ -6,7 +6,7 @@ import UsersList from '../../components/molecules/users-list/users-list.componen
 
 const UsersPage = () => (
     <MainSection>
-        <PageTitle>Users </PageTitle>
+        <PageTitle>Users</PageTitle>
         <UsersList />
     </MainSection>
 );
