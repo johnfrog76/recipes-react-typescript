@@ -1,205 +1,222 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useToasts } from 'react-toast-notifications';
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useToasts } from "react-toast-notifications";
 
-import { RecipesContext } from '../../../providers/recipes/recipes.provider';
-import { AuthContext } from '../../../providers/auth/auth.provider';
-import { iRecipe } from '../../../interfaces/recipe/recipe.interface';
-import UserActionButtonIcon, { ButtonIconTypeEnum } from '../user-action-button-icon/user-action-button-icon.component';
-import { StyledRecipeActionBar } from './recipe-action-bar.styles';
-import {  RecipeService, IRecipeService } from '../../../services/recipes/recipes.services';
-import { FavoritesService, IFavoritesResponse, IFavoritesService } from '../../../services/favorites/favorites.service';
-import ConfirmDialog from '../../molecules/confirm-dialog/confirm-dialog.component';
+import { RecipesContext } from "../../../providers/recipes/recipes.provider";
+import { AuthContext } from "../../../providers/auth/auth.provider";
+import { iRecipe } from "../../../interfaces/recipe/recipe.interface";
+import UserActionButtonIcon, {
+  ButtonIconTypeEnum,
+} from "../user-action-button-icon/user-action-button-icon.component";
+import { StyledRecipeActionBar } from "./recipe-action-bar.styles";
+import {
+  RecipeService,
+  IRecipeService,
+} from "../../../services/recipes/recipes.services";
+import {
+  FavoritesService,
+  IFavoritesResponse,
+  IFavoritesService,
+} from "../../../services/favorites/favorites.service";
+import ConfirmDialog from "../../molecules/confirm-dialog/confirm-dialog.component";
 
 const RecicipeActionBar = () => {
-    const favoritesService: IFavoritesService = new FavoritesService();
-    const recipeService: IRecipeService = new RecipeService();
-    let { id } = useParams();
-    let navigate = useNavigate();
-    const { addToast } = useToasts();
-    const { recipeItems, deleteRecipe, setSpinner, setCount,
-        editRecipe, setRecipeItems } = useContext(RecipesContext);
-    const { token, isLoggedIn, user } = useContext(AuthContext);
+  const favoritesService: IFavoritesService = new FavoritesService();
+  const recipeService: IRecipeService = new RecipeService();
+  let { id } = useParams();
+  let navigate = useNavigate();
+  const { addToast } = useToasts();
+  const {
+    recipeItems,
+    deleteRecipe,
+    setSpinner,
+    setCount,
+    editRecipe,
+    setRecipeItems,
+  } = useContext(RecipesContext);
+  const { token, isLoggedIn, user } = useContext(AuthContext);
 
-    const [favDisabled, setFavDisabled] = useState<boolean>(false);
-    const [isFav, setIsFav] = useState<boolean>(false);
-    const [recipe, setRecipe] = useState<iRecipe | undefined>(undefined);
-    const [open, setOpen] = useState<boolean>(false);
-    const [copyOpen, setCopyOpen] = useState<boolean>(false);
-    const [isOwner, setIsOwner] = useState<boolean>(false);
+  const [favDisabled, setFavDisabled] = useState<boolean>(false);
+  const [isFav, setIsFav] = useState<boolean>(false);
+  const [recipe, setRecipe] = useState<iRecipe | undefined>(undefined);
+  const [open, setOpen] = useState<boolean>(false);
+  const [copyOpen, setCopyOpen] = useState<boolean>(false);
+  const [isOwner, setIsOwner] = useState<boolean>(false);
 
-    useEffect(() => {
-        const recipe = recipeItems.find(r => r._id === id);
+  useEffect(() => {
+    const recipe = recipeItems.find((r) => r._id === id);
 
-        if (recipe) {
-            setRecipe(recipe);
-        }
-    }, [recipeItems, id]);
-
-    useEffect(() => {
-        if (recipe && user && recipe.user_id === user.userId) {
-            setIsOwner(true);
-        }
-    }, [user, recipe]);
-
-    useEffect(() => {
-        if (recipe?.favorites) {
-            let tempFav = recipe.favorites.find(f => f.userId === user?.userId);
-            if (tempFav) {
-                setIsFav(true)
-            }
-        }
-
-    }, [recipe, user]);
-
-    const handleDelete = () => {
-        setSpinner(true);
-        if (recipe) {
-            recipeService.removeRecipe(recipe, token).then((resp) => {
-                deleteRecipe(recipeItems, recipe);
-                setCount(recipeItems.length);
-                setSpinner(false);
-                addToast(
-                    'Success',
-                    {
-                        appearance: 'success',
-                        autoDismiss: true
-                    }
-                );
-                navigate('/');
-
-            }).catch((err) => {
-                setSpinner(false);
-                addToast(
-                    `Error: ${err.message}`,
-                    {
-                        appearance: 'error',
-                        autoDismiss: false
-                    }
-                );
-            });
-        }
+    if (recipe) {
+      setRecipe(recipe);
     }
+  }, [recipeItems, id]);
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const confirmCopyRecipe = () => {
-        setCopyOpen(true);
-    };
-
-    const handleCopyClose = () => {
-        setCopyOpen(false);
+  useEffect(() => {
+    if (recipe && user && recipe.user_id === user.userId) {
+      setIsOwner(true);
     }
+  }, [user, recipe]);
 
-    const handleCopy = () => {
-        setCopyOpen(false);
-        if (id && user) {
-            recipeService.copyRecipe(id, user.userId, user?.token).then((resp) => {
-                debugger;
-                const tempItems = recipeItems;
-                tempItems.push(resp.data);
-                setRecipeItems(tempItems);
-                addToast(
-                    'Success',
-                    {
-                        appearance: 'success',
-                        autoDismiss: true
-                    }
-                );
-                navigate('/recipes');
-            }).catch(err => {
-                addToast(
-                    `Error: ${err.message}`,
-                    {
-                        appearance: 'error',
-                        autoDismiss: false
-                    }
-                );
-            });
-        }
+  useEffect(() => {
+    if (recipe?.favorites) {
+      let tempFav = recipe.favorites.find((f) => f.userId === user?.userId);
+      if (tempFav) {
+        setIsFav(true);
+      }
     }
+  }, [recipe, user]);
 
-    const handleFavorite = () => {
-        setFavDisabled(true);
-        if (isFav) {
-            favoritesService.removeFavorite(id, user?.userId, token).then((resp: IFavoritesResponse) => {
-                editRecipe(recipeItems, resp.data);
-                setIsFav(false);
-                setFavDisabled(false);
-            }).catch(err => console.log(err.message));
-        } else {
-            favoritesService.addFavorite(id, user?.userId, token).then((resp: IFavoritesResponse) => {
-                setIsFav(true);
-                editRecipe(recipeItems, resp.data);
-                setFavDisabled(false);
-            }).catch(err => console.log(err.message));
-        }
+  const handleDelete = () => {
+    setSpinner(true);
+    if (recipe) {
+      recipeService
+        .removeRecipe(recipe, token)
+        .then((resp) => {
+          deleteRecipe(recipeItems, recipe);
+          setCount(recipeItems.length);
+          setSpinner(false);
+          addToast("Success", {
+            appearance: "success",
+            autoDismiss: true,
+          });
+          navigate("/");
+        })
+        .catch((err) => {
+          setSpinner(false);
+          addToast(`Error: ${err.message}`, {
+            appearance: "error",
+            autoDismiss: false,
+          });
+        });
     }
+  };
 
-    return (
-        <React.Fragment>
-            <StyledRecipeActionBar>
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-                {
-                    isLoggedIn && (
-                        <React.Fragment>
-                            {
-                                isFav ? (
-                                    <UserActionButtonIcon
-                                        title="Remove Favorite"
-                                        clickHandler={() => handleFavorite()}
-                                        disabled={favDisabled}
-                                        icon={ButtonIconTypeEnum.favorite}
-                                    />
-                                ) : (
-                                    <UserActionButtonIcon
-                                        title="Add Favorite"
-                                        clickHandler={() => handleFavorite()}
-                                        disabled={favDisabled}
-                                        icon={ButtonIconTypeEnum.unfavorite}
-                                    />
-                                )
-                            }
-                            {
-                                isOwner && (
-                                    <React.Fragment>
-                                        <UserActionButtonIcon title="Delete" clickHandler={handleClickOpen} icon={ButtonIconTypeEnum.delete} />
-                                        <UserActionButtonIcon title="Edit" clickHandler={() => navigate(`/edit-recipe/${id}`)} icon={ButtonIconTypeEnum.edit} />
-                                    </React.Fragment>
-                                )
-                            }
-                            <UserActionButtonIcon
-                                title="Copy this Recipe"
-                                clickHandler={() => confirmCopyRecipe()}
-                                icon={ButtonIconTypeEnum.copy}
-                            />
-                        </React.Fragment>
-                    )
-                }
-                <UserActionButtonIcon title="Print" clickHandler={() => window.print()} icon={ButtonIconTypeEnum.print} />
-            </StyledRecipeActionBar>
-            <ConfirmDialog
-                open={open}
-                title={"Are you sure?"}
-                confirmText={`Delete ${recipe?.r_name} recipe?`}
-                handleCancel={handleClose}
-                handleConfirm={handleDelete}
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const confirmCopyRecipe = () => {
+    setCopyOpen(true);
+  };
+
+  const handleCopyClose = () => {
+    setCopyOpen(false);
+  };
+
+  const handleCopy = () => {
+    setCopyOpen(false);
+    if (id && user) {
+      recipeService
+        .copyRecipe(id, user.userId, user?.token)
+        .then((resp) => {
+          const tempItems = recipeItems;
+          tempItems.push(resp.data);
+          setRecipeItems(tempItems);
+          addToast("Success", {
+            appearance: "success",
+            autoDismiss: true,
+          });
+          navigate("/recipes");
+        })
+        .catch((err) => {
+          addToast(`Error: ${err.message}`, {
+            appearance: "error",
+            autoDismiss: false,
+          });
+        });
+    }
+  };
+
+  const handleFavorite = () => {
+    setFavDisabled(true);
+    if (isFav) {
+      favoritesService
+        .removeFavorite(id, user?.userId, token)
+        .then((resp: IFavoritesResponse) => {
+          editRecipe(recipeItems, resp.data);
+          setIsFav(false);
+          setFavDisabled(false);
+        })
+        .catch((err) => console.log(err.message));
+    } else {
+      favoritesService
+        .addFavorite(id, user?.userId, token)
+        .then((resp: IFavoritesResponse) => {
+          setIsFav(true);
+          editRecipe(recipeItems, resp.data);
+          setFavDisabled(false);
+        })
+        .catch((err) => console.log(err.message));
+    }
+  };
+
+  return (
+    <React.Fragment>
+      <StyledRecipeActionBar>
+        {isLoggedIn && (
+          <React.Fragment>
+            {isFav ? (
+              <UserActionButtonIcon
+                title="Remove Favorite"
+                clickHandler={() => handleFavorite()}
+                disabled={favDisabled}
+                icon={ButtonIconTypeEnum.favorite}
+              />
+            ) : (
+              <UserActionButtonIcon
+                title="Add Favorite"
+                clickHandler={() => handleFavorite()}
+                disabled={favDisabled}
+                icon={ButtonIconTypeEnum.unfavorite}
+              />
+            )}
+            {isOwner && (
+              <React.Fragment>
+                <UserActionButtonIcon
+                  title="Delete"
+                  clickHandler={handleClickOpen}
+                  icon={ButtonIconTypeEnum.delete}
+                />
+                <UserActionButtonIcon
+                  title="Edit"
+                  clickHandler={() => navigate(`/edit-recipe/${id}`)}
+                  icon={ButtonIconTypeEnum.edit}
+                />
+              </React.Fragment>
+            )}
+            <UserActionButtonIcon
+              title="Copy this Recipe"
+              clickHandler={() => confirmCopyRecipe()}
+              icon={ButtonIconTypeEnum.copy}
             />
-            <ConfirmDialog
-                open={copyOpen}
-                title={"Are you sure?"}
-                confirmText={`Copy ${recipe?.r_name} recipe to a new recipe?`}
-                handleCancel={handleCopyClose}
-                handleConfirm={handleCopy}
-            />
-        </React.Fragment>
-    );
-}
+          </React.Fragment>
+        )}
+        <UserActionButtonIcon
+          title="Print"
+          clickHandler={() => window.print()}
+          icon={ButtonIconTypeEnum.print}
+        />
+      </StyledRecipeActionBar>
+      <ConfirmDialog
+        open={open}
+        title={"Are you sure?"}
+        confirmText={`Delete ${recipe?.r_name} recipe?`}
+        handleCancel={handleClose}
+        handleConfirm={handleDelete}
+      />
+      <ConfirmDialog
+        open={copyOpen}
+        title={"Are you sure?"}
+        confirmText={`Copy ${recipe?.r_name} recipe to a new recipe?`}
+        handleCancel={handleCopyClose}
+        handleConfirm={handleCopy}
+      />
+    </React.Fragment>
+  );
+};
 
 export default RecicipeActionBar;
