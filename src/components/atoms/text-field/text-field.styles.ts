@@ -45,12 +45,12 @@ export const StyledLabel = styled.label<iStyledLabel>`
     color: ${props => props.theme.colors.pageForeground1};
     display: block;
     margin-bottom: 0.25rem;
-    &::before {
+    &::after {
         content: '${props => props.Required ? '*' : ''}';
         color: ${props => props.theme.colors.pageHighLight2};
         font-size: 18px;
         font-weight: 700;
-        padding-right: 0.3rem;
+        padding-left: 0.3rem;
     }
 `;
 

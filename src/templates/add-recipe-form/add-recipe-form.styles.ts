@@ -78,9 +78,10 @@ export const StyledLabel = styled.label<iRequiredLabel>`
     color: ${props => props.theme.colors.pageForeground1};
     display: block;
     margin-bottom: 0.25rem;
-    &::before {
-        content: '${props => props.Required ? '* ' : ''}';
+    &::after {
+        content: '${props => props.Required ? '*' : ''}';
         color: ${props => props.theme.colors.pageHighLight2};
+        padding-left: 0.25rem;
         font-size: 18px;
         font-weight: 700;
     }

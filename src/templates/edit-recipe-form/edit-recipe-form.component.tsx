@@ -23,7 +23,7 @@ import {
     StyledAccordionContent
 } from './edit-recipe-form.styles';
 import { iRecipe, iRecipeComment } from '../../interfaces/recipe/recipe.interface';
-import { updateRecipe } from '../../services/recipes/recipes.services';
+import { RecipeService, IRecipeService } from '../../services/recipes/recipes.services';
 import AccordionToggle from '../../components/atoms/accordion-toggle/accordion-toggle.component';
 import { CategoriesContext } from '../../providers/categories/categories.provider';
 
@@ -51,6 +51,7 @@ interface Values {
 }
 
 const EditRecipeForm: FC<Props> = ({ recipeId }) => {
+    const recipeService: IRecipeService = new RecipeService();
     const { addToast } = useToasts();
     const { recipeItems, editRecipe } = useContext(RecipesContext);
     const { categoryItems } = useContext(CategoriesContext);
@@ -125,7 +126,7 @@ const EditRecipeForm: FC<Props> = ({ recipeId }) => {
                                 cat_id: cat_id
                             }
 
-                            updateRecipe(vals, token).then((resp) => {
+                            recipeService.updateRecipe(vals, token).then((resp) => {
                                 addToast(
                                     'Success',
                                     {
