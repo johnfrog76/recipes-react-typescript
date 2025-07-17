@@ -35,3 +35,6 @@ REACT_APP_RECIPE_ENDPOINT
 >
 > "deploy": "gh-pages -b master -d build"
 >
+
+## Node
+- currently running on 16.13.0
